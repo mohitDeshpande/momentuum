@@ -1,3 +1,22 @@
+# Momentuum
+This is the Momentuum Mobile Application for iOS & Android, built with React Native
+
+## Getting Started for development
+1. Install [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [node.js/npm](https://nodejs.org/en/download/) and [yarn](https://yarnpkg.com/en/docs/getting-started) 
+2. Clone repository  
+`git clone <GitHub Repository URL>`
+3. Install dependencies  
+`yarn`
+3. Run a sanity check  
+`yarn test`
+4. Check the commands you can use during development - [Documentation](#available-scripts)
+5. If the tests pass, then start your development in your dedicated branch
+6. Start the development server  
+`yarn start`
+
+#### This project follows the [Git Flow Branching model](http://nvie.com/posts/a-successful-git-branching-model) for development. Please create your feature branch from `develop` branch and start developing in it and then open a pull request to merge your code into the develop branch
+
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
@@ -39,7 +58,7 @@ Upgrading to a new version of React Native requires updating the `react-native`,
 
 If Yarn was installed when the project was initialized, then dependencies will have been installed via Yarn, and you should probably use it to run these commands as well. Unlike dependency installation, command running syntax is identical for Yarn and NPM at the time of this writing.
 
-### `npm start`
+### `yarn start`
 
 Runs your app in development mode.
 
@@ -53,15 +72,15 @@ npm start -- --reset-cache
 yarn start -- --reset-cache
 ```
 
-#### `npm test`
+#### `yarn test`
 
 Runs the [jest](https://github.com/facebook/jest) test runner on your tests.
 
-#### `npm run ios`
+#### `yarn run ios`
 
 Like `npm start`, but also attempts to open your app in the iOS Simulator if you're on a Mac and have it installed.
 
-#### `npm run android`
+#### `yarn run android`
 
 Like `npm start`, but also attempts to open your app on a connected Android device or emulator. Requires an installation of Android build tools (see [React Native docs](https://facebook.github.io/react-native/docs/getting-started.html) for detailed setup). We also recommend installing Genymotion as your Android emulator. Once you've finished setting up the native build environment, there are two options for making the right copy of `adb` available to Create React Native App:
 
