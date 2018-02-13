@@ -1,28 +1,40 @@
 import React from "react";
 import styles from "./../styles/LoginStyles";
-import { View, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, ImageBackground,Image } from "react-native";
 import { FormLabel, FormInput, Button } from "react-native-elements";
 
 export default class Login extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <FormLabel style={styles.formGroup} labelStyle={styles.labelStyles}>
-          Username
-        </FormLabel>
-        <FormInput />
-
-        <FormLabel style={styles.formGroup} labelStyle={styles.labelStyles}>
-          Password
-        </FormLabel>
-        <FormInput secureTextEntry />
-
-        <Button
-          title="LOGIN"
-          style={styles.formGroup}
-          buttonStyle={styles.button}
+      <ImageBackground
+        style={styles.backgroundImage}
+        source={require('./../img/login.jpg')}
+      >
+        <KeyboardAvoidingView
+            backgroundColor='transparent'
+            style={styles.container}
+            behavior='padding'
+        >
+        <Image
+            source={require('./../../../assets/img/CivicTrack-Logo.png')}
         />
-      </View>
+          <FormLabel style={styles.formGroup} labelStyle={styles.labelStyles}>
+            Username
+          </FormLabel>
+          <FormInput />
+
+          <FormLabel style={styles.formGroup} labelStyle={styles.labelStyles}>
+            Password
+          </FormLabel>
+          <FormInput secureTextEntry />
+
+          <Button
+            title="LOGIN"
+            style={styles.formGroup}
+            buttonStyle={styles.button}
+          />
+        </KeyboardAvoidingView>
+      </ImageBackground>
     );
   }
 }

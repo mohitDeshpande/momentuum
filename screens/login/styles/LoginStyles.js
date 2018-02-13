@@ -1,9 +1,17 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    backgroundImage: {
+        backgroundColor: "#ccc",
+          flex: 1,
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+    },
     container : {
         paddingLeft: 25,
-        paddingRight: 25,
+        paddingRight: 25, 
+        paddingTop:100,
     },
     formGroup: {
         paddingTop: 30,
