@@ -19,8 +19,11 @@ export default StyleSheet.create({
     labelStyles: {
         color: 'white'
     },
+    inputStyle: {
+        color: 'white'
+    },
     button: {
-        backgroundColor: 'rgba(60, 244, 244, 1)',
+        backgroundColor: 'rgba(55, 111, 146, 1)',
         width: null,
         height: 60, 
         borderRadius: 3
