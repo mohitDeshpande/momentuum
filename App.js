@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import Login from './screens/login/components/Login';
 
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
@@ -12,6 +14,12 @@ export default class App extends React.Component {
     );
   }
 }
+
+export default StackNavigator({
+  Home: {
+    screen: Login
+  }
+});
 
 const styles = StyleSheet.create({
   container: {
