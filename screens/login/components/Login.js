@@ -46,7 +46,7 @@ export default class Login extends React.Component {
         this.state.token = token;
 
         // check if the token is valid with the test endpoint
-        var url = config.api.url + config.api.endpoints.test.withAuth;
+        var ursl = config.api.url + config.api.endpoints.test.withAuth;
         axios({
           method: "get",
           url: url,
