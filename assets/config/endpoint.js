@@ -7,6 +7,10 @@ export default {
       caseItems: {
         caseItem: "caseitem/",
         caseItemsForCase: "caseitem/case/"
+      },
+      test: {
+        withAuth: "values/5",
+        withoutAuth: "values"
       }
     }
   }

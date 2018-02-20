@@ -13,6 +13,8 @@ import { Constants } from "expo";
 import axios from "axios";
 import styles from "./../styles/LoginStyles";
 import config from "./../../../assets/config/endpoint";
+import constants from "./../../../assets/config/constants";
+
 
 export default class Login extends React.Component {
 
@@ -30,7 +32,8 @@ export default class Login extends React.Component {
    * The react-navigation configuration for this screen
    */
   static navigationOptions = {
-    header: null
+    header: null,
+    tabBarVisible: false
   }
 
   async componentWillMount() {
@@ -41,6 +44,29 @@ export default class Login extends React.Component {
         // token is set
         console.debug("Token is present : " + token);
         this.state.token = token;
+
+        // check if the token is valid with the test endpoint
+        var url = config.api.url + config.api.endpoints.test.withAuth;
+        axios({
+          method: "get",
+          url: url,
+          headers: { 
+            "Authorization": "Bearer " + token
+          }
+        })
+        .then (response => {
+          console.log("Token is valid. Token user : " + response.data)
+          
+          // Since token is valid we send the user to the next screen
+          this.props.navigation.navigate(constants.appConstants.screenNames.caseList)
+        })
+        .catch (error => {
+          if (error.response.status == 401) {
+            console.debug("Token is not valid. User has to login again. Response: " +error.response)
+          } else {
+            console.error("Something went wrong. Response: "+error.response)
+          }
+        })
       }
     } catch (error) {
       console.error(error);
@@ -93,6 +119,9 @@ export default class Login extends React.Component {
         } catch (error) {
           console.error("AsyncStorage error : " + error);
         }
+
+        // navigate to the case list screen
+        this.props.navigation.navigate('CaseList');
       })
       .catch(error => {
         if (error.response) {
