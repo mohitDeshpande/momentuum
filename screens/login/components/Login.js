@@ -19,11 +19,10 @@ export default class Login extends React.Component {
       password: ""
     };
   }
-
   loginUser() {
     axios
       .post(
-        config.api.url + config.api.endpoints.login,
+        "http://192.168.0.14:5000/api/auth/login",
         JSON.stringify(this.state)
       )
       .then(response => console.log(response))

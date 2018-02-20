@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Login from './screens/login/components/Login';
+import TabNavigator from './TabNavigator';
 
 class App extends React.Component {
   render() {
