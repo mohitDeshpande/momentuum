@@ -8,6 +8,7 @@ import {
   Alert
 } from "react-native";
 import { FormLabel, FormInput, Button } from "react-native-elements";
+import { SafeAreaView } from 'react-navigation'
 import { Constants } from "expo";
 import axios from "axios";
 import styles from "./../styles/LoginStyles";
@@ -20,15 +21,16 @@ export default class Login extends React.Component {
       username: "",
       password: "",
       token: ""
-    }
+    };
   }
 
   async componentWillMount() {
     try {
-      var token = await AsyncStorage.getItem('token')
+      // check if the token is present in the storage
+      var token = await AsyncStorage.getItem("token");
       if (token != null) {
         // token is set
-        console.debug("Token is present : " + token)
+        console.debug("Token is present : " + token);
         this.state.token = token;
       }
     } catch (error) {
@@ -36,40 +38,51 @@ export default class Login extends React.Component {
     }
   }
 
+  /**
+   * Display invalid user error alert box
+   */
   authError = () => {
     Alert.alert("Authentication Error", "Invalid Username or Password entered");
-  }
+  };
 
+  /**
+   * display something went wrong alert box
+   */
   appError = () => {
-    Alert.alert("Application Error", "Something went wrong. Please contact Momentuum regarding this error");
-  }
+    Alert.alert(
+      "Application Error",
+      "Something went wrong. Please contact Momentuum regarding this error"
+    );
+  };
 
   /**
    * This method is called when the user clicks the login button
    */
   loginUser = () => {
     var endpoint = config.api.url + config.api.endpoints.login;
-    console.debug("Initiating POST request to endpoint: "+ endpoint);
+    console.debug("Initiating POST request to endpoint: " + endpoint);
 
     // make the call
     axios({
-      method: 'post',
+      method: "post",
       url: endpoint,
       data: {
         username: this.state.username,
         password: this.state.password
       },
-      headers: {'Content-Type' : 'application/json'}
+      headers: { "Content-Type": "application/json" }
     })
-      .then(async (response) => {
-        console.debug("Call was successful for login. Response status : " + response.status);
-        console.debug(response.data)
+      .then(async response => {
+        console.debug(
+          "Call was successful for login. Response status : " + response.status
+        );
+        console.debug(response.data);
 
         // save the token in the storage
         try {
-          await AsyncStorage.setItem('token', response.data.token)
+          await AsyncStorage.setItem("token", response.data.token);
         } catch (error) {
-          console.error("AsyncStorage error : " +error);
+          console.error("AsyncStorage error : " + error);
         }
       })
       .catch(error => {
@@ -87,7 +100,7 @@ export default class Login extends React.Component {
           this.appError();
         }
       });
-  }
+  };
 
   render() {
     return (
@@ -95,6 +108,7 @@ export default class Login extends React.Component {
         style={styles.backgroundImage}
         source={require("./../img/login.jpg")}
       >
+        <SafeAreaView>
         <KeyboardAvoidingView
           backgroundColor="transparent"
           style={styles.container}
@@ -128,6 +142,7 @@ export default class Login extends React.Component {
             onPress={this.loginUser}
           />
         </KeyboardAvoidingView>
+        </SafeAreaView>
       </ImageBackground>
     );
   }
