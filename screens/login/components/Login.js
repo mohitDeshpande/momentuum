@@ -5,23 +5,32 @@ import {
   Image,
   Text,
   AsyncStorage,
-  Alert
+  Alert,
+  StatusBar
 } from "react-native";
 import { FormLabel, FormInput, Button } from "react-native-elements";
-import { SafeAreaView } from 'react-navigation'
 import { Constants } from "expo";
 import axios from "axios";
 import styles from "./../styles/LoginStyles";
 import config from "./../../../assets/config/endpoint";
 
 export default class Login extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
       username: "",
       password: "",
-      token: ""
+      token: "",
+      isLoading: false
     };
+  }
+
+  /**
+   * The react-navigation configuration for this screen
+   */
+  static navigationOptions = {
+    header: null
   }
 
   async componentWillMount() {
@@ -92,14 +101,14 @@ export default class Login extends React.Component {
             console.debug("Invalid username and password entered");
             this.authError();
           } else {
-            console.error("Invalid request sent");
+            console.error("Invalid request sent. Status : " + error.response.status);
             this.appError();
           }
         } else {
-          console.error("Something went wrong in the request : " + error);
+          console.error("Something went wrong in the request Status : " + error.response.status + " Response : "+ error);
           this.appError();
         }
-      });
+      })
   };
 
   render() {
@@ -108,11 +117,11 @@ export default class Login extends React.Component {
         style={styles.backgroundImage}
         source={require("./../img/login.jpg")}
       >
-        <SafeAreaView>
+        <StatusBar barStyle="light-content"/>
         <KeyboardAvoidingView
           backgroundColor="transparent"
           style={styles.container}
-          behavior="padding"
+          behavior="position"
         >
           <Image
             source={require("./../../../assets/img/CivicTrack-Logo.png")}
@@ -122,6 +131,8 @@ export default class Login extends React.Component {
           </FormLabel>
           <FormInput
             inputStyle={styles.inputStyle}
+            autoCapitalize="none"
+            autoCorrect={false}
             onChangeText={username => this.setState({ username })}
             value={this.state.username}
           />
@@ -140,9 +151,9 @@ export default class Login extends React.Component {
             style={styles.formGroup}
             buttonStyle={styles.button}
             onPress={this.loginUser}
+            loading={this.state.isLoading}
           />
         </KeyboardAvoidingView>
-        </SafeAreaView>
       </ImageBackground>
     );
   }
