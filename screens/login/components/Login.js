@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { FormLabel, FormInput, Button } from "react-native-elements";
 import { Constants } from "expo";
+import { StackNavigator } from 'react-navigation';
 import axios from "axios";
 import styles from "./../styles/LoginStyles";
 import config from "./../../../assets/config/endpoint";
@@ -31,10 +32,11 @@ export default class Login extends React.Component {
   /**
    * The react-navigation configuration for this screen
    */
+   /*
   static navigationOptions = {
     header: null,
     tabBarVisible: false
-  }
+  }*/
 
   async componentWillMount() {
     try {
@@ -46,19 +48,19 @@ export default class Login extends React.Component {
         this.state.token = token;
 
         // check if the token is valid with the test endpoint
-        var ursl = config.api.url + config.api.endpoints.test.withAuth;
+        var url =  config.api.url + config.api.endpoints.test.withAuth;
         axios({
           method: "get",
           url: url,
-          headers: { 
+          headers: {
             "Authorization": "Bearer " + token
           }
         })
         .then (response => {
           console.log("Token is valid. Token user : " + response.data)
-          
+
           // Since token is valid we send the user to the next screen
-          this.props.navigation.navigate(constants.appConstants.screenNames.caseList)
+          this.props.navigation.navigate('CaseList')
         })
         .catch (error => {
           if (error.response.status == 401) {
@@ -121,7 +123,7 @@ export default class Login extends React.Component {
         }
 
         // navigate to the case list screen
-        this.props.navigation.navigate('CaseList');
+        this.props.navigation.navigate('CaseList')
       })
       .catch(error => {
         if (error.response) {
