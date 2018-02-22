@@ -12,16 +12,20 @@ export default StyleSheet.create({
   },
   container: {
     paddingLeft: 25,
-    paddingRight: 25,
+    paddingRight: 25
   },
   formGroup: {
     paddingTop: 30
   },
   labelStyles: {
-    color: "black",
+    color: "white",
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   inputStyle: {
-    color: "black",
+    color: "white",
+    fontSize: 18,
+    fontWeight: 'bold'
   },
   button: {
     backgroundColor: "rgba(55, 111, 146, 1)",
