@@ -1,18 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 import Login from './screens/login/components/Login';
-import TabNavigator from './screens/CaseList/components/TabNavigator';
+import CaseList from './screens/caselist/CaseList';
 
-class App extends React.Component {
+export default class App extends React.Component {
   render() {
+    return <MainNavigation/>
   }
 }
-export default StackNavigator({
-  Home: {
+
+const MainNavigation = TabNavigator({
+  Login: {
     screen: Login
   },
-  TabNavigator: {
-    screen: TabNavigator
-  },
+  CaseList: {
+    screen: CaseList
+  }
 });
