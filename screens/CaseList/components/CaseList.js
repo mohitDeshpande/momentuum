@@ -28,7 +28,7 @@ async componentDidMount() {
     var url =  config.api.url + config.api.endpoints.caselist;
     console.debug("Initiating GET request to endpoint: " + url);
 
-    //console.debug(this.state.token);
+    console.debug(this.state.token);
     // make the call
     axios({
       method: "get",
@@ -43,7 +43,7 @@ async componentDidMount() {
           console.debug(
             "Call was successful for login. Response status : " + response.status
           );
-            //console.debug(response.data);
+            console.debug(response.data);
             this.setState({
               dataSource: response.data
             });
