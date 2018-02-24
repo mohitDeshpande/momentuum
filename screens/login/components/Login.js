@@ -37,11 +37,11 @@ export default class Login extends React.Component {
   /**
    * The react-navigation configuration for this screen
    */
-   /*
+   
   static navigationOptions = {
     header: null,
     tabBarVisible: false
-  }*/
+  }
 
   async componentWillMount() {
     try {
