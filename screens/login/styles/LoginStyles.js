@@ -15,24 +15,26 @@ export default StyleSheet.create({
     paddingRight: 25
   },
   formGroup: {
-    paddingTop: 30
+    paddingTop: 40
   },
   labelStyles: {
     color: "white",
-    fontSize: 20,
-    fontWeight: 'bold'
+    paddingTop:10,
+    fontSize: 16,
+    fontWeight: '600',
+    fontStyle: 'italic'
   },
   inputStyle: {
     color: "white",
-    fontSize: 18,
+    fontSize: 20,
+    paddingTop: 5,
     fontWeight: 'bold'
   },
   button: {
     backgroundColor: "rgba(55, 111, 146, 1)",
     width: null,
     height: 50,
-    paddingLeft:10,
-    paddingRight:10,
+    padding: 10,
     borderRadius: 3,
   }
 });

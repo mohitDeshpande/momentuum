@@ -8,7 +8,12 @@ import {
   Alert,
   StatusBar
 } from "react-native";
-import { FormLabel, FormInput, Button } from "react-native-elements";
+import {
+  FormLabel,
+  FormInput,
+  FormValidationMessage,
+  Button
+} from "react-native-elements";
 import { Constants } from "expo";
 import { StackNavigator } from 'react-navigation';
 import axios from "axios";
@@ -16,16 +21,16 @@ import styles from "./../styles/LoginStyles";
 import config from "./../../../assets/config/endpoint";
 import constants from "./../../../assets/config/constants";
 
-
 export default class Login extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       username: "",
       password: "",
       token: "",
-      isLoading: false
+      isLoading: false,
+      isInvalid: false,
+      errorMessage: ""
     };
   }
 
@@ -53,22 +58,29 @@ export default class Login extends React.Component {
           method: "get",
           url: url,
           headers: {
-            "Authorization": "Bearer " + token
+            Authorization: "Bearer " + token
           }
         })
-        .then (response => {
-          console.log("Token is valid. Token user : " + response.data)
+          .then(response => {
+            console.log("Token is valid. Token user : " + response.data);
 
-          // Since token is valid we send the user to the next screen
-          this.props.navigation.navigate('CaseList')
-        })
-        .catch (error => {
-          if (error.response.status == 401) {
-            console.debug("Token is not valid. User has to login again. Response: " +error.response)
-          } else {
-            console.error("Something went wrong. Response: "+error.response)
-          }
-        })
+            // Since token is valid we send the user to the next screen
+            this.props.navigation.navigate(
+              constants.appConstants.screenNames.caseList
+            );
+          })
+          .catch(error => {
+            if (error.response.status == 401) {
+              console.debug(
+                "Token is not valid. User has to login again. Response: " +
+                  error.response
+              );
+            } else {
+              console.error(
+                "Something went wrong. Response: " + error.response
+              );
+            }
+          });
       }
     } catch (error) {
       console.error(error);
@@ -79,7 +91,10 @@ export default class Login extends React.Component {
    * Display invalid user error alert box
    */
   authError = () => {
-    Alert.alert("Authentication Error", "Invalid Username or Password entered");
+    var state = this.state;
+    state.isInvalid = true;
+    state.errorMessage = "Invalid username or password";
+    this.setState(state);
   };
 
   /**
@@ -98,6 +113,9 @@ export default class Login extends React.Component {
   loginUser = () => {
     var endpoint = config.api.url + config.api.endpoints.login;
     console.debug("Initiating POST request to endpoint: " + endpoint);
+    var state = this.state;
+    state.isLoading = true;
+    this.setState(state);
 
     // make the call
     axios({
@@ -132,14 +150,24 @@ export default class Login extends React.Component {
             console.debug("Invalid username and password entered");
             this.authError();
           } else {
-            console.error("Invalid request sent. Status : " + error.response.status);
+            console.error(
+              "Invalid request sent. Status : " + error.response.status
+            );
             this.appError();
           }
         } else {
-          console.error("Something went wrong in the request Status : " + error.response.status + " Response : "+ error);
+          console.error(
+            "Something went wrong in the request Status : " +
+              error.response.status +
+              " Response : " +
+              error
+          );
           this.appError();
         }
-      })
+      });
+
+    state.isLoading = false;
+    this.setState(state);
   };
 
   render() {
@@ -148,7 +176,7 @@ export default class Login extends React.Component {
         style={styles.backgroundImage}
         source={require("./../img/login.jpg")}
       >
-        <StatusBar barStyle="light-content"/>
+        <StatusBar barStyle="light-content" />
         <KeyboardAvoidingView
           backgroundColor="transparent"
           style={styles.container}
@@ -164,7 +192,10 @@ export default class Login extends React.Component {
             inputStyle={styles.inputStyle}
             autoCapitalize="none"
             autoCorrect={false}
-            onChangeText={username => this.setState({ username })}
+            shake={this.state.isInvalid}
+            onChangeText={username => {
+              this.setState({ username });
+            }}
             value={this.state.username}
           />
 
@@ -174,9 +205,15 @@ export default class Login extends React.Component {
           <FormInput
             secureTextEntry
             inputStyle={styles.inputStyle}
-            onChangeText={password => this.setState({ password })}
+            shake={this.state.isInvalid}
+            onChangeText={password => {
+              this.setState({ password })
+            }}
             value={this.state.password}
           />
+          <FormValidationMessage>
+            {this.state.errorMessage}
+          </FormValidationMessage>
           <Button
             title="LOGIN"
             style={styles.formGroup}
