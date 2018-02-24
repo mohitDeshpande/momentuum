@@ -2,7 +2,8 @@ export default {
     appConstants : {
         screenNames : {
             login: "Login",
-            caseList: "CaseList"
+            caseList: "CaseList",
+            tabNavigator: "TabNavigator"
         }
     }
 }
