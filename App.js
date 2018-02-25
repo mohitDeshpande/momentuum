@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails/CaseDetails";
 import CaseUpdateForm from "./screens/CaseDetails/components/CaseDetails/CaseUpdateForm";
-import { Font } from 'expo';
 import { StackNavigator } from 'react-navigation';
 
 
@@ -15,7 +14,6 @@ const defaultNavigationOptions = {
 
 export default class App extends React.Component {
 
-  
   render() {
     return (
       <View style={styles.container}>
