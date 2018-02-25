@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import Login from './screens/login/components/Login';
+import TabNavigator from './screens/CaseList/components/TabNavigator';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails/CaseDetails";
 import CaseUpdateForm from "./screens/CaseDetails/components/CaseDetails/CaseUpdateForm";
-import { StackNavigator } from 'react-navigation';
-
 
 const defaultNavigationOptions = {
   headerStyle: {
@@ -12,21 +13,24 @@ const defaultNavigationOptions = {
   headerTitleStyle:{ color: '#ffffff',textAlign: 'center',alignSelf:'center'},
 };
 
-export default class App extends React.Component {
-
+class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <AppNavigation />
-      </View>
-    );
   }
 }
-
-const AppNavigation = StackNavigator(
-  {
-    CaseDetails: { screen: CaseDetails },
-    CaseUpdateForm: { screen: CaseUpdateForm },
+  
+export default StackNavigator({
+    Home: {
+      screen: CaseDetails
+    },
+    TabNavigator: {
+      screen: CaseUpdateForm
+    },
+    CaseDetails: { 
+      screen: CaseDetails 
+    },
+    CaseUpdateForm: { 
+      screen: CaseUpdateForm 
+    },
   },
   {
     headerMode: 'screen',
@@ -35,10 +39,3 @@ const AppNavigation = StackNavigator(
       }
     },
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
-});
