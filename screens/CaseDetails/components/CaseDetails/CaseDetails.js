@@ -1,139 +1,209 @@
 import React from 'react';
-import { Text, ScrollView, View, TextInput, StatusBar } from 'react-native';
+import { Text, ScrollView, View, TextInput, StatusBar, TouchableHighlight, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
 import { Constants } from 'expo';
-import Clients from "./Clients";
+import endpoint from "../../../../assets/config/endpoint";
+import CaseUpdateForm from "./CaseUpdateForm";
 import styles from "../../styles/CaseDetailsStyles"
-import DatePickerIOS from 'react-native-datepicker' // 1.6.0
-import { Dropdown } from 'react-native-material-dropdown'; // 0.7.2
-import { Sae } from 'react-native-textinput-effects'; // 0.4.2
-import { Hoshi } from 'react-native-textinput-effects'; // 0.4.2
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
+import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
+import GrowingTextInput from './GrowingTextInput';
+import { StackNavigator } from 'react-navigation';
+import axios from "axios";
+import Ripple from 'react-native-material-ripple';
 
 class CaseDetails extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { chosenDate: new Date() };
-        this.setDate = this.setDate.bind(this);
+        this.state = {
+            dataSource: []
+        };
     }
 
-    setDate(newDate) {
-        this.setState({ chosenDate: newDate })
+    static navigationOptions = {
+        title: 'Case Details',
+        headerRight: (
+            <View style={{ flexDirection: 'row', paddingRight: 20 }}>
+                <Icon name="trash" size={25} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+            </View>
+        ),
+        headerLeft: (
+            <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
+                <Icon name="angle-left" size={25} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+            </View>
+        ),
+    };
+
+    async componentDidMount() {
+        //this.state.token = await AsyncStorage.getItem("token");
+        var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "/37148";
+        console.debug("Initiating GET request to endpoint: " + url);
+
+        //console.debug(this.state.token);
+        // make the call
+        axios({
+            method: "get",
+            url: url
+
+        })
+            .then(async response => {
+                console.debug(
+                    "Call was successful for login. Response status : " + response.status
+                );
+                console.debug(response.data);
+                this.setState({
+                    dataSource: response.data
+                });
+            })
+            .catch(error => {
+                if (error.response) {
+                    // the response was other than 2xx status
+                    if (error.response.status == 401) {
+                        console.debug("Invalid username and password entered");
+                        this.authError();
+                    } else {
+                        console.error("Invalid request sent. Status : " + error.response.status);
+                        this.appError();
+                    }
+                } else {
+                    console.error("Something went wrong in the request Status : " + error.response.status + " Response : " + error);
+                    this.appError();
+                }
+            });
+
     }
 
-    //TextInput fields effects
+
     render() {
-        const caseCodeInput = (
-            <Sae
-                label={'Case Code'}
-                inputStyle={{ color: '#000' }}
-                iconClass={FontAwesomeIcon}
-                iconName={'pencil'}
-                iconColor={'gray'}
-                // TextInput props
-                autoCapitalize={'none'}
-                autoCorrect={false}
-            />
-        );
-        const hoshiInput = (
-            <Hoshi
-                label={'Case Code'}
-                // this is used as active border color
-                borderColor={'#fff'}
-                paddingHorizontal={0}
-                // this is used to set backgroundColor of label mask.
-                // please pass the backgroundColor of your TextInput container.
-                backgroundColor={'#fff'}
-            />
-        );
-
-        //Dropdown text field dummy data
-        let casestatus = [{
-            value: 'Open',
-        }, {
-            value: 'Closed',
-        }, {
-            value: 'Pending',
-        }];
-
-        let casetype = [{
-            value: 'Assistance',
-        }, {
-            value: 'Forward',
-        }, {
-            value: 'Xyz',
-        }];
-
-        //Main case details View
         return (
             <View style={styles.container}>
                 <ScrollView
-                    contentContainerStyle={{ paddingTop: 65 + 30 }}
-                    style={{ flex: 1, backgroundColor: '#F8F8F9' }}>
+                    keyboardDismissMode="on-drag"
+                    contentContainerStyle={{ paddingVertical: 0 }}
+                    style={{ flex: 1, backgroundColor: '#f2f2f4' }}>
 
-                    //clients component
-                    <Clients />
+                    <FlatList
+                        data={this.state.dataSource}
+                        keyExtractor={(item, index) => index}
+                        renderItem={({ item }) =>
 
-                    //Case details form
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.category}>Case Update From</Text>
+                            <View>
+                                {/* Client Session */}
+                                {/* Client Header */}
+                                <View style={[styles.header]}>
+                                    <Text style={[styles.category,styles.clientHeader]}>Client Details</Text>
+                                </View>
+
+                                {/* Client details */}
+                                <View style={styles.details}>
+                                    <View style={styles.clientFirstRow}>
+                                        <Text style={styles.clientName}>{item.cli.firstName + " " + item.cli.lastname}</Text>
+                                        <Text>#{item.cas.caseid}</Text>
+                                    </View>
+                                    <View style={styles.clientRow}>
+                                    <Text style={styles.clienttext}>{item.cli.addressLine1} {item.cli.addressLine2}</Text>
+                                    </View>
+                                    <View style={styles.clientRow}>
+                                        <Text>{item.cli.mainPhone}</Text>
+                                        <Text>{item.cli.email}</Text>
+                                    </View>
+                                </View>
+                                {/* Client Session Ends */}
+
+                                {/* Case Session */}
+                                {/* Case header */}
+                                <View style={styles.header}>
+                                    <Text style={styles.category}>Case Details</Text>
+                                        <Icon name="edit" size={25} style={{ paddingTop: 10 }} color="#444" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+                                </View>
+
+                                {/* Case details */}
+                                <View style={styles.details}>
+                                    <View style={[styles.row, styles.firstRow]}>
+                                        <Text style={styles.fieldname}>Date</Text>
+                                        <TextInput
+                                            placeholder="Open Date"
+                                            underlineColorAndroid='#ffffff'
+                                            style={styles.textInput}
+                                            editable={false}
+                                            value={item.cas.caseOpenDate}
+                                        />
+                                    </View>
+                                    <View style={[styles.row]}>
+                                        <Text style={styles.fieldname}>Close Date</Text>
+                                        <TextInput
+                                            placeholder="Close Date"
+                                            underlineColorAndroid='#ffffff'
+                                            style={styles.textInput}
+                                            editable={false}
+                                            value={item.cas.caseClosedDate}
+                                        />
+                                    </View>
+                                    <View style={styles.row}>
+                                        <Text style={styles.fieldname}>Case Code</Text>
+                                        <TextInput
+                                            placeholder="Case Code"
+                                            underlineColorAndroid='#ffffff'
+                                            style={styles.textInput}
+                                            editable={false}
+                                            value={item.cas.caseCode}
+                                        />
+                                    </View>
+                                    <View style={styles.row}>
+                                        <Text style={styles.fieldname}>Case Type</Text>
+                                        <TextInput
+                                            placeholder="Case Type"
+                                            underlineColorAndroid='#ffffff'
+                                            style={styles.textInput}
+                                            editable={false}
+                                            value={item.cas.casetype}
+                                        />
+                                    </View>
+                                    <View style={styles.row}>
+                                        <Text style={styles.fieldname}>Case Status</Text>
+                                        <TextInput
+                                            placeholder="Case Status"
+                                            underlineColorAndroid='#ffffff'
+                                            style={styles.textInput}
+                                            editable={false}
+                                            value={item.cas.casestatus}
+                                        />
+                                    </View>
+                                    <View style={styles.row}>
+                                        <Text style={styles.fieldname}>Description</Text>
+                                        <GrowingTextInput
+                                            minHeight={80}
+                                            placeholder="Description"
+                                            underlineColorAndroid='#ffffff'
+                                            style={styles.textInput}
+                                            editable={false}
+                                            value={item.cas.casedescription}
+                                        />
+                                    </View>
+                                </View>
+                                {/* Case Session Ends */}
+
+                            </View>
+                        }
+                    />
+                    {/* Case Items Session */}
+                    {/* Case Items header */}
+                    <View style={styles.header}>
+                        <Text style={styles.category}>Case Items</Text>
+                        <Icon name="plus-square" size={25} style={{ paddingTop: 10 }} color="#444" />
                     </View>
-                    <View style={[styles.row, styles.firstRow]}>
-                        <DatePickerIOS
-                            customStyles={{
-                                dateIcon: {
-                                    width: 0,
-                                    height: 0,
-                                },
-                                dateInput: {
-                                    //alignItems:'left',
-                                    borderLeftWidth: 0,
-                                    borderRightWidth: 0,
-                                    borderTopWidth: 0,
-                                }
-                            }}
-                            date={this.state.chosenDate}
-                            onDateChange={this.setDate}
-                            style={styles.date}
-                        />
-                    </View>
-                    <View style={styles.row}>
-                        <TextInput
-                            placeholder="Case Code"
-                            style={styles.textInput}
-                        />
-                    </View>
-                    <View style={styles.row}>
-                        <Dropdown
-                            style={styles.dropdown}
-                            textColor='rgb(0, 0, 0)'
-                            label='Case Type'
-                            data={casetype}
-                        />
-                    </View>
-                    <View style={styles.row}>
-                        <Dropdown
-                            style={styles.dropdown}
-                            label='Case Status'
-                            data={casestatus}
-                        />
-                    </View>
-                    <View style={styles.row}>
-                        <TextInput
-                            multiline={true}
-                            placeholder="Description"
-                            style={styles.description}
-                        />
-                    </View>
+
+                    {/* Case Items details */}
+
+                    {/* ///Case Items goes here/// */}
+
+                    {/* Case Items Session Ends */}
+
                 </ScrollView>
-                <View style={styles.navbar}>
-                    <Text style={styles.titleText}>Case Details</Text>
-                </View>
+
                 <StatusBar barStyle="light-content" />
             </View>
         )
     }
 }
-
 
 export default CaseDetails

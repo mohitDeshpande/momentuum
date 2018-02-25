@@ -1,69 +1,79 @@
 import { StyleSheet } from 'react-native';
+import { Constants } from 'expo';
 //Stylesheet
-const styles = StyleSheet.create({
+export default StyleSheet.create({
     container: {
-        flex: 1
-    },
-    navbar: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: 65,
-        backgroundColor: '#050B7A',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: Constants.statusBarHeight
-    },
-    titleText: {
-        fontSize: 22,
-        color: '#fff',
-        fontWeight: '500'
-    },
-    category: {
         flex: 1,
+    },
+    /* required  */
+    category: {
         fontSize: 16,
         color: '#444',
         fontWeight: '500',
-        left: 10,
-        top: 10
+        top: 10,
     },
+    /* required  */
+    header: {
+        paddingHorizontal: 10,
+        paddingBottom: 20,
+        flex: 1,
+        flexDirection: 'row',
+        paddingHorizontal: 10,
+        color: '#444',
+        fontWeight: '500',
+        top: 10,
+        justifyContent: 'space-between'
+    },
+    clientHeader: {
+        paddingBottom:15
+    },
+    /* required */
     row: {
         backgroundColor: '#fff',
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#ccc'
     },
+    /* required */
     firstRow: {
         backgroundColor: '#fff',
+        paddingHorizontal: 20,
         borderTopWidth: StyleSheet.hairlineWidth,
         borderTopColor: '#ccc',
-        marginTop: 20,
+    },
+    clientRow: {
+        backgroundColor: '#fff',
+        paddingHorizontal: 20,
+        paddingVertical:5,
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
         flexDirection: 'row'
     },
+    /* required */
+    clientFirstRow: {
+        backgroundColor: '#fff',
+        paddingHorizontal: 20,
+        paddingVertical:5,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    clientName: {
+        color: '#2b6aa6',
+        fontWeight:'500',
+    },
+    /* required */
+    fieldname: {
+        color: '#000',
+        paddingTop: 10
+    },
+    /* required */
     textInput: {
-        flex: 1,
-        paddingHorizontal: 0,
-        paddingTop: 20
+        height: 45,
+        paddingHorizontal: 20,
     },
-    dropdown: {
-        flex: 1,
-        paddingHorizontal: 15,
+    /* required */
+    details: {
+        backgroundColor: '#fff'
     },
-    date: {
-        flex: 1,
-    },
-    description: {
-        flex: 1,
-        paddingHorizontal: 0,
-        paddingTop: 20
-    },
-    formcontainer: {
-        flex:1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    input: {
-        height:40,
-        backgroundColor: 'rgba(255,255,255,0.7)',
-        marginBottom: 20
-    }
 })
