@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, ScrollView, View, TextInput, StatusBar, TouchableHighlight, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
 import { Constants } from 'expo';
-import endpoint from "../../../../assets/config/endpoint";
+import endpoint from "../../../assets/config/endpoint";
 import CaseUpdateForm from "./CaseUpdateForm";
-import styles from "../../styles/CaseDetailsStyles"
+import styles from "../styles/CaseDetailsStyles"
 import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import GrowingTextInput from './GrowingTextInput';
 import { StackNavigator } from 'react-navigation';

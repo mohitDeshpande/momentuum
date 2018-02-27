@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, KeyboardAvoidingView, StatusBar, Button } from 'react-native';
 import { Font, Constants } from 'expo';
-import styles from "../../styles/CaseDetailsStyles"
+import styles from "../styles/CaseDetailsStyles"
 import DatePicker from 'react-native-datepicker' // 1.6.0
 import { Dropdown } from 'react-native-material-dropdown'; // 0.7.2
 import { Sae } from 'react-native-textinput-effects'; // 0.4.2
