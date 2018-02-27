@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Login from './screens/login/components/Login';
 import TabNavigator from './screens/CaseList/components/TabNavigator';
-import CaseDetails from "./screens/CaseDetails/components/CaseDetails/CaseDetails";
-import CaseUpdateForm from "./screens/CaseDetails/components/CaseDetails/CaseUpdateForm";
+import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
+import CaseUpdateForm from "./screens/CaseDetails/components/CaseUpdateForm";
 
 const defaultNavigationOptions = {
   headerStyle: {
