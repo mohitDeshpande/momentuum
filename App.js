@@ -20,10 +20,10 @@ class App extends React.Component {
   
 export default StackNavigator({
     Home: {
-      screen: CaseDetails
+      screen: Login
     },
     TabNavigator: {
-      screen: CaseUpdateForm
+      screen: TabNavigator
     },
     CaseDetails: { 
       screen: CaseDetails 
