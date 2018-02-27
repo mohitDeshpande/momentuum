@@ -5,12 +5,13 @@ import Login from './screens/login/components/Login';
 import TabNavigator from './screens/CaseList/components/TabNavigator';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
 import CaseUpdateForm from "./screens/CaseDetails/components/CaseUpdateForm";
+import color from "./assets/styles/color"
 
 const defaultNavigationOptions = {
   headerStyle: {
-    backgroundColor: '#2b6aa6',
+    backgroundColor: color.primaryColor.hex,
   },
-  headerTitleStyle:{ color: '#ffffff',textAlign: 'center',alignSelf:'center'},
+  headerTitleStyle:{ color: color.white.hex,textAlign: 'center',alignSelf:'center'},
 };
 
 class App extends React.Component {
