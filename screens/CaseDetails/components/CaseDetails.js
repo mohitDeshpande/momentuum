@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, ScrollView, View, TextInput, StatusBar, TouchableHighlight, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
+import { AsyncStorage, Text, ScrollView, View, TextInput, StatusBar, TouchableHighlight, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
 import { Constants } from 'expo';
 import endpoint from "../../../assets/config/endpoint";
 import CaseUpdateForm from "./CaseUpdateForm";
@@ -15,7 +15,8 @@ class CaseDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: []
+            dataSource: [],
+            token: ''
         };
     }
 
@@ -35,15 +36,20 @@ class CaseDetails extends React.Component {
 
     async componentDidMount() {
         //this.state.token = await AsyncStorage.getItem("token");
-        var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "/37148";
+        this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4";
+        var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "37148";
         console.debug("Initiating GET request to endpoint: " + url);
 
-        //console.debug(this.state.token);
+        console.debug(this.state.token);
         // make the call
         axios({
             method: "get",
-            url: url
-
+            url: url,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.state.token,
+            }
         })
             .then(async response => {
                 console.debug(
