@@ -35,7 +35,7 @@ class CaseDetails extends React.Component {
 
     async componentDidMount() {
         //this.state.token = await AsyncStorage.getItem("token");
-        var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "/37148";
+        var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "37148";
         console.debug("Initiating GET request to endpoint: " + url);
 
         //console.debug(this.state.token);
