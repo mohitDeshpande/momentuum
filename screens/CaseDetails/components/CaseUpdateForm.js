@@ -4,16 +4,8 @@ import { Font, Constants } from 'expo';
 import styles from "../styles/CaseDetailsStyles"
 import DatePicker from 'react-native-datepicker' // 1.6.0
 import { Dropdown } from 'react-native-material-dropdown'; // 0.7.2
-import { Sae } from 'react-native-textinput-effects'; // 0.4.2
-import { Hoshi } from 'react-native-textinput-effects'; // 0.4.2
 import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import GrowingTextInput from './GrowingTextInput'
-
-  import {
-    Input,
-    Select,
-    Switch
-  } from 'react-native-clean-form' // 0.5.0
 
   const countryOptions = [
     {label: 'Denmark', value: 'DK'},
