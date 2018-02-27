@@ -37,6 +37,7 @@ class CaseDetails extends React.Component {
     async componentDidMount() {
         //this.state.token = await AsyncStorage.getItem("token");
         this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4";
+
         var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "37148";
         console.debug("Initiating GET request to endpoint: " + url);
 
