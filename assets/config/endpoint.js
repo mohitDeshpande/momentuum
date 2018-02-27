@@ -1,6 +1,6 @@
 export default {
     api: {
-      url: "http://192.168.2.150/MomentuumApi/api/",
+      url: "http://192.168.0.11/MomentuumApi/api/",
       endpoints: {
         login: "auth/login",
         casesDetail: {
