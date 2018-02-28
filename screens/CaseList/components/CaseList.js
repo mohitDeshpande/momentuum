@@ -16,13 +16,19 @@ export default class CaseList extends Component<{}> {
     dataSource: [],
     filteredData: [],
     text: '',
-    token: ''
+    token: '',
   }
 
   }
-goToCase(){
 
+//passinf caseid of list item being clicked
+GetItem (caseid1) {
+  this.props.navigation.navigate(
+    'Test',
+    { caseid1 :caseid1 },
+  );
 }
+
 async componentDidMount() {
     this.state.token = await AsyncStorage.getItem("token");
     var url =  config.api.url + config.api.endpoints.caselist;
@@ -43,7 +49,6 @@ async componentDidMount() {
           console.debug(
             "Call was successful for login. Response status : " + response.status
           );
-            console.debug(response.data);
             this.setState({
               dataSource: response.data
             });
@@ -66,6 +71,7 @@ async componentDidMount() {
 
     }
 
+
   render() {
 
         return (
@@ -81,7 +87,6 @@ async componentDidMount() {
       <Picker.Item label="Assessment" value="js" />
       </Picker>
       </View>
-
 
       <List>
            <FlatList
@@ -100,21 +105,20 @@ async componentDidMount() {
                        <View>
                        <View style={{width: 150, height: 1, backgroundColor: 'lightgrey'}} />
                        <Text style={styles.rightT}>{item.cas.casetype + " | Updated: " + item.cas.updateddate}</Text>
-
                       </View>
                      }
 
                      rightTitle={"Status: "+item.cas.casestatus}
+                      onPress={this.GetItem.bind(this, item.cas.caseid)}
 
-                     onPress={this.goToCase}
                    />}
              />
-
              </List>
 
       </View>
         );
   }
+
 }
 
 const styles = StyleSheet.create({
