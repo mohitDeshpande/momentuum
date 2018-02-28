@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Login from './screens/login/components/Login';
 import TabNavigator from './screens/CaseList/components/TabNavigator';
+import Test from './screens/CaseList/components/Test';
 
 class App extends React.Component {
   render() {
@@ -14,5 +15,8 @@ export default StackNavigator({
   },
   TabNavigator: {
     screen: TabNavigator
+  },
+  Test: {
+    screen: Test
   },
 });
