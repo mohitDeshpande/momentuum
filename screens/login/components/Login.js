@@ -60,7 +60,7 @@ export default class Login extends React.Component {
           console.log("Token is valid. Token user : " + response.data)
 
           // Since token is valid we send the user to the next screen
-          this.props.navigation.navigate('CaseList')
+          this.props.navigation.navigate('TabNavigator')
         })
         .catch (error => {
           if (error.response.status == 401) {
@@ -123,7 +123,7 @@ export default class Login extends React.Component {
         }
 
         // navigate to the case list screen
-        this.props.navigation.navigate('CaseList')
+        this.props.navigation.navigate('TabNavigator')
       })
       .catch(error => {
         if (error.response) {
