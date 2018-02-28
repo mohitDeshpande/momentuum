@@ -6,13 +6,9 @@ export default class Test extends React.Component{
     super(props);
   }
 
-/* componentDidMount() {
-      this.state.caseid = this.props.navigation.state.params.caseid1;
-
-      console.log("in test:" + this.state.caseid);
-    }*/
    render() {
      const { params } = this.props.navigation.state;
+     //so what you get from caselist screen is caseid. 
     const caseid = params ? params.caseid1 : "u";
      console.log("Test + " + caseid);
     return (
