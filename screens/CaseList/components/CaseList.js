@@ -14,13 +14,37 @@ export default class CaseList extends Component<{}> {
     this.state = {
     isLoading: false,
     dataSource: [],
-    filteredData: [],
-    text: '',
+    renderedListData: [],
     token: '',
+    noData: false,
   }
 
   }
-
+  filterClients(e){
+    let text = e.toLowerCase()
+    let fullList = this.state.dataSource;
+    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+      if(item.cas.lastname.toLowerCase().match(text) || item.cas.firstName.toLowerCase().match(text))
+        return item;
+    })
+    if (!text || text === '') {
+      this.setState({
+        renderedListData: fullList,
+        noData:false,
+      })
+    } else if (!filteredList.length) {
+     // set no data flag to true so as to render flatlist conditionally
+       this.setState({
+         noData: true
+       })
+    }
+    else if (Array.isArray(filteredList)) {
+      this.setState({
+        noData: false,
+        renderedListData: filteredList
+      })
+    }
+  }
 //passinf caseid of list item being clicked
 GetItem (caseid1) {
   this.props.navigation.navigate(
@@ -32,9 +56,9 @@ GetItem (caseid1) {
 async componentDidMount() {
     this.state.token = await AsyncStorage.getItem("token");
     var url =  config.api.url + config.api.endpoints.caselist;
-    console.debug("Initiating GET request to endpoint: " + url);
+    //console.debug("Initiating GET request to endpoint: " + url);
+    //console.debug(this.state.token);
 
-    console.debug(this.state.token);
     // make the call
     axios({
       method: "get",
@@ -50,7 +74,8 @@ async componentDidMount() {
             "Call was successful for login. Response status : " + response.status
           );
             this.setState({
-              dataSource: response.data
+              dataSource: response.data,
+              renderedListData: response.data
             });
         })
         .catch(error => {
@@ -78,6 +103,7 @@ async componentDidMount() {
           <View  style={styles.container}>
          <SearchBar
       lightTheme
+      onChangeText={this.filterClients.bind(this)}
       placeholder='Type Here...' />
 
       <View style={{flexDirection: 'row', paddingTop: 20}}>
