@@ -4,6 +4,10 @@ import { StackNavigator } from 'react-navigation';
 import Login from './screens/login/components/Login';
 import TabNavigator from './screens/CaseList/components/TabNavigator';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
+import Integrate from "./screens/CaseDetails/components/Integrate";
+import ClientDetails from "./screens/CaseDetails/components/ClientDetails";
+import FormGenerator from "./screens/CaseDetails/components/FormGenerator";
+import TestCaseDetails from "./screens/CaseDetails/components/TestCaseDetails";
 import CaseUpdateForm from "./screens/CaseDetails/components/CaseUpdateForm";
 import color from "./assets/styles/color"
 
@@ -27,7 +31,7 @@ export default StackNavigator({
       screen: TabNavigator
     },
     CaseDetails: { 
-      screen: CaseDetails 
+      screen: Integrate 
     },
     CaseUpdateForm: { 
       screen: CaseUpdateForm 
