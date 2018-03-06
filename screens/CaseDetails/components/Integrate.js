@@ -4,6 +4,7 @@ import { Constants } from 'expo';
 import endpoint from "../../../assets/config/endpoint";
 import CaseUpdateForm from "./CaseUpdateForm";
 import CaseItems from './CaseItems'
+import CaseItemDemo from './CaseItemDemo'
 import styles from "../styles/CaseDetailsStyles"
 import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import GrowingTextInput from './GrowingTextInput';

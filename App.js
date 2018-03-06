@@ -5,6 +5,7 @@ import Login from './screens/login/components/Login';
 import TabNavigator from './screens/CaseList/components/TabNavigator';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
 import CaseItems from "./screens/CaseDetails/components/CaseItems";
+import CaseItemDemo from "./screens/CaseDetails/components/CaseItemDemo";
 import CaseItemDetails from "./screens/CaseItemDetails/components/CaseItemDetails";
 import Integrate from "./screens/CaseDetails/components/Integrate";
 import ClientDetails from "./screens/CaseDetails/components/ClientDetails";
@@ -43,6 +44,9 @@ export default StackNavigator({
     },
     CaseItems: { 
       screen: CaseItems 
+    },
+    CaseItemDemo: { 
+      screen: CaseItemDemo
     },
   },
   {
