@@ -9,5 +9,9 @@ export default {
     },
     white: {
         hex: "#ffffff"
+    },
+    green: {
+        hex: "#0f9b0f",
+        rgb: "rgb(15, 153, 15)"
     }
 }

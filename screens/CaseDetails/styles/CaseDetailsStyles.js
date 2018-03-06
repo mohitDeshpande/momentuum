@@ -19,8 +19,8 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         paddingHorizontal: 10,
-        color: '#444',
-        fontWeight: '500',
+        //color: '#444',
+        //fontWeight: '500',
         top: 10,
         justifyContent: 'space-between'
     },
@@ -71,6 +71,10 @@ export default StyleSheet.create({
     textInput: {
         height: 45,
         paddingHorizontal: 20,
+    },
+    picker: {
+        height: 45,
+        paddingLeft: 30,
     },
     /* required */
     details: {
