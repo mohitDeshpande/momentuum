@@ -162,6 +162,13 @@ class CaseDetails extends React.Component {
 
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <View style={{ flex: 1 }}>
+                    <ActivityIndicator />
+                </View>
+            );
+        }
         return (
             <View style={styles.container}>
                 <ScrollView

@@ -4,6 +4,8 @@ import { StackNavigator } from 'react-navigation';
 import Login from './screens/login/components/Login';
 import TabNavigator from './screens/CaseList/components/TabNavigator';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
+import CaseItems from "./screens/CaseDetails/components/CaseItems";
+import CaseItemDetails from "./screens/CaseItemDetails/components/CaseItemDetails";
 import Integrate from "./screens/CaseDetails/components/Integrate";
 import ClientDetails from "./screens/CaseDetails/components/ClientDetails";
 import FormGenerator from "./screens/CaseDetails/components/FormGenerator";
@@ -35,6 +37,12 @@ export default StackNavigator({
     },
     CaseUpdateForm: { 
       screen: CaseUpdateForm 
+    },
+    CaseItemDetails: { 
+      screen: CaseItemDetails 
+    },
+    CaseItems: { 
+      screen: CaseItems 
     },
   },
   {
