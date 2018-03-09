@@ -4,7 +4,7 @@ import {FlatList, StyleSheet, Text, View, Picker, AsyncStorage} from 'react-nati
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
-const KEYS_TO_FILTERS = ['cli.lastname', 'cli.firstName'];
+//const KEYS_TO_FILTERS = ['cli.lastname', 'cli.firstName']
 
 export default class CaseList extends Component<{}> {
   constructor(props)
@@ -20,11 +20,13 @@ export default class CaseList extends Component<{}> {
   }
 
   }
+  //load always renderedlistdata in flatlist while ontextchange it's going
+  // to be filtered and returned to the initial state if there's no text on the search bar
   filterClients(e){
     let text = e.toLowerCase()
     let fullList = this.state.dataSource;
     let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-      if(item.cas.lastname.toLowerCase().match(text) || item.cas.firstName.toLowerCase().match(text))
+      if(item.cli.lastname.toLowerCase().match(text) || item.cli.firstName.toLowerCase().match(text))
         return item;
     })
     if (!text || text === '') {
@@ -45,7 +47,7 @@ export default class CaseList extends Component<{}> {
       })
     }
   }
-//passinf caseid of list item being clicked
+//passing caseid of list item being clicked
 GetItem (caseid1) {
   this.props.navigation.navigate(
     'Test',
@@ -70,12 +72,10 @@ async componentDidMount() {
        }
     })
         .then(async response => {
-          console.debug(
-            "Call was successful for login. Response status : " + response.status
-          );
+          //console.debug("Call was successful for case list. Response status : " + response.status);
             this.setState({
               dataSource: response.data,
-              renderedListData: response.data
+              renderedListData: response.data,
             });
         })
         .catch(error => {
@@ -100,23 +100,24 @@ async componentDidMount() {
   render() {
 
         return (
+          
           <View  style={styles.container}>
          <SearchBar
-      lightTheme
-      onChangeText={this.filterClients.bind(this)}
-      placeholder='Type Here...' />
+          lightTheme
+          onChangeText={this.filterClients.bind(this)}
+          placeholder='Type Here...' />
 
       <View style={{flexDirection: 'row', paddingTop: 20}}>
       <Text style={{paddingTop: 7}}> Case Type: </Text>
       <Picker style={{width: 156, height: 36}} itemStyle={{height: 36, fontSize: 13}}>
-      <Picker.Item label="Appointment" value="java" />
-      <Picker.Item label="Assessment" value="js" />
+      <Picker.Item label="Appointment" value="appointment" />
+      <Picker.Item label="Assessment" value="assessment" />
       </Picker>
       </View>
 
       <List>
            <FlatList
-              data={ this.state.dataSource }
+              data={ this.state.renderedListData }
               keyExtractor={(item, index) => index}
               renderItem={({item}) =>
                    <ListItem
