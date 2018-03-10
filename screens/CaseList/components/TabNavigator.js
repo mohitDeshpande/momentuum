@@ -34,6 +34,6 @@ export default TabNavigator(
       inactiveTintColor: '#3385ff',
     },
     animationEnabled: false,
-    swipeEnabled: true,
+    swipeEnabled: false,
   }
 );

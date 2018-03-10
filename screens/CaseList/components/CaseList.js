@@ -54,6 +54,12 @@ GetItem (caseid1) {
     { caseid1 :caseid1 },
   );
 }
+//passing caseid of list item being clicked
+SearchClients () {
+  this.props.navigation.navigate(
+    'Test',
+  );
+}
 
 async componentDidMount() {
     this.state.token = await AsyncStorage.getItem("token");
@@ -101,21 +107,37 @@ async componentDidMount() {
 
         return (
           
-          <View  style={styles.container}>
+          <View style={styles.container}>
          <SearchBar
           lightTheme
           onChangeText={this.filterClients.bind(this)}
           placeholder='Type Here...' />
 
       <View style={{flexDirection: 'row', paddingTop: 20}}>
-      <Text style={{paddingTop: 7}}> Case Type: </Text>
+      <Text style={{paddingLeft: 7, fontSize: 16, fontWeight: 'bold'}}> Case Type: </Text>
+      <Text style={{paddingLeft: 93, fontSize: 16, fontWeight: 'bold'}}> Case Status: </Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
       <Picker style={{width: 156, height: 36}} itemStyle={{height: 36, fontSize: 13}}>
       <Picker.Item label="Appointment" value="appointment" />
       <Picker.Item label="Assessment" value="assessment" />
       </Picker>
+      <Picker style={{width: 156, height: 36, marginLeft: 30}} itemStyle={{height: 36, fontSize: 13}}>
+      <Picker.Item label="Case status" value="appointment" />
+      <Picker.Item label="case status1" value="assessment" />
+      </Picker>
       </View>
 
       <List>
+      {this.state.noData ? <View><Text style={styles.nodata}>No cases found</Text>
+      <Button
+      title="Search client"
+      style={styles.formGroup}
+      buttonStyle={styles.button}
+      //onPress={this.loginUser}
+      //loading={this.state.isLoading}
+    /></View>:
            <FlatList
               data={ this.state.renderedListData }
               keyExtractor={(item, index) => index}
@@ -135,22 +157,28 @@ async componentDidMount() {
                       </View>
                      }
 
-                     rightTitle={"Status: "+item.cas.casestatus}
+                     rightTitle={
+                     <Text style={
+                      item.cas.casestatus === 'Open' ? styles.subtitleGreen :
+                      item.cas.casestatus === 'Pending' ? styles.subtitleOrange :
+                      item.cas.casestatus === 'Scheduled' ? styles.subtitleBlue :
+                      styles.subtitleNeutral}>
+                     {item.cas.casestatus} </Text>}
                       onPress={this.GetItem.bind(this, item.cas.caseid)}
 
                    />}
              />
-             </List>
-
+          }
+        </List>
       </View>
         );
   }
-
 }
 
 const styles = StyleSheet.create({
   container: {
       flex: 1,
+      paddingBottom: 40,
    },
   title: {
     fontSize: 16,
@@ -160,27 +188,22 @@ const styles = StyleSheet.create({
   },
   subtitleGreen: {
     color: '#33cc33',
-    fontWeight: 'bold',
     paddingTop: 5,
   },
   subtitleOrange: {
     color: '#ff9933',
-    fontWeight: 'bold',
     paddingTop: 5,
   },
   subtitleBlue: {
     color: '#3399ff',
-    fontWeight: 'bold',
     paddingTop: 5,
   },
   subtitleRed: {
     color: '#ff3300',
-    fontWeight: 'bold',
     paddingTop: 5,
   },
   subtitleNeutral: {
     color: '#999966',
-    fontWeight: 'bold',
     paddingTop: 5,
   },
   rightT: {
@@ -196,5 +219,11 @@ const styles = StyleSheet.create({
   borderWidth: 9,
   borderColor: '#E4E4E4',
 },
+nodata: {
+  textAlign: 'center', 
+    fontWeight: '100',
+    fontSize: 18,
+    padding: 40
+}
 
 });
