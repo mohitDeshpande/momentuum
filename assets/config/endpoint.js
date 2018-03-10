@@ -11,7 +11,8 @@ export default {
       test: {
         withAuth: "values/5",
         withoutAuth: "values"
-      }
+      },
+      clientlist: "client/",
     }
   }
 };

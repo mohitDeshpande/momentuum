@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import { StackNavigator } from 'react-navigation';
 import {List, ListItem, SearchBar, Button} from 'react-native-elements'; // 0.19.0
 import {FlatList, StyleSheet, Text, View, Picker, AsyncStorage} from 'react-native';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
 import styles from "./../styles/CaseListStyles";
-//const KEYS_TO_FILTERS = ['cli.lastname', 'cli.firstName']
 
 export default class CaseList extends Component<{}> {
   constructor(props)
@@ -51,18 +51,18 @@ export default class CaseList extends Component<{}> {
 //passing caseid of list item being clicked
 GetItem (caseid1) {
   this.props.navigation.navigate(
-    'Test',
+    'Add',
     { caseid1 :caseid1 },
   );
 }
 //search from all clients
-SearchClients () {
-  this.props.navigation.navigate(
-    'Add',
-  );
-}
+/*
+SearchClient () {
+  navigation.navigate('ClientList');
+}*/
 
 async componentDidMount() {
+    console.disableYellowBox = true;
     this.state.token = await AsyncStorage.getItem("token");
     var url =  config.api.url + config.api.endpoints.caselist;
     //console.debug("Initiating GET request to endpoint: " + url);
@@ -118,8 +118,8 @@ async componentDidMount() {
           <Button
           title="Search client"
           buttonStyle={styles.button}
-          onPress={this.SearchClient}
-          //loading={this.state.isLoading}
+          onPress={() => this.props.navigation.navigate('ClientList')}
+          loading={this.state.isLoading}
         /></View>
         :
 <View style={styles.container}>
