@@ -8,20 +8,20 @@ import Test1 from './Test1';
 
 export default TabNavigator(
   {
-    CaseList: {screen: CaseList},
-    Test: { screen: Test },
-    Test1: { screen: Test1 },
+    Home: {screen: CaseList},
+    Add: { screen: Test },
+    Profile: { screen: Test1 },
   },
   {
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName;
-        if (routeName === 'CaseList') {
+        if (routeName === 'Home') {
           iconName = `ios-home${focused ? '' : '-outline'}`;
-        } else if (routeName === 'Test') {
+        } else if (routeName === 'Add') {
           iconName = `ios-add-circle${focused ? '' : '-outline'}`;
-        }else if (routeName === 'Test1') {
+        }else if (routeName === 'Profile') {
           iconName = `ios-person${focused ? '' : '-outline'}`;
         }
         return <Ionicons name={iconName} size={25} color={tintColor} />;
