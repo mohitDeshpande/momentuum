@@ -149,6 +149,9 @@ async componentDidMount() {
                             <Ionicons name={'ios-add-circle'} size={40} color={'#3385ff'} />
                               </TouchableOpacity>
                           }
+                          rightTitle={
+                              <Text style={styles.subtitleBlue}>Add Case</Text>
+                          }
 
                    />}
              />

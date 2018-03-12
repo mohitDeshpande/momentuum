@@ -18,6 +18,7 @@ export default class CaseList extends Component<{}> {
     renderedListData: [],
     token: '',
     noData: false,
+    typeStatus: false,
   }
 
   }
@@ -44,6 +45,31 @@ export default class CaseList extends Component<{}> {
     else if (Array.isArray(filteredList)) {
       this.setState({
         noData: false,
+        renderedListData: filteredList
+      })
+    }
+  }
+  filterCases(e){
+    let text = e.toLowerCase()
+    let fullList = this.state.dataSource;
+    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+      if(item.cas.casestatus.toLowerCase().match(text) || item.cas.casetype.toLowerCase().match(text))
+        return item;
+    })
+    if (!text || text === '') {
+      this.setState({
+        renderedListData: fullList,
+        typeStatus:false,
+      })
+    } else if (!filteredList.length) {
+     // set no data flag to true so as to render flatlist conditionally
+       this.setState({
+        typeStatus: true
+       })
+    }
+    else if (Array.isArray(filteredList)) {
+      this.setState({
+        typeStatus: false,
         renderedListData: filteredList
       })
     }
@@ -129,13 +155,17 @@ async componentDidMount() {
       </View>
 
       <View style={{flexDirection: 'row'}}>
-      <Picker style={{width: 156, height: 36, marginLeft: 20}} itemStyle={{height: 36, fontSize: 13}}>
+      <Picker 
+          onValueChange={this.filterCases.bind(this)}
+          style={{width: 156, height: 56, marginLeft: 20}} itemStyle={{height: 56, fontSize: 13}}>
       <Picker.Item label="Appointment" value="appointment" />
       <Picker.Item label="Assessment" value="assessment" />
       </Picker>
-      <Picker style={{width: 156, height: 36, marginLeft: 25}} itemStyle={{height: 36, fontSize: 13}}>
-      <Picker.Item label="Case status" value="appointment" />
-      <Picker.Item label="case status1" value="assessment" />
+      <Picker 
+          onValueChange={this.filterCases.bind(this)}
+          style={{width: 156, height: 56, marginLeft: 25}} itemStyle={{height: 56, fontSize: 13}}>
+      <Picker.Item label="pending" value="pending" />
+      <Picker.Item label="open" value="open" />
       </Picker>
       </View>
 
@@ -162,10 +192,10 @@ async componentDidMount() {
 
                      rightTitle={
                      <Text style={
-                      item.cas.casestatus === 'Open' ? styles.subtitleGreen :
-                      item.cas.casestatus === 'Pending' ? styles.subtitleOrange :
-                      item.cas.casestatus === 'Scheduled' ? styles.subtitleBlue :
-                      item.cas.casestatus === 'Closed' ? styles.subtitleRed :
+                      item.cas.casestatus === 'Open' ? styles.subtitleBlue :
+                      item.cas.casestatus === 'Pending' ? styles.subtitleRed :
+                      item.cas.casestatus === 'Scheduled' ? styles.subtitleGreen :
+                      item.cas.casestatus === 'Closed' ? styles.subtitleYellow :
                       styles.subtitleNeutral}>
                      {item.cas.casestatus} </Text>}
                       onPress={this.GetItem.bind(this, item.cas.caseid)}
