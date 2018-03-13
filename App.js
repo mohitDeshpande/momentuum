@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import tabnav from './assets/config/HomeTabs';
 import Login from './screens/Login/components/Login';
 import TabNavigator from './screens/CaseList/components/TabNavigator';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
@@ -17,14 +17,15 @@ const defaultNavigationOptions = {
 class App extends React.Component {
   render() {
   }
+  
 }
   
 export default StackNavigator({
-    Home: {
-      screen: Login
-    },
-    TabNavigator: {
-      screen: TabNavigator
+  Home: {
+    screen: Login
+  },
+  tabnav: {
+    screen: tabnav
     },
     CaseDetails: { 
       screen: CaseDetails 
@@ -32,6 +33,7 @@ export default StackNavigator({
     CaseUpdateForm: { 
       screen: CaseUpdateForm 
     },
+
   },
   {
     headerMode: 'screen',

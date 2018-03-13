@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, AsyncStorage } from 'react-native';
 
-export default class Test extends React.Component{
+export default class AddClient extends React.Component{
   constructor(props) {
     super(props);
   }
@@ -9,11 +9,11 @@ export default class Test extends React.Component{
    render() {
      const { params } = this.props.navigation.state;
      //so what you get from caselist screen is caseid. 
-    const caseid = params ? params.caseid1 : "u";
+    //const caseid = params ? params.caseid1 : "";
      console.log("Test + " + caseid);
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>{caseid}</Text>
+        <Text>{clientId}</Text>
       </View>
     );
   }
