@@ -34,18 +34,18 @@ const HomeStack = StackNavigator({
     );
 export default tabnav = TabNavigator(
   {
-    HomeStack: {screen: HomeStack},
-    Add: { screen: Test },
+    Home: {screen: HomeStack},
+    Add: { screen: ClientList },
     Profile: { screen: Test1 },
   },
   {
       
-    initialRouteName: 'HomeStack',
+    initialRouteName: 'Home',
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName;
-        if (routeName === 'HomeStack') {
+        if (routeName === 'Home') {
           iconName = `ios-home${focused ? '' : '-outline'}`;
         } else if (routeName === 'Add') {
           iconName = `ios-add-circle${focused ? '' : '-outline'}`;
