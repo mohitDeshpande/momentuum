@@ -25,46 +25,11 @@ export default class ClientList extends Component<{}> {
   }
   //load always renderedlistdata in flatlist while ontextchange it's going
   // to be filtered and returned to the initial state if there's no text on the search bar
-  filterClients(e){
-    let text = e.toLowerCase()
-    let fullList = this.state.dataSource;
-    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-      if(item.lastname.toLowerCase().match(text) || item.firstName.toLowerCase().match(text))
-        return item;
-    })
-    if (!text || text === '') {
-      this.setState({
-        renderedListData: [],
-        noData:false,
-        fisrtState: true,
-      })
-    } else if (!filteredList.length) {
-     // set no data flag to true so as to render flatlist conditionally
-       this.setState({
-         noData: true,
-         fisrtState: false,
-       })
-    }
-    else if (Array.isArray(filteredList)) {
-      this.setState({
-        noData: false,
-        renderedListData: filteredList,
-        fisrtState: false,
-      })
-    }
-  }
-//passing caseid of list item being clicked
-GetItem (id) {
-  this.props.navigation.navigate(
-    'AddCase',
-    { clientId : id },
-  );
-}
-
-async componentDidMount() {
+  async filterClients(e){
+    
     console.disableYellowBox = true;
     this.state.token = await AsyncStorage.getItem("token");
-    var url =  config.api.url + config.api.endpoints.clientlist;
+    var url =  config.api.url + config.api.endpoints.clientlist + e;
     console.debug("Initiating GET request to endpoint: " + url);
     //console.debug(this.state.token);
 
@@ -99,8 +64,42 @@ async componentDidMount() {
             this.appError();
           }
         });
-
+    /*let text = e.toLowerCase()
+    let fullList = this.state.dataSource;
+    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+      if(item.lastname.toLowerCase().match(text) || item.firstName.toLowerCase().match(text))
+        return item;
+    })
+    if (!text || text === '') {
+      this.setState({
+        renderedListData: [],
+        noData:false,
+        fisrtState: true,
+      })
+    } else if (!filteredList.length) {
+     // set no data flag to true so as to render flatlist conditionally
+       this.setState({
+         noData: true,
+         fisrtState: false,
+       })
     }
+    else if (Array.isArray(filteredList)) {
+      this.setState({
+        noData: false,
+        renderedListData: filteredList,
+        fisrtState: false,
+      })
+    }*/
+  }
+
+//passing clientid of list item being clicked
+GetItem (id) {
+  this.props.navigation.navigate(
+    'AddCase',
+    { clientId : id },
+  );
+}
+
 
 
   render() {
@@ -113,7 +112,7 @@ async componentDidMount() {
           onChangeText={this.filterClients.bind(this)}
           placeholder='Type Here...' />
 
-          {this.state.noData ? <View><Text style={styles.nodata}>No clients found</Text>
+          {!this.state.dataSource ? <View><Text style={styles.nodata}>No clients found</Text>
           <Button
           title="Add client"
           buttonStyle={styles.button}
@@ -124,7 +123,7 @@ async componentDidMount() {
 <View style={styles.container}>
       <List>
                  <FlatList
-              data={ this.state.renderedListData }
+              data={ this.state.dataSource }
               keyExtractor={(item, index) => index}
               renderItem={({item}) =>
                    <ListItem

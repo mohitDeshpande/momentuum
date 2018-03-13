@@ -12,7 +12,7 @@ export default {
         withAuth: "values/5",
         withoutAuth: "values"
       },
-      clientlist: "client/",
+      clientlist: "client/division/",
     }
   }
 };
