@@ -14,7 +14,6 @@ import {
   FormValidationMessage,
   Button
 } from "react-native-elements";
-import { Constants } from "expo";
 import { StackNavigator } from 'react-navigation';
 import axios from "axios";
 import styles from "./../styles/LoginStyles";
