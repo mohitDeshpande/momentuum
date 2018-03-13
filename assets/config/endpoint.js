@@ -4,6 +4,11 @@ export default {
     endpoints: {
       login: "auth/login",
       caselist: "case/client/emp",
+      casesDetail: {
+        caseDetail: "case/",
+        caseDetailWithClient: "case/client/emp",
+        caseDetailById: "case/client/"
+      },
       caseItems: {
         caseItem: "caseitem/",
         caseItemsForCase: "caseitem/case/"
