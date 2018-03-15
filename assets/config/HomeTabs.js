@@ -4,10 +4,10 @@ import { Ionicons } from '@expo/vector-icons'; // 6.2.2
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation'; // 1.0.0-beta.27
 import CaseList from "../../screens/CaseList/components/CaseList";
 import Test from "../../screens/CaseList/components/Test";
-import Test1 from "../../screens/CaseList/components/Test1";
 import ClientList from "../../screens/clients/components/ClientList";
 import AddClient from "../../screens/clients/components/AddClient";
 import AddCase from '../../screens/AddCase/components/AddCase';
+import Profile from '../../screens/Profile/components/Profile';
 
 const HomeStack = StackNavigator({
     CaseList: {
@@ -36,7 +36,7 @@ export default tabnav = TabNavigator(
   {
     Home: {screen: HomeStack},
     Add: { screen: ClientList },
-    Profile: { screen: Test1 },
+    Profile: { screen: Profile },
   },
   {
       
