@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, AsyncStorage } from "react-native";
 import { Avatar, Button, List, ListItem, Text } from "react-native-elements";
 import axios from "axios";
 import config from "./../../../assets/config/endpoint";
@@ -8,8 +8,10 @@ import styles from "../styles/ProfileStyles";
 import colors from "../../../assets/styles/color";
 
 export default class Profile extends React.Component {
+  
   constructor(props) {
     super(props);
+    this.logout = this.logout.bind(this)
     this.state = {
       name: "Mohit Deshpande",
       totalCases: 0,
@@ -17,6 +19,86 @@ export default class Profile extends React.Component {
       pendingCases: 0,
       closedCases: 0
     };
+  }
+  
+  async componentDidMount() {
+    var token = await AsyncStorage.getItem("token")
+    if (token != null) {
+      var employeeUrl = config.api.url + config.api.endpoints.employee
+
+      console.debug("Calling employee service with token: " + token + "\n From URl: " + employeeUrl);
+      axios({
+        method: "get",
+        url: employeeUrl,
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(response => {
+        console.debug("Response for employee was successful. Response: " + JSON.stringify(response.data))
+        var newState = this.state
+        newState.name = response.data.employeeName
+        this.setState(newState)
+      })
+      .catch(error => {
+        if (error.response.status === 401) {
+          console.debug(
+            "Token is not valid. User has to login again. Response: " +
+              error.response
+          )
+          this.props.navigation.navigate('Home')
+        } else {
+          console.error(
+            "Something went wrong in the request Status : " +
+              error.response.status +
+              " Response : " +
+              error
+          );
+        }
+      })
+
+      var caseStatsUrl = config.api.url + config.api.endpoints.casesDetail.stats
+      console.debug("Getting Case Stats from endpoint" + caseStatsUrl)
+      axios({
+        method: "get",
+        url: caseStatsUrl,
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(response => {
+        console.debug("Response to get case stats was successful. Response:" + JSON.stringify(response.data))
+        var newState = this.state
+        newState.openCases = response.data.openCount
+        newState.closedCases = response.data.closedCount
+        newState.totalCases = response.data.totalCount
+        this.setState(newState)
+      })
+      .catch(error => {
+        if (error.response.status === 401) {
+          console.debug(
+            "Token is not valid. User has to login again. Response: " +
+              error.response
+          )
+          this.props.navigation.navigate('Home')
+        } else {
+          console.error(
+            "Something went wrong in the request Status : " +
+              error.response.status +
+              " Response : " +
+              error
+          );
+        }
+      })
+    }
+  }
+
+  /**
+   * Logs out a user by forgetting the token and redirecting to the login screen
+   */
+  logout() {
+    AsyncStorage.removeItem("token")
+    this.props.navigation.goBack()
   }
 
   render() {
@@ -45,12 +127,6 @@ export default class Profile extends React.Component {
             badge={{ value: this.state.openCases, containerStyle:{ backgroundColor: colors.blue.rgb } }}
           />
           <ListItem
-            key={3}
-            title={"Total Pending Cases"}
-            hideChevron={true}
-            badge={{ value: this.state.pendingCases, containerStyle:{ backgroundColor: 'orange' } }}
-          />
-          <ListItem
             key={4}
             title={"Total Closed Cases"}
             hideChevron={true}
@@ -59,6 +135,7 @@ export default class Profile extends React.Component {
         </List>
         <Button 
           title="LOGOUT"
+          onPress={this.logout}
           style={styles.padding}
           buttonStyle={{
             backgroundColor: colors.danger.rgb,
