@@ -15,8 +15,9 @@ import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
 import styles from "./../styles/ClientListStyles";
 import { Ionicons } from "@expo/vector-icons"; // 6.2.2
+import RouteNames from "../../../assets/config/RouteNames";
 
-export default class ClientList extends Component<{}> {
+export default class ClientList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -127,7 +128,7 @@ export default class ClientList extends Component<{}> {
             <Button
               title="Add client"
               buttonStyle={styles.button}
-              onPress={() => this.props.navigation.navigate("AddClient")}
+              onPress={() => this.props.navigation.navigate(RouteNames.addClient)}
               loading={this.state.isLoading}
             />
           </View>

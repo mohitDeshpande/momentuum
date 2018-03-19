@@ -12,10 +12,12 @@ import {
 import SearchInput, { createFilter } from "react-native-search-filter";
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
+import routes from "./../../../assets/config/RouteNames";
 import colors from "./../../../assets/styles/color";
 import styles from "./../styles/CaseListStyles";
+import RouteNames from "./../../../assets/config/RouteNames";
 
-export default class CaseList extends Component<{}> {
+export default class CaseList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -88,7 +90,7 @@ export default class CaseList extends Component<{}> {
   }
   //passing caseid of list item being clicked
   GetItem(caseid1) {
-    this.props.navigation.navigate("CaseDetails", { caseid1: caseid1 });
+    this.props.navigation.navigate(routes.caseDetails, { caseid1: caseid1 });
   }
   //search from all clients
   /*
@@ -160,7 +162,7 @@ SearchClient () {
             <Button
               title="Search client"
               buttonStyle={styles.button}
-              onPress={() => this.props.navigation.navigate("ClientList")}
+              onPress={() => this.props.navigation.navigate(RouteNames.clientList)}
               loading={this.state.isLoading}
             />
           </View>
