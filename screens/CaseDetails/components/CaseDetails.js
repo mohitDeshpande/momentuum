@@ -303,7 +303,7 @@ class CaseDetails extends React.Component {
 
                     {/* ///Case Items goes here/// */}
                    
-                <CaseItems openCaseItem={this.openCaseItem} CaseId={this.state.caseId} />
+                <CaseItems  CaseId={this.state.caseId} />
                                  
                
                     {/* Case Items Session Ends */}

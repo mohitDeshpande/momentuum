@@ -43,7 +43,7 @@ export default class CaseItems extends Component {
     };
 
     renderRow(rowData, sectionID) {
-        getItem=() =>{
+        getItem=(id) =>{
             console.log("clicked");
              this.props.navigation.navigate(
                  'CaseItemDetails',
@@ -54,7 +54,7 @@ export default class CaseItems extends Component {
            
             <ListItem
           //  onPress= {() => this.props.navigation.navigate('CaseItemDetails', {CaseItemId:'275314'})}
-          onPress= {() =>this.props.openCaseItems('275314')}
+          onPress= {() =>getItem('275314')}
                     key={sectionID}
                 //Content properties
                 title={<View ><Text style={styles.title} numberOfLines={1}>Status: <Text style={styles.status}>{rowData.caseItemStatus}</Text></Text>
