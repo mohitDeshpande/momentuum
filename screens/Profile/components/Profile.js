@@ -1,11 +1,13 @@
 import React from "react";
 import { View, AsyncStorage } from "react-native";
+import { SafeAreaView } from 'react-navigation';
 import { Avatar, Button, List, ListItem, Text } from "react-native-elements";
 import axios from "axios";
 import config from "./../../../assets/config/endpoint";
 import constants from "./../../../assets/config/constants";
 import styles from "../styles/ProfileStyles";
 import colors from "../../../assets/styles/color";
+import screens from "../../../assets/config/screens"
 
 export default class Profile extends React.Component {
   
@@ -13,7 +15,7 @@ export default class Profile extends React.Component {
     super(props);
     this.logout = this.logout.bind(this)
     this.state = {
-      name: "Mohit Deshpande",
+      name: "",
       totalCases: 0,
       openCases: 0,
       pendingCases: 0,
@@ -46,7 +48,7 @@ export default class Profile extends React.Component {
             "Token is not valid. User has to login again. Response: " +
               error.response
           )
-          this.props.navigation.navigate('Home')
+          this.props.navigation.navigate(screens.loginScreen)
         } else {
           console.error(
             "Something went wrong in the request Status : " +
@@ -80,7 +82,7 @@ export default class Profile extends React.Component {
             "Token is not valid. User has to login again. Response: " +
               error.response
           )
-          this.props.navigation.navigate('Home')
+          this.props.navigation.navigate(screens.loginScreen)
         } else {
           console.error(
             "Something went wrong in the request Status : " +
@@ -96,14 +98,15 @@ export default class Profile extends React.Component {
   /**
    * Logs out a user by forgetting the token and redirecting to the login screen
    */
-  logout() {
-    AsyncStorage.removeItem("token")
-    this.props.navigation.goBack()
+  async logout() {
+    console.debug("Logging out user")
+    await AsyncStorage.removeItem("token")
+    this.props.navigation.navigate(screens.loginScreen)
   }
 
   render() {
     return (
-      <View>
+      <SafeAreaView>
         <View style={styles.center}>
           <Avatar
             xlarge
@@ -124,13 +127,13 @@ export default class Profile extends React.Component {
             key={2}
             title={"Total Open Cases"}
             hideChevron={true}
-            badge={{ value: this.state.openCases, containerStyle:{ backgroundColor: colors.blue.rgb } }}
+            badge={{ value: this.state.openCases, containerStyle:{ backgroundColor: 'orange'} }}
           />
           <ListItem
             key={4}
             title={"Total Closed Cases"}
             hideChevron={true}
-            badge={{ value: this.state.closedCases }}
+            badge={{ value: this.state.closedCases , containerStyle:{ backgroundColor: colors.blue.rgb } }}
           />
         </List>
         <Button 
@@ -142,7 +145,7 @@ export default class Profile extends React.Component {
             borderRadius: 5
           }}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

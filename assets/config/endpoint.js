@@ -1,13 +1,14 @@
 export default {
   api: {
-    url: "http://192.168.0.14:5000/api/",
+    url: "http://192.168.1.107:5000/api/",
     endpoints: {
       login: "auth/login",
       caselist: "case/client/emp",
       casesDetail: {
         caseDetail: "case/",
         caseDetailWithClient: "case/client/emp",
-        caseDetailById: "case/client/"
+        caseDetailById: "case/client/",
+        stats: "case/stats"
       },
       caseItems: {
         caseItem: "caseitem/",
@@ -18,6 +19,7 @@ export default {
         withoutAuth: "values"
       },
       clientlist: "client/division/",
+      employee: "employee/"
     }
   }
 };
