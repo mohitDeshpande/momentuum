@@ -109,7 +109,7 @@ export default class ClientList extends Component<{}> {
 
   //passing clientid of list item being clicked
   GetItem(id) {
-    this.props.navigation.navigate("AddCase", { clientId: id });
+    this.props.navigation.navigate("ClientDetails", { clientId: id });
   }
 
   render() {

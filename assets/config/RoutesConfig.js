@@ -61,7 +61,7 @@ const HomeStack = StackNavigator(
   }
 );
 
-export default (tabnav = TabNavigator(
+export default tabnav = TabNavigator(
   {
     Home: { screen: HomeStack },
     Add: { screen: ClientList },
@@ -94,4 +94,4 @@ export default (tabnav = TabNavigator(
     animationEnabled: false,
     swipeEnabled: false
   }
-));
+);

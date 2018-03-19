@@ -88,7 +88,7 @@ export default class CaseList extends Component<{}> {
   }
   //passing caseid of list item being clicked
   GetItem(caseid1) {
-    this.props.navigation.navigate("Add", { caseid1: caseid1 });
+    this.props.navigation.navigate("CaseDetails", { caseid1: caseid1 });
   }
   //search from all clients
   /*

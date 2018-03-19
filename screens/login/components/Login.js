@@ -19,7 +19,7 @@ import axios from "axios";
 import styles from "./../styles/LoginStyles";
 import config from "./../../../assets/config/endpoint";
 import constants from "./../../../assets/config/constants";
-import screens from "./../../../assets/config/screens";
+import screens from "./../../../assets/config/RouteNames";
 
 export default class Login extends React.Component {
   constructor(props) {

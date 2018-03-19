@@ -7,7 +7,7 @@ import config from "./../../../assets/config/endpoint";
 import constants from "./../../../assets/config/constants";
 import styles from "../styles/ProfileStyles";
 import colors from "../../../assets/styles/color";
-import screens from "../../../assets/config/screens"
+import screens from "../../../assets/config/RouteNames"
 
 export default class Profile extends React.Component {
   
