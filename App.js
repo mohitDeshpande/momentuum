@@ -28,7 +28,7 @@ class App extends React.Component {
   
 export default StackNavigator({
     Home: {
-      screen: Login
+      screen: FormGenerator
     },
     TabNavigator: {
       screen: TabNavigator

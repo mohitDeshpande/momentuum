@@ -1,6 +1,6 @@
 import React from 'react';
 import endpoint from "../../../assets/config/endpoint";
-import { StyleSheet, Text, View, TextInput, ScrollView, Picker, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView, Picker, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import axios from "axios";
 import colors from '../../../assets/styles/color'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -30,8 +30,8 @@ class CaseUpdateForm extends React.Component {
           "code": "234"
         },
         {
-          "id": "POC Exception",
-          "listtext": 'POC Exception',
+          "id": "Roundtable Invitation",
+          "listtext": 'Roundtable Invitation',
           "code": "1234"
         },
         {
@@ -51,6 +51,11 @@ class CaseUpdateForm extends React.Component {
           "id": "Scheduled",
           "listtext": 'Scheduled',
           "code": "43"
+        },
+        {
+          "id": "close",
+          "listtext": 'close',
+          "code": "44"
         }
       ]
     };
@@ -74,26 +79,44 @@ class CaseUpdateForm extends React.Component {
   }
 
   updateData = () => {
+    console.log(this.state.openDate.toString());
+    if(this.state.closeDate)
+    console.log(this.state.closeDate.toString());
+    console.log(this.state.caseCode.toString());
+    console.log(this.state.casetype.toString());
+    console.log(this.state.casestatus.toString());
+    console.log(this.state.caseDesc.toString());
+    
+    var obj = {};
+    obj["caseOpenDate"] = this.state.openDate;
+    obj["caseClosedDate"] = this.state.closeDate;
+    obj["caseCode"] = this.state.caseCode;
+    obj["casetype"] = this.state.casetype;
+    obj["casestatus"] = this.state.casestatus;
+    obj["casedescription"] = this.state.caseDesc;
+
+    this.state.updateDataJson.push(obj);
+    console.log(this.state.updateDataJson);
     //const { params } = this.props.navigation.state;
     //const caseid = params ? params.caseid1 : "u";
     //console.log("Test + " + caseid);
     //this.state.token = await AsyncStorage.getItem("token");
-    this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4";
+    this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTIzODMwMDU4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.es7Isy_n4g8y2loU9Defn2v7PyTe5aHHR3U9Z_qRtgw";
 
-    var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "37148";
+    var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetail + "965064";
     console.debug("Initiating GET request to endpoint: " + url);
 
     // make the call
     axios({
-      method: "post",
+      method: "PUT",
       url: url,
       data: {
-        openDate: this.state.openDate,
-        closeDate: this.state.closeDate,
-        caseCode: this.state.caseCode,
-        caseType: this.state.casetype,
-        caseStatus: this.state.casestatus,
-        caseDesc: this.state.caseDesc
+        "caseopenDate": this.state.openDate,
+        "casecloseDate": this.state.closeDate,
+        "caseCode": this.state.caseCode,
+        "caseType": this.state.casetype,
+        "caseStatus": this.state.casestatus,
+        "casedescription": this.state.caseDesc
       },
       headers: {
         'Accept': 'application/json',
@@ -126,9 +149,9 @@ class CaseUpdateForm extends React.Component {
 
   async componentDidMount() {
     //this.state.token = await AsyncStorage.getItem("token");
-    this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4";
+    this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTIzODMwMDU4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.es7Isy_n4g8y2loU9Defn2v7PyTe5aHHR3U9Z_qRtgw";
 
-    var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "37148";
+    var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + "965064";
     console.debug("Initiating GET request to endpoint: " + url);
 
     console.debug(this.state.token);
@@ -185,8 +208,16 @@ class CaseUpdateForm extends React.Component {
             <View style={styles.header}>
               <Text style={styles.category}>Case Details</Text>
               <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                style={styles.submitBtn}
+                onPress={this.updateData}>
                 <Icon name="check-circle" size={25} style={{ paddingTop: 10 }} color={color.green.hex} onPress={this.updateData} />
-                <Icon name="edit" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#666" onPress={this.toggleEdit} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={styles.submitBtn}
+                onPress={this.toggleEdit}>
+                <Icon name="edit" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#666" />
+                </TouchableOpacity>
               </View>
             </View>
             <View style={styles.details}>
