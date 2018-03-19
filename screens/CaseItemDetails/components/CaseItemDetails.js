@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, Text, ScrollView, View, TextInput, StatusBar, TouchableHighlight, TouchableOpacity, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
+import { Alert, AsyncStorage, Text, ScrollView, View, TextInput, StatusBar, TouchableHighlight, TouchableOpacity, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
 import { Constants } from 'expo';
 import endpoint from "../../../assets/config/endpoint";
 import styles from "../styles/CaseItemDetailsStyle"
@@ -33,20 +33,81 @@ class CaseItemDetails extends React.Component {
             caseItemActionCurrent:'',
             caseItemDescriptionCurrent:'',
             caseItemDetailsCurrent:'',
-            caseItemStatusCurrent:'',
-            
+            caseItemStatusCurrent:'',   
         };
     }
-    
+    deleteAlert(){
+        Alert.alert(
+            'Delete Case Item',
+            'Do you want to delete this case item?',
+            [
+              {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
+              {text: 'Yes', onPress: () => 
+              {
+                console.log('Yes Pressed');
+                this.deleteCaseItem();
+             }
+                
+              }
+              ,
+            ],
+            { cancelable: false }
+          )
+
+    }
+    deleteCaseItem(){
+        var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + '275314';
+       
+            {/* Soft delete call*/}
+            axios({
+                method: "delete",
+                url,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.state.token,
+                }
+            })
+                .then(async response => {
+                    console.debug(
+                        'Call was successful for delete. Response status : ' + response.status
+                    );
+                    if (response.data.deleted!="false"){
+                        console.log("Item was soft deleted");
+                    }
+                  
+                    console.debug(response.data);
+                    this.setState({
+                        caseItem: response.data
+                    });
+                })
+                .catch(error => {
+                    if (error.response) {
+                        // the response was other than 2xx status
+                        if (error.response.status == 401) {
+                            console.debug("Invalid username and password entered");
+                           // this.authError();
+                        } else {
+                            console.error("Invalid request sent. Status : " + error.response.status);
+                           // this.appError();
+                        }
+                    } else {
+                        console.error("Something went wrong in the request Status : " + error.response.status + " Response : " + error);
+                       // this.appError();
+                    }
+                });
+
+
+    }
    
     async componentDidMount() {
         const { params } = this.props.navigation.state;
         const caseitemid = params ? params.caseitemid : "null";
         console.log("Test + " + caseitemid);
         //this.state.token = await AsyncStorage.getItem("token");
-        this.state.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4';
+        this.state.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTIzODIwMDEzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.kIREt48cIMC18UbWpVldqPQAt3OFfpcj8770zNTW1rE';
 
-        const url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + '2';
+        var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + '275314';
         console.debug('Initiating GET request to endpoint: ' + url);
 
         console.debug(this.state.token);
@@ -62,7 +123,7 @@ class CaseItemDetails extends React.Component {
         })
             .then(async response => {
                 console.debug(
-                    'Call was successful for login. Response status : ' + response.status
+                    'Call was successful for get case item. Response status : ' + response.status
                 );
                 console.debug(response.data);
                 this.setState({
@@ -112,8 +173,10 @@ class CaseItemDetails extends React.Component {
                 <Icon name="edit" size={25} color="#444" onPress={() => this.toggleEdit()} style={[styles.editButton, this.state.editMode && styles.editButtonActive]} />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                <Icon name="trash" size={25} color="#444" style={styles.deleteButton} onPress={() => {}}  />
+                <Icon name="trash" size={25} color="#444" style={styles.deleteButton} onPress={() => this.deleteAlert()}  />
                 </TouchableOpacity>
+               
+                
             </View>   
                         
             </View>
