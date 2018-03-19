@@ -17,6 +17,10 @@ import FormGenerator from "../../screens/CaseDetails/components/FormGenerator";
 import TestCaseDetails from "../../screens/CaseDetails/components/TestCaseDetails";
 import CaseUpdateForm from "../../screens/CaseDetails/components/CaseUpdateForm";
 
+/**
+ * This is the main configuration of all the Screen routes in the Application
+ * Whenever you need to add a new route, you should add it here
+ */
 const HomeStack = StackNavigator(
   {
     CaseList: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { SwitchNavigator } from 'react-navigation';
-import tabnav from './assets/config/HomeTabs';
+import App from './assets/config/RoutesConfig';
 import Login from './screens/Login/components/Login';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
 import CaseItems from "./screens/CaseDetails/components/CaseItems";
@@ -23,7 +23,7 @@ const defaultNavigationOptions = {
 export default SwitchNavigator(
   {
     Auth: Login,
-    App: tabnav
+    App: App
   },
   {
     initialRouteName: 'Auth'
