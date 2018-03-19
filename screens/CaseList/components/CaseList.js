@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import {List, ListItem, SearchBar} from 'react-native-elements'; // 0.19.0
+import { StackNavigator } from 'react-navigation';
+import {List, ListItem, SearchBar, Button} from 'react-native-elements'; // 0.19.0
 import {FlatList, StyleSheet, Text, View, Picker, AsyncStorage} from 'react-native';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
-const KEYS_TO_FILTERS = ['cli.lastname', 'cli.firstName'];
+import styles from "./../styles/CaseListStyles";
 
 export default class CaseList extends Component<{}> {
   constructor(props)
@@ -14,27 +15,85 @@ export default class CaseList extends Component<{}> {
     this.state = {
     isLoading: false,
     dataSource: [],
-    filteredData: [],
-    text: '',
+    renderedListData: [],
     token: '',
+    noData: false,
+    typeStatus: false,
   }
 
   }
-
-//passinf caseid of list item being clicked
+  //load always renderedlistdata in flatlist while ontextchange it's going
+  // to be filtered and returned to the initial state if there's no text on the search bar
+  filterClients(e){
+    let text = e.toLowerCase()
+    let fullList = this.state.dataSource;
+    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+      if(item.cli.lastname.toLowerCase().match(text) || item.cli.firstName.toLowerCase().match(text))
+        return item;
+    })
+    if (!text || text === '') {
+      this.setState({
+        renderedListData: fullList,
+        noData:false,
+      })
+    } else if (!filteredList.length) {
+     // set no data flag to true so as to render flatlist conditionally
+       this.setState({
+         noData: true
+       })
+    }
+    else if (Array.isArray(filteredList)) {
+      this.setState({
+        noData: false,
+        renderedListData: filteredList
+      })
+    }
+  }
+  filterCases(e){
+    let text = e.toLowerCase()
+    let fullList = this.state.dataSource;
+    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+      if(item.cas.casestatus.toLowerCase().match(text) || item.cas.casetype.toLowerCase().match(text))
+        return item;
+    })
+    if (!text || text === '') {
+      this.setState({
+        renderedListData: fullList,
+        typeStatus:false,
+      })
+    } else if (!filteredList.length) {
+     // set no data flag to true so as to render flatlist conditionally
+       this.setState({
+        typeStatus: true
+       })
+    }
+    else if (Array.isArray(filteredList)) {
+      this.setState({
+        typeStatus: false,
+        renderedListData: filteredList
+      })
+    }
+  }
+//passing caseid of list item being clicked
 GetItem (caseid1) {
   this.props.navigation.navigate(
-    'CaseDetails',
+    'Add',
     { caseid1 :caseid1 },
   );
 }
+//search from all clients
+/*
+SearchClient () {
+  navigation.navigate('ClientList');
+}*/
 
 async componentDidMount() {
+    console.disableYellowBox = true;
     this.state.token = await AsyncStorage.getItem("token");
     var url =  config.api.url + config.api.endpoints.caselist;
-    console.debug("Initiating GET request to endpoint: " + url);
+    //console.debug("Initiating GET request to endpoint: " + url);
+    //console.debug(this.state.token);
 
-    console.debug(this.state.token);
     // make the call
     axios({
       method: "get",
@@ -46,11 +105,10 @@ async componentDidMount() {
        }
     })
         .then(async response => {
-          console.debug(
-            "Call was successful for login. Response status : " + response.status
-          );
+          //console.debug("Call was successful for case list. Response status : " + response.status);
             this.setState({
-              dataSource: response.data
+              dataSource: response.data,
+              renderedListData: response.data,
             });
         })
         .catch(error => {
@@ -75,22 +133,46 @@ async componentDidMount() {
   render() {
 
         return (
-          <View  style={styles.container}>
+          
+          <View style={styles.container}>
          <SearchBar
-      lightTheme
-      placeholder='Type Here...' />
+          lightTheme
+          onChangeText={this.filterClients.bind(this)}
+          placeholder='Type Here...' />
 
+          {this.state.noData ? <View><Text style={styles.nodata}>No cases found</Text>
+          <Button
+          title="Search client"
+          buttonStyle={styles.button}
+          onPress={() => this.props.navigation.navigate('ClientList')}
+          loading={this.state.isLoading}
+        /></View>
+        :
+<View style={styles.container}>
       <View style={{flexDirection: 'row', paddingTop: 20}}>
-      <Text style={{paddingTop: 7}}> Case Type: </Text>
-      <Picker style={{width: 156, height: 36}} itemStyle={{height: 36, fontSize: 13}}>
-      <Picker.Item label="Appointment" value="java" />
-      <Picker.Item label="Assessment" value="js" />
+      <Text style={{paddingLeft: 23, fontSize: 16, fontWeight: 'bold'}}> Case Type: </Text>
+      <Text style={{paddingLeft: 93, fontSize: 16, fontWeight: 'bold'}}> Case Status: </Text>
+      </View>
+
+      <View style={{flexDirection: 'row'}}>
+      <Picker 
+          onValueChange={this.filterCases.bind(this)}
+          style={{width: 156, height: 56, marginLeft: 20}} itemStyle={{height: 56, fontSize: 13}}>
+      <Picker.Item label="Appointment" value="appointment" />
+      <Picker.Item label="Assessment" value="assessment" />
+      </Picker>
+      <Picker 
+          onValueChange={this.filterCases.bind(this)}
+          style={{width: 156, height: 56, marginLeft: 25}} itemStyle={{height: 56, fontSize: 13}}>
+      <Picker.Item label="pending" value="pending" />
+      <Picker.Item label="open" value="open" />
       </Picker>
       </View>
 
       <List>
+      
            <FlatList
-              data={ this.state.dataSource }
+              data={ this.state.renderedListData }
               keyExtractor={(item, index) => index}
               renderItem={({item}) =>
                    <ListItem
@@ -108,66 +190,23 @@ async componentDidMount() {
                       </View>
                      }
 
-                     rightTitle={"Status: "+item.cas.casestatus}
+                     rightTitle={
+                     <Text style={
+                      item.cas.casestatus === 'Open' ? styles.subtitleBlue :
+                      item.cas.casestatus === 'Pending' ? styles.subtitleRed :
+                      item.cas.casestatus === 'Scheduled' ? styles.subtitleGreen :
+                      item.cas.casestatus === 'Closed' ? styles.subtitleYellow :
+                      styles.subtitleNeutral}>
+                     {item.cas.casestatus} </Text>}
                       onPress={this.GetItem.bind(this, item.cas.caseid)}
 
                    />}
              />
-             </List>
-
+          
+        </List>
+        </View>
+        }
       </View>
         );
   }
-
 }
-
-const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-   },
-  title: {
-    fontSize: 16,
-    padding: 5,
-    color : 'grey',
-    fontWeight: 'bold',
-  },
-  subtitleGreen: {
-    color: '#33cc33',
-    fontWeight: 'bold',
-    paddingTop: 5,
-  },
-  subtitleOrange: {
-    color: '#ff9933',
-    fontWeight: 'bold',
-    paddingTop: 5,
-  },
-  subtitleBlue: {
-    color: '#3399ff',
-    fontWeight: 'bold',
-    paddingTop: 5,
-  },
-  subtitleRed: {
-    color: '#ff3300',
-    fontWeight: 'bold',
-    paddingTop: 5,
-  },
-  subtitleNeutral: {
-    color: '#999966',
-    fontWeight: 'bold',
-    paddingTop: 5,
-  },
-  rightT: {
-    fontSize: 12,
-    paddingTop: 5,
-    color: '#595959',
-  },
-  searchBar: {
-    paddingLeft: 30,
-  fontSize: 22,
-  height: 100,
-  flex: .1,
-  borderWidth: 9,
-  borderColor: '#E4E4E4',
-},
-
-});
