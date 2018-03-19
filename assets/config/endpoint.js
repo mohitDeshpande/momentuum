@@ -1,6 +1,6 @@
 export default {
   api: {
-    url: "http://192.168.0.14:5000/api/",
+    url: "http://192.168.0.13/MomentuumApi/api/",
     endpoints: {
       login: "auth/login",
       caselist: "case/client/emp",
@@ -10,8 +10,8 @@ export default {
         caseDetailById: "case/client/"
       },
       caseItems: {
-        caseItem: "caseitem/",
-        caseItemsForCase: "caseitem/case/"
+        caseItem: "caseItems/",
+        caseItemsForCase: "caseItems/case/"
       },
       test: {
         withAuth: "values/5",
