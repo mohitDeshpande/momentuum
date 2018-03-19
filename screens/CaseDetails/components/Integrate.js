@@ -1,12 +1,11 @@
 import React from 'react';
-import { Alert, AsyncStorage, Text, ScrollView, View,
-         TextInput, Picker, StatusBar, TouchableHighlight, KeyboardAvoidingView, 
-         Button, FlatList, Image } from 'react-native';
+import { AsyncStorage, Text, ScrollView, View, TextInput, Picker, StatusBar, TouchableHighlight, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
 import { Constants } from 'expo';
 import endpoint from "../../../assets/config/endpoint";
 import CaseUpdateForm from "./CaseUpdateForm";
-import CaseItems from './CaseItems';
-import styles from "../styles/CaseDetailsStyles";
+import CaseItems from './CaseItems'
+import CaseItemDemo from './CaseItemDemo'
+import styles from "../styles/CaseDetailsStyles"
 import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import GrowingTextInput from './GrowingTextInput';
 import { StackNavigator } from 'react-navigation';
@@ -21,10 +20,7 @@ class CaseDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            caseLoaded: false,
-            caseItemsLoaded:false,
             dataSource: [],
-            caseItemsList: [],
             token: '',
             editable: false,
             firstName: '',
@@ -100,49 +96,72 @@ class CaseDetails extends React.Component {
     updateData = () => {
         console.log(this.ref.caseCode.value);
         console.log(this.ref.caseType.value);
-        }
-    openCaseItem=(id)  =>{
-        this.props.navigation.navigate('CaseItemDetails', {CaseItemId:id})
-    }
-        
-    deleteAlert(){
-        Alert.alert(
-            'Delete Case ',
-            'Do you want to delete this case ?',
-            [
-              {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
-              {text: 'Yes', onPress: () => 
-              {
-                console.log('Yes Pressed');
-                this.deleteCase();
-             }
-                
-              }
-              ,
-            ],
-            { cancelable: false }
-          )
-
     }
 
     static navigationOptions = {
         title: 'Case Details',
-       
+        headerRight: (
+            <View style={{ flexDirection: 'row', paddingRight: 20 }}>
+                <Icon name="trash" size={25} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+            </View>
+        ),
         headerLeft: (
             <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
                 <Icon name="angle-left" size={25} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
             </View>
         ),
     };
-    async componentWillMount(){
+
+    async componentDidMount() {
         const { params } = this.props.navigation.state;
         const caseid = params ? params.caseid1 : "u";
-        console.log("CaseId + " + caseid);
-        this.state.caseId=params ? params.caseid1 : "error";
+        console.log("Test + " + caseid);
         this.state.token = await AsyncStorage.getItem("token");
-        this.getCaseDetails();
+        //this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4";
+
+        var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + caseid;
+        console.debug("Initiating GET request to endpoint: " + url);
+
+        console.debug(this.state.token);
+        // make the call
+        axios({
+            method: "get",
+            url: url,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.state.token,
+            }
+        })
+            .then(async response => {
+                console.debug(
+                    "Call was successful for login. Response status : " + response.status
+                );
+                console.debug(response.data);
+                this.setState({
+                    dataSource: response.data
+                });
+                this.MapData();
+            })
+            .catch(error => {
+                if (error.response) {
+                    // the response was other than 2xx status
+                    if (error.response.status == 401) {
+                        console.debug("Invalid username and password entered");
+                        this.authError();
+                    } else {
+                        console.error("Invalid request sent. Status : " + error.response.status);
+                        this.appError();
+                    }
+                } else {
+                    console.error("Something went wrong in the request Status : " + error.response.status + " Response : " + error);
+                    this.appError();
+                }
+            });
+
     }
-    
+
+
     render() {
         if (this.state.isLoading) {
             return (
@@ -190,7 +209,6 @@ class CaseDetails extends React.Component {
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon name="check-circle" size={25} style={{ paddingTop: 10 }} color={color.green.hex} onPress={this.updateData} />
                                 <Icon name="edit" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#666" onPress={this.toggleEdit} />
-                                <Icon name="trash" size={25} color="#444" style={{ paddingTop: 10, paddingLeft: 20 }} onPress={() => this.deleteAlert()}  />
                             </View>
                         </View>
                         <View style={styles.details}>
@@ -301,10 +319,7 @@ class CaseDetails extends React.Component {
                     {/* Case Items details */}
 
                     {/* ///Case Items goes here/// */}
-                   
-                <CaseItems  CaseId={this.state.caseId} />
-                                 
-               
+                    <CaseItems CaseID={this.state.caseId}/>
                     {/* Case Items Session Ends */}
 
                 </ScrollView>
@@ -313,138 +328,6 @@ class CaseDetails extends React.Component {
             </View>
         )
     }
-  
-    // Api Calls
-
-  // Get Case Detail 
-
-  getCaseDetails() {
-    
-    var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + this.state.caseId;
-    
-
-    axios({
-        method: "get",
-        url: url,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + this.state.token,
-        }
-    })
-        .then(async response => {
-            console.debug(
-                "Call was successful for case details. Response status : " + response.status
-            );
-            console.debug(response.data);
-            this.setState({
-                dataSource: response.data,
-                caseLoaded:true
-            });
-            this.MapData();
-            
-        })
-        .catch(error => {
-            if (error.response) {
-                // the response was other than 2xx status
-                if (error.response.status == 401) {
-                    console.debug("Invalid username and password entered");
-                   // this.authError();
-                } else {
-                    console.error("Invalid request sent. Status : " + error.response.status);
-                    //this.appError();
-                }
-            } else {
-                console.error("Something went wrong in the request Status : " + error.response.status + " Response : " + error);
-                //this.appError();
-            }
-        });
-    }
-
-    // Delete Case 
-    deleteCase(){
-        var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetail + this.state.caseId;
-       
-            {/* Soft delete call */}
-            axios({
-                method: "delete",
-                url,
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + this.state.token,
-                }
-            })
-                .then(async response => {
-                    console.debug(
-                        'Call was successful for delete. Response status : ' + response.status
-                    );
-                    if (response.data.deleted!="false"){
-                        console.log("Case was soft deleted");
-                    }
-                  
-                    console.debug(response.data);
-                    this.setState({
-                        caseItem: response.data
-                    });
-                })
-                .catch(error => {
-                    if (error.response) {
-                        // the response was other than 2xx status
-                        if (error.response.status == 401) {
-                            console.debug("Invalid username and password ");
-                           // this.authError();
-                        } else {
-                            console.error("Invalid request sent. Status : " + error.response.status);
-                           // this.appError();
-                        }
-                    } else {
-                        console.error("Something went wrong in the request Status : " + error + " Response : " + error);
-                       // this.appError();
-                    }
-                });
-        } 
-        // Get Case Items 
-        getCaseItems(){
-        
-        var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItemsForCase +  this.state.caseId;
-        axios({
-            method: "get",
-            url: url,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.state.token,
-            }
-        })
-            .then(response => {
-                console.log(response.data);
-               
-                this.setState({
-                    caseItemsList: response.data,
-                    caseItemsLoaded: true
-                });
-                console.log("Case Items Data :" + response.data);
-            }
-            )
-            .catch(error => {
-                if (error.response) {
-                    // the response was other than 2xx status
-                    if (error.response.status == 401) {
-                        console.debug("Invalid username and password entered");
-                       // this.authError();
-                    } else {
-                        console.error("Invalid request sent. Status : " + error.response.status);
-                        //this.appError();
-                    }
-                } else {
-                    console.error("Something went wrong in the request Status : " + error+ " Response : " + error);
-                    //this.appError();
-                }
-            });
-         }
-
-
 }
 
 export default CaseDetails

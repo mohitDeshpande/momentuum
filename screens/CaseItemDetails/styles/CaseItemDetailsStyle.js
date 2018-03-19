@@ -1,9 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { Constants } from 'expo';
+import color from '../../../assets/styles/color';
+//import { radius } from 'react-native-material-ripple/styles';
 //Stylesheet
 export default StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#f2f2f4'
     },
     /* required  */
     category: {
@@ -16,16 +19,13 @@ export default StyleSheet.create({
     header: {
         paddingHorizontal: 10,
         paddingBottom: 20,
-        flex: 1,
+        flex: 0.06,
         flexDirection: 'row',
-        paddingHorizontal: 10,
-        //color: '#444',
-        //fontWeight: '500',
         top: 10,
         justifyContent: 'space-between'
     },
     clientHeader: {
-        paddingBottom:15
+        paddingBottom: 15
     },
     /* required */
     row: {
@@ -72,12 +72,40 @@ export default StyleSheet.create({
         height: 45,
         paddingHorizontal: 20,
     },
-    picker: {
-        height: 45,
-        paddingLeft: 30,
-    },
     /* required */
     details: {
         backgroundColor: '#fff'
     },
-})
+    button: {
+        backgroundColor: color.primaryColor.hex,
+        alignItems: 'center',
+        flex: 0.5,
+        // height: 50,        
+    },
+    buttonNeutral: {
+        backgroundColor: '#f8f8f8',
+        alignItems: 'center',
+        flex: 0.5,
+        // height: 50
+    },
+    editButton: {
+        paddingHorizontal: 10, 
+    },
+    editButtonActive: {
+        backgroundColor: '#dcdcdc',
+        borderRadius: 5,
+        borderWidth: 0.5,
+        paddingHorizontal: 10,
+    }, 
+    editActions: {
+        color: 'black',
+        fontSize: 16,
+        fontWeight: 'bold',
+        alignItems: 'center'
+    }, 
+    deleteButton: {
+        paddingHorizontal: 10,
+    }
+    
+
+});
