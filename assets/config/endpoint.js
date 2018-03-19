@@ -11,8 +11,8 @@ export default {
         stats: "case/stats"
       },
       caseItems: {
-        caseItem: "caseitem/",
-        caseItemsForCase: "caseitem/case/"
+        caseItem: "caseItems/",
+        caseItemsForCase: "caseItems/case/"
       },
       test: {
         withAuth: "values/5",
