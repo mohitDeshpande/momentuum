@@ -146,7 +146,7 @@ SearchClient () {
 
   render() {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.primaryColor.rgb }]}>
+      <SafeAreaView style={[styles.container]}>
         <SearchBar
           lightTheme
           onChangeText={this.filterClients.bind(this)}
