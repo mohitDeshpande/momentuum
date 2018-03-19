@@ -5,8 +5,7 @@ import { Alert, AsyncStorage, Text, ScrollView, View,
 import { Constants } from 'expo';
 import endpoint from "../../../assets/config/endpoint";
 import CaseUpdateForm from "./CaseUpdateForm";
-import CaseItems from './CaseItemsNav';
-import CaseItemDemo from './CaseItemDemo';
+import CaseItems from './CaseItems';
 import styles from "../styles/CaseDetailsStyles";
 import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import GrowingTextInput from './GrowingTextInput';
