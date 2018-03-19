@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import { SwitchNavigator } from 'react-navigation';
 import tabnav from './assets/config/HomeTabs';
 import Login from './screens/Login/components/Login';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
@@ -19,41 +19,13 @@ const defaultNavigationOptions = {
   },
   headerTitleStyle:{ color: color.white.hex,textAlign: 'center',alignSelf:'center'},
 };
-
-class App extends React.Component {
-  render() {
-  }
   
-}
-  
-export default StackNavigator({
-  Home: {
-    screen: Login
-  },
-  tabnav: {
-    screen: tabnav
-    },
-    CaseDetails: { 
-      screen: Integrate 
-    },
-    CaseUpdateForm: { 
-      screen: CaseUpdateForm 
-    },
-    CaseItemDetails: { 
-      screen: CaseItemDetails 
-    },
-    CaseItems: { 
-      screen: CaseItems 
-    },
-    CaseItemDemo: { 
-      screen: CaseItemDemo
-    },
-
+export default SwitchNavigator(
+  {
+    Auth: Login,
+    App: tabnav
   },
   {
-    headerMode: 'screen',
-    navigationOptions: {
-      ...defaultNavigationOptions,        
-      }
-    },
+    initialRouteName: 'Auth'
+  }
 );

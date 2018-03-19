@@ -39,7 +39,7 @@ export default tabnav = TabNavigator(
     Profile: { screen: Profile },
   },
   {
-      
+    headerMode: 'screen',
     initialRouteName: 'Home',
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
