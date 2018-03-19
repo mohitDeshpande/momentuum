@@ -50,7 +50,8 @@ export default class CaseList extends Component<{}> {
     }
   }
   filterCases(e){
-    let text = e.toLowerCase()
+    console.debug("entered");
+    let text = e.toLowerCase();
     let fullList = this.state.dataSource;
     let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
       if(item.cas.casestatus.toLowerCase().match(text) || item.cas.casetype.toLowerCase().match(text))
@@ -128,7 +129,17 @@ async componentDidMount() {
         });
 
     }
-
+    loadCaseTypes() {
+      return this.state.dataSource.map(type => (
+        
+         <Picker.Item label={type.cas.casetype} value={type.cas.casetype} />
+      ))
+    }
+    loadCaseStatuses() {
+      return this.state.dataSource.map(st => (
+        <Picker.Item label={st.cas.casestatus} value={st.cas.casestatus} />
+     ))
+    }
 
   render() {
 
@@ -158,14 +169,12 @@ async componentDidMount() {
       <Picker 
           onValueChange={this.filterCases.bind(this)}
           style={{width: 156, height: 56, marginLeft: 20}} itemStyle={{height: 56, fontSize: 13}}>
-      <Picker.Item label="Appointment" value="appointment" />
-      <Picker.Item label="Assessment" value="assessment" />
+      {this.loadCaseTypes()}
       </Picker>
       <Picker 
           onValueChange={this.filterCases.bind(this)}
           style={{width: 156, height: 56, marginLeft: 25}} itemStyle={{height: 56, fontSize: 13}}>
-      <Picker.Item label="pending" value="pending" />
-      <Picker.Item label="open" value="open" />
+      {this.loadCaseStatuses()}
       </Picker>
       </View>
 
