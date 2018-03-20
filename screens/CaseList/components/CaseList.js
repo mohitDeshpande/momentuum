@@ -15,7 +15,11 @@ import config from "./../../../assets/config/endpoint";
 import routes from "./../../../assets/config/RouteNames";
 import colors from "./../../../assets/styles/color";
 import styles from "./../styles/CaseListStyles";
+<<<<<<< HEAD
 import RouteNames from "./../../../assets/config/RouteNames";
+=======
+import CaseDetails from "../../CaseDetails/components/CaseDetails";
+>>>>>>> Need to fix date calender and update form issue
 
 export default class CaseList extends React.Component {
   constructor(props) {
