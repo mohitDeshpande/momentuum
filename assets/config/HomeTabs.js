@@ -9,6 +9,8 @@ import ClientList from "../../screens/clients/components/ClientList";
 import AddClient from "../../screens/clients/components/AddClient";
 import AddCase from '../../screens/AddCase/components/AddCase';
 import CaseDetails from '../../screens/CaseDetails/components/CaseDetails';
+import CaseItems from "../../screens/CaseDetails/components/CaseItems";
+import CaseItemDetails from "../../screens/CaseItemDetails/components/CaseItemDetails";
 
 const HomeStack = StackNavigator({
     CaseList: {
@@ -22,6 +24,14 @@ const HomeStack = StackNavigator({
     CaseDetails: {
       screen: CaseDetails,
       title: 'CaseDetails',
+    },
+    CaseItemDetails: {
+      screen: CaseItemDetails,
+      title: 'CaseItemDetails',
+    },
+    CaseItems: {
+      screen: CaseItems,
+      title: 'CaseItems',
     },
     AddCase: {
         screen: AddCase,
