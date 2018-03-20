@@ -1,6 +1,6 @@
 export default {
   api: {
-    url: "http://192.168.0.14:5000/api/",
+    url: "http://192.168.0.13:5000/api/",
     endpoints: {
       login: "auth/login",
       caselist: "case/client/emp",

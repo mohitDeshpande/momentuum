@@ -8,6 +8,10 @@ import Test1 from "../../screens/CaseList/components/Test1";
 import ClientList from "../../screens/clients/components/ClientList";
 import AddClient from "../../screens/clients/components/AddClient";
 import AddCase from '../../screens/AddCase/components/AddCase';
+import CaseDetails from '../../screens/CaseDetails/components/CaseDetails';
+import CaseUpdateForm from '../../screens/CaseDetails/components/CaseUpdateForm';
+import GrowingTextInput from '../../screens/CaseDetails/components/GrowingTextInput';
+
 
 const HomeStack = StackNavigator({
     CaseList: {
@@ -26,6 +30,18 @@ const HomeStack = StackNavigator({
         screen: AddClient,
         title: 'AddClient',
     },
+    CaseDetails: {
+      screen: CaseDetails,
+      title: 'CaseDetails',
+  },
+  CaseUpdateForm: {
+    screen: CaseUpdateForm,
+    title: 'CaseUpdateForm',
+  },
+  GrowingTextInput: {
+    screen: GrowingTextInput,
+    title: 'GrowingTextInput',
+  },
 },
     {
       initialRouteName: 'CaseList',
