@@ -40,7 +40,7 @@ export default class CaseItems extends Component {
     }
 
     render() {
-        if (this.state.isLoading) {
+        if (!this.state.isLoading) {
             return (
                 <View style={{ flex: 1 }}>
                     <ActivityIndicator />
