@@ -36,9 +36,7 @@ class CaseDetails extends React.Component {
         title: 'Case Details',
     };
 
-    openCaseItem = (id) => {
-        this.props.navigation.navigate('CaseItemDetails', { CaseItemId: id })
-    }
+    
 
     async componentWillMount() {
         const { params } = this.props.navigation.state;
@@ -63,7 +61,7 @@ class CaseDetails extends React.Component {
                         <ClientDetails CaseId={this.state.caseId} />
 
                         {/* Case Session */}
-                        <CaseUpdateForm CaseId={this.state.caseId} />
+                        <CaseUpdateForm nav={this.props.navigation} CaseId={this.state.caseId} />
                     </View>
 
                     {/* Case Items Session */}
@@ -73,7 +71,8 @@ class CaseDetails extends React.Component {
                     </View>
 
                     {/* Case Items details */}
-                    <CaseItems CaseId={this.state.caseId} />
+                    <CaseItems nav={this.props.navigation} CaseId={this.state.caseId} /> 
+                
 
                 </ScrollView>
 
@@ -118,46 +117,6 @@ class CaseDetails extends React.Component {
                     }
                 } else {
                     console.error("Something went wrong in the request Status : " + error.response.status + " Response : " + error);
-                    //this.appError();
-                }
-            });
-    }
-
-    // Get Case Items 
-    getCaseItems() {
-
-        var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItemsForCase + this.state.caseId;
-        axios({
-            method: "get",
-            url: url,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.state.token,
-            }
-        })
-            .then(response => {
-                console.log(response.data);
-
-                this.setState({
-                    caseItemsList: response.data,
-                    caseItemsLoaded: true
-                });
-                console.log("Case Items Data :" + response.data);
-            }
-            )
-            .catch(error => {
-                if (error.response) {
-                    // the response was other than 2xx status
-                    if (error.response.status == 401) {
-                        console.debug("Invalid username and password entered");
-                        // this.authError();
-                    } else {
-                        console.error("Invalid request sent. Status : " + error.response.status);
-                        //this.appError();
-                    }
-                } else {
-                    console.error("Something went wrong in the request Status : " + error + " Response : " + error);
                     //this.appError();
                 }
             });

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableHighlight, AsyncStorage, ActivityIndicator, ListView, Text, View } from 'react-native';
+import { FlatList, TouchableHighlight, AsyncStorage, ActivityIndicator, ListView, Text, View } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import axios from 'axios';
 import endpoint from "./../../../assets/config/endpoint";
@@ -38,39 +38,6 @@ export default class CaseItems extends Component {
           console.log("Case ID inside of Case Items is "+this.state.caseId)
           this.getCaseItems();
     }
-    
-    checkStatus= ()=> {
-        console.log("Check Status Method");
-    };
-
-    renderRow(rowData, sectionID) {
-        getItem=(id) =>{
-            console.log("clicked");
-             this.props.navigation.navigate(
-                 RouteNames.caseItemDetails,
-                { caseItemId :id},
-               ); 
-        }
-        return (
-           
-            <ListItem
-                onPress= {() =>getItem('275314')}
-                key={sectionID}
-                //Content properties
-                title={<View ><Text style={styles.title} numberOfLines={1}>Status: <Text style={styles.status}>{rowData.caseItemStatus}</Text></Text>
-
-                    <Text style={styles.action}>Action: {rowData.caseItemAction}</Text></View>}
-                subtitle={<Text style={styles.itemDesc} numberOfLines={1}>{rowData.caseItemDescription}</Text>}
-                //Styling properties
-                rightTitle={rowData.caseItemDate}                
-                rightTitleStyle={styles.itemDate}
-                chevronColor={color.primaryColor.hex}
-                containerStyle={styles.container}
-
-            />
-            
-        )
-    }
 
     render() {
         if (this.state.isLoading) {
@@ -80,24 +47,36 @@ export default class CaseItems extends Component {
                 </View>
             );
         }
+       
         return (
-           
-            <View style={{ flex: 1 }}>
-                <List containerStyle={{ marginBottom: 20 }}>
-
-                    <ListView
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow}
-                       
-                        
-                    />
-
-                </List>
-            </View> 
+          
+            <List>
+            <FlatList
+               data={ this.state.dataSource }
+               keyExtractor={(item, index) => index}
+               renderItem={({item}) =>
+               <ListItem
+                onPress= {() => this.props.nav.navigate('CaseItemDetails', {CaseItemId:item.intId})}
+            
+                    //Content properties
+                    title={<View ><Text style={styles.title} numberOfLines={1}>Status: <Text style={styles.status}>{item.caseItemStatus}</Text></Text>
+    
+                        <Text style={styles.action}>Action: {item.caseItemAction}</Text></View>}
+                    subtitle={<Text style={styles.itemDesc} numberOfLines={1}>{item.caseItemDescription}</Text>}
+                    //Styling properties
+                    rightTitle={item.caseItemDate}
+                    
+                    rightTitleStyle={styles.itemDate}
+                    chevronColor={color.primaryColor.hex}
+                    containerStyle={styles.container}
+                    />}
+                />
+             </List>
+       
         );
     }
 
-
+        // Api Call to get case items
     getCaseItems(){
        
         var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItemsForCase +  this.state.caseId;
@@ -114,10 +93,9 @@ export default class CaseItems extends Component {
             .then(response => {
                 console.log(response.data);
                
-                let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
                 this.setState({
                     isLoading: false,
-                    dataSource: ds.cloneWithRows(response.data),
+                    dataSource: response.data,
                     }); 
                 console.log("Case Items Data :" + response.data);
             }
@@ -138,4 +116,5 @@ export default class CaseItems extends Component {
                 }
             });
          }
+
 }
