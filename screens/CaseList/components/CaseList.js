@@ -160,23 +160,18 @@ async componentDidMount() {
 
     }
     loadCaseTypes() {
-     // console.debug(this.state.uniqueStatuses);
-      //this.state.uniqueTypes = Array.from(new Set(this.state.dataSource.cas.casetype));
-      return this.state.dataSource.map(type => (
-         <Picker.Item label={type.cas.casetype} value={type.cas.casetype} />
+      this.state.uniqueTypes = this.state.dataSource.map(type => type.cas.casetype);
+      this.state.uniqueTypes = Array.from(new Set(this.state.uniqueTypes));
+      return this.state.uniqueTypes.map(t => (
+         <Picker.Item label={t} value={t} />
       ))
     }
     loadCaseStatuses() {
       this.state.uniqueStatuses = this.state.dataSource.map(st => st.cas.casestatus);
-       console.debug(this.state.uniqueStatuses);
       this.state.uniqueStatuses = Array.from(new Set(this.state.uniqueStatuses));
-       console.debug(this.state.uniqueStatuses);
-      this.state.uniqueStatuses.map((item, index) => {
-        <Picker.Item label={item} value={item} key={index}/>
-    })
-     /* return this.state.dataSource.map(st => (
-        <Picker.Item label={st.cas.casestatus} value={st.cas.casestatus} />
-     ))*/
+      return this.state.uniqueStatuses.map(st => (
+        <Picker.Item label={st} value={st} />
+     ))
     }
 
   render() {
