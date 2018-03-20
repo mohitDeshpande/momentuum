@@ -30,8 +30,8 @@ export default class CaseList extends React.Component {
       token: '',
       noData: false,
       typeStatus: false,
-      valueS: '',
-      valueT: '',
+      valueS: 'All',
+      valueT: 'All',
     }
 
   }
@@ -63,6 +63,7 @@ export default class CaseList extends React.Component {
     }
   }
   filterCasesByType(e) {
+    this.state.valueS = 'All';
     this.state.valueT = e;
     let text = e.toLowerCase();
     let fullList = this.state.dataSource;
@@ -71,6 +72,11 @@ export default class CaseList extends React.Component {
         return item;
     })
     if (!text || text === '') {
+      this.setState({
+        renderedListData: fullList,
+        typeStatus: false,
+      })
+    } else if (text === 'all') {
       this.setState({
         renderedListData: fullList,
         typeStatus: false,
@@ -89,6 +95,7 @@ export default class CaseList extends React.Component {
     }
   }
   filterCasesByStatus(e) {
+    this.state.valueT = 'All';
     this.state.valueS = e;
     let text = e.toLowerCase();
     let fullList = this.state.dataSource;
@@ -97,6 +104,11 @@ export default class CaseList extends React.Component {
         return item;
     })
     if (!text || text === '') {
+      this.setState({
+        renderedListData: fullList,
+        typeStatus: false,
+      })
+    } else if (text === 'all') {
       this.setState({
         renderedListData: fullList,
         typeStatus: false,
@@ -113,6 +125,7 @@ export default class CaseList extends React.Component {
         renderedListData: filteredList
       })
     }
+    
   }
   //passing caseid of list item being clicked
   GetItem(caseid1) {
@@ -160,15 +173,17 @@ export default class CaseList extends React.Component {
   loadCaseTypes() {
     this.state.uniqueTypes = this.state.dataSource.map(type => type.cas.casetype);
     this.state.uniqueTypes = Array.from(new Set(this.state.uniqueTypes));
-    return this.state.uniqueTypes.map(t => (
-      <Picker.Item label={t} value={t} />
+    this.state.uniqueTypes.push("All");
+    return this.state.uniqueTypes.map( (t, i) => (
+      <Picker.Item label={t} value={t} key={i} />
     ))
   }
   loadCaseStatuses() {
     this.state.uniqueStatuses = this.state.dataSource.map(st => st.cas.casestatus);
     this.state.uniqueStatuses = Array.from(new Set(this.state.uniqueStatuses));
-    return this.state.uniqueStatuses.map(st => (
-      <Picker.Item label={st} value={st} />
+    this.state.uniqueStatuses.push("All");
+    return this.state.uniqueStatuses.map( (st, i) => (
+      <Picker.Item label={st} value={st} key={i}/>
     ))
   }
 
@@ -215,7 +230,7 @@ export default class CaseList extends React.Component {
 
             <List>
 
-              <FlatList
+              <FlatList contentContainerStyle={{ paddingBottom: 200 }}
                 data={this.state.renderedListData}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item }) =>
@@ -236,14 +251,14 @@ export default class CaseList extends React.Component {
                       </View>
                     }
 
-                    rightTitle={
-                      <Text style={
-                        item.cas.casestatus === 'Open' ? styles.subtitleBlue :
-                          item.cas.casestatus === 'Pending' ? styles.subtitleRed :
-                            item.cas.casestatus === 'Scheduled' ? styles.subtitleGreen :
-                              item.cas.casestatus === 'Closed' ? styles.subtitleYellow :
-                                styles.subtitleNeutral}>
-                        {item.cas.casestatus} </Text>}
+                    
+                    badge={{value: item.cas.casestatus, containerStyle:
+                        item.cas.casestatus === 'Open' ? { backgroundColor: 'orange', padding: 10} :
+                          item.cas.casestatus === 'Pending' ? { backgroundColor: 'red', padding: 10} :
+                            item.cas.casestatus === 'Scheduled' ? { backgroundColor: 'yellow', padding: 10} :
+                              item.cas.casestatus === 'Closed' ? { backgroundColor: 'green', padding: 10} :
+                              { backgroundColor: 'brown'}}
+                    }
                     onPress={this.GetItem.bind(this, item.cas.caseid)}
 
                   />}

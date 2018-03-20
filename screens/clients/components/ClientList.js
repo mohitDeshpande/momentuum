@@ -80,32 +80,6 @@ export default class ClientList extends React.Component {
           this.appError();
         }
       });
-    /*let text = e.toLowerCase()
-    let fullList = this.state.dataSource;
-    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-      if(item.lastname.toLowerCase().match(text) || item.firstName.toLowerCase().match(text))
-        return item;
-    })
-    if (!text || text === '') {
-      this.setState({
-        renderedListData: [],
-        noData:false,
-        fisrtState: true,
-      })
-    } else if (!filteredList.length) {
-     // set no data flag to true so as to render flatlist conditionally
-       this.setState({
-         noData: true,
-         fisrtState: false,
-       })
-    }
-    else if (Array.isArray(filteredList)) {
-      this.setState({
-        noData: false,
-        renderedListData: filteredList,
-        fisrtState: false,
-      })
-    }*/
   }
 
   //passing clientid of list item being clicked
@@ -157,12 +131,19 @@ export default class ClientList extends React.Component {
                           }}
                         />
                         <Text style={styles.rightT}>
-                          {"Division: " +
-                            item.division +
-                            " | Filename: " +
-                            item.filename}
-                        </Text>
-                        <Text style={styles.right}>{item.mainPhone}</Text>
+                          {item.type === null ? "" : 
+                          item.type === "" ? "" : 
+                          "Type: " + item.type }</Text>
+
+                        <Text style={styles.rightT}>
+                        { item.city === null ? "" :
+                          item.city === "" ? "" :
+                          "City: " + item.city}</Text>
+                             
+                        <Text style={styles.rightT}>
+                          {item.workArea === null ? "" :
+                          item.workArea === "" ? "" :
+                          "Work Phone: " + item.workArea + "-" + item.workPhone}</Text>
                       </View>
                     }
                     rightIcon={
