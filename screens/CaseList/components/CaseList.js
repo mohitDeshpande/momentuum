@@ -160,16 +160,23 @@ async componentDidMount() {
 
     }
     loadCaseTypes() {
-      //this.state.uniqueTypes = Array.from(new Set(this.state.dataSource.item.cas.casetype));
+     // console.debug(this.state.uniqueStatuses);
+      //this.state.uniqueTypes = Array.from(new Set(this.state.dataSource.cas.casetype));
       return this.state.dataSource.map(type => (
          <Picker.Item label={type.cas.casetype} value={type.cas.casetype} />
       ))
     }
     loadCaseStatuses() {
-      //this.state.uniqueStatuses = Array.from(new Set(this.state.dataSource.item.cas.casestatus));
-      return this.state.dataSource.map(st => (
+      this.state.uniqueStatuses = this.state.dataSource.map(st => st.cas.casestatus);
+       console.debug(this.state.uniqueStatuses);
+      this.state.uniqueStatuses = Array.from(new Set(this.state.uniqueStatuses));
+       console.debug(this.state.uniqueStatuses);
+      this.state.uniqueStatuses.map((item, index) => {
+        <Picker.Item label={item} value={item} key={index}/>
+    })
+     /* return this.state.dataSource.map(st => (
         <Picker.Item label={st.cas.casestatus} value={st.cas.casestatus} />
-     ))
+     ))*/
     }
 
   render() {
@@ -217,8 +224,8 @@ async componentDidMount() {
               data={ this.state.renderedListData }
               keyExtractor={(item, index) => index}
               renderItem={({item}) =>
+              
                    <ListItem
-
                     title={
                      <View>
                        <Text style={styles.title}>{item.cli.firstName + " " + item.cli.lastname}</Text>
@@ -228,7 +235,9 @@ async componentDidMount() {
                      subtitle={
                        <View>
                        <View style={{width: 150, height: 1, backgroundColor: 'lightgrey'}} />
-                       <Text style={styles.rightT}>{item.cas.casetype + " | Updated: " + item.cas.caseOpenDate}</Text>
+                       <Text style={styles.rightT}>
+                  
+                    {"Type: " + item.cas.casetype + " | Updated: " + item.cas.caseOpenDate}</Text>
                       </View>
                      }
 
