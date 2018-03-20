@@ -4,37 +4,13 @@ export default StyleSheet.create({
     
   container: {
     flex: 1,
-    marginBottom: 45,
+    //marginBottom: 15,
  },
 title: {
   fontSize: 16,
   padding: 5,
   color : 'grey',
   fontWeight: 'bold',
-},
-subtitleGreen: {
-  color: '#33cc33',
-  paddingTop: 5,
-},
-subtitleOrange: {
-  color: '#ff9933',
-  paddingTop: 5,
-},
-subtitleBlue: {
-  color: '#3399ff',
-  paddingTop: 5,
-},
-subtitleYellow: {
-  color: '#ffff1a',
-  paddingTop: 5,
-},
-subtitleRed: {
-  color: '#ff3300',
-  paddingTop: 5,
-},
-subtitleNeutral: {
-  color: '#999966',
-  paddingTop: 5,
 },
 rightT: {
   fontSize: 12,
