@@ -19,6 +19,7 @@ import axios from "axios";
 import styles from "./../styles/LoginStyles";
 import config from "./../../../assets/config/endpoint";
 import constants from "./../../../assets/config/constants";
+import screens from "./../../../assets/config/RouteNames";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -33,7 +34,10 @@ export default class Login extends React.Component {
     };
   }
 
-
+  static navigationOptions = {		
+    header: null,		
+    tabBarVisible: false		
+  }
 
   async componentWillMount() {
     try {
@@ -55,13 +59,11 @@ export default class Login extends React.Component {
         })
           .then(response => {
             console.log("Token is valid. Token user : " + response.data);
-
-
             // Since token is valid we send the user to the next screen
-          this.props.navigation.navigate('tabnav');
+            this.props.navigation.navigate(screens.appScreen);
           })
           .catch(error => {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
               console.debug(
                 "Token is not valid. User has to login again. Response: " +
                   error.response
@@ -132,7 +134,7 @@ export default class Login extends React.Component {
         }
 
         // navigate to the case list screen
-          this.props.navigation.navigate('tabnav');
+          this.props.navigation.navigate(screens.appScreen);
       })
       .catch(error => {
         if (error.response) {
@@ -161,6 +163,7 @@ export default class Login extends React.Component {
     this.setState(state);
   };
 
+  
   render() {
     return (
       <ImageBackground

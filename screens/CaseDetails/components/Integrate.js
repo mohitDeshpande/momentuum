@@ -12,7 +12,8 @@ import { StackNavigator } from 'react-navigation';
 import axios from "axios";
 import DatePicker from 'react-native-datepicker';
 import color from '../../../assets/styles/color';
-//import Ripple from 'react-native-material-ripple';
+import routes from '../../../assets/config/RouteNames';
+
 
 class CaseDetails extends React.Component {
 
@@ -102,12 +103,12 @@ class CaseDetails extends React.Component {
         title: 'Case Details',
         headerRight: (
             <View style={{ flexDirection: 'row', paddingRight: 20 }}>
-                <Icon name="trash" size={25} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+                <Icon name="trash" size={25} color="#fff" onPress={() => this.props.navigation.navigate(routes.caseUpdateForm)} />
             </View>
         ),
         headerLeft: (
             <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
-                <Icon name="angle-left" size={25} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+                <Icon name="angle-left" size={25} color="#fff" onPress={() => this.props.navigation.navigate(routes.caseUpdateForm)} />
             </View>
         ),
     };

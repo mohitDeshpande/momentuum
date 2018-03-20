@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import GrowingTextInput from './GrowingTextInput';
 import { StackNavigator } from 'react-navigation';
 import axios from "axios";
+import RouteNames from '../../../assets/config/RouteNames';
 //import Ripple from 'react-native-material-ripple';
 
 class TestCaseDetails extends React.Component {
@@ -29,12 +30,12 @@ class TestCaseDetails extends React.Component {
         title: 'Case Details',
         headerRight: (
             <View style={{ flexDirection: 'row', paddingRight: 20 }}>
-                <Icon name="trash" size={23} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+                <Icon name="trash" size={23} color="#fff" onPress={() => this.props.navigation.navigate(RouteNames.caseUpdateForm)} />
             </View>
         ),
         headerLeft: (
             <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
-                <Icon name="angle-left" size={23} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+                <Icon name="angle-left" size={23} color="#fff" onPress={() => this.props.navigation.navigate(RouteNames.caseUpdateForm)} />
             </View>
         ),
     };

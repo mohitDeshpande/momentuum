@@ -6,6 +6,7 @@ import endpoint from "./../../../assets/config/endpoint";
 import { StackNavigator } from 'react-navigation';
 import styles from "./../styles/CaseItemsStyles";
 import color from "./../../../assets/styles/color";
+import RouteNames from '../../../assets/config/RouteNames';
 
 export default class CaseItems extends Component {
     constructor(props) {
@@ -46,25 +47,22 @@ export default class CaseItems extends Component {
         getItem=(id) =>{
             console.log("clicked");
              this.props.navigation.navigate(
-                 'CaseItemDetails',
+                 RouteNames.caseItemDetails,
                 { caseItemId :id},
                ); 
         }
         return (
            
             <ListItem
-          //  onPress= {() => this.props.navigation.navigate('CaseItemDetails', {CaseItemId:'275314'})}
-          onPress= {() =>getItem('275314')}
-                    key={sectionID}
+                onPress= {() =>getItem('275314')}
+                key={sectionID}
                 //Content properties
                 title={<View ><Text style={styles.title} numberOfLines={1}>Status: <Text style={styles.status}>{rowData.caseItemStatus}</Text></Text>
 
                     <Text style={styles.action}>Action: {rowData.caseItemAction}</Text></View>}
                 subtitle={<Text style={styles.itemDesc} numberOfLines={1}>{rowData.caseItemDescription}</Text>}
                 //Styling properties
-                rightTitle={rowData.caseItemDate}
-                
-               //onPress= {() => this.props.navigation.navigate('CaseItemDetails')}
+                rightTitle={rowData.caseItemDate}                
                 rightTitleStyle={styles.itemDate}
                 chevronColor={color.primaryColor.hex}
                 containerStyle={styles.container}
