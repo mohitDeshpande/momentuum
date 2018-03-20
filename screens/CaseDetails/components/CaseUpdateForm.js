@@ -178,6 +178,7 @@ class CaseUpdateForm extends React.Component {
           text: 'Yes', onPress: () => {
             console.log('Yes Pressed');
             this.deleteCase();
+           //this.props.nav.navigate('CaseList');
           }
 
         }

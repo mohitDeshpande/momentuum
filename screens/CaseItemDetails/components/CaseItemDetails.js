@@ -33,7 +33,9 @@ class CaseItemDetails extends React.Component {
             caseItemActionCurrent:'',
             caseItemDescriptionCurrent:'',
             caseItemDetailsCurrent:'',
-            caseItemStatusCurrent:'',   
+            caseItemStatusCurrent:'', 
+            caseItemId:"",
+            
         };
     }
     deleteAlert(){
@@ -46,6 +48,7 @@ class CaseItemDetails extends React.Component {
               {
                 console.log('Yes Pressed');
                 this.deleteCaseItem();
+                this.props.navigation.navigate('CaseDetails',{ caseid1 :this.state.caseItem.caseid });
              }
                 
               }
@@ -56,7 +59,7 @@ class CaseItemDetails extends React.Component {
 
     }
     deleteCaseItem(){
-        var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + '275314';
+        var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + this.state.caseItemId;
        
             {/* Soft delete call*/}
             axios({
@@ -102,12 +105,12 @@ class CaseItemDetails extends React.Component {
    
     async componentDidMount() {
         const { params } = this.props.navigation.state;
-        const caseitemid = params ? params.caseitemid : "null";
-        console.log("Test + " + caseitemid);
-        //this.state.token = await AsyncStorage.getItem("token");
-        this.state.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTIzODIwMDEzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.kIREt48cIMC18UbWpVldqPQAt3OFfpcj8770zNTW1rE';
+        this.state.caseItemId = params ? params.CaseItemId : "null";
+        console.log("Test + " + this.state.caseItemId);
+        this.state.token = await AsyncStorage.getItem("token");
+        //this.state.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTIzODIwMDEzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.kIREt48cIMC18UbWpVldqPQAt3OFfpcj8770zNTW1rE';
 
-        var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + '275314';
+        var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + this.state.caseItemId;
         console.debug('Initiating GET request to endpoint: ' + url);
 
         console.debug(this.state.token);

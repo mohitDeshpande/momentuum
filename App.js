@@ -33,21 +33,6 @@ export default StackNavigator({
   tabnav: {
     screen: tabnav
     },
-    CaseDetails: { 
-      screen: Integrate 
-    },
-    CaseUpdateForm: { 
-      screen: CaseUpdateForm 
-    },
-    CaseItemDetails: { 
-      screen: CaseItemDetails 
-    },
-    CaseItems: { 
-      screen: CaseItems 
-    },
-    CaseItemDemo: { 
-      screen: CaseItemDemo
-    },
 
   },
   {
