@@ -195,7 +195,7 @@ async componentDidMount() {
                      subtitle={
                        <View>
                        <View style={{width: 150, height: 1, backgroundColor: 'lightgrey'}} />
-                       <Text style={styles.rightT}>{item.cas.casetype + " | Updated: " + item.cas.updateddate}</Text>
+                       <Text style={styles.rightT}>{item.cas.casetype + " | Updated: " + item.cas.caseOpenDate}</Text>
                       </View>
                      }
 

@@ -1,10 +1,7 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import tabnav from './assets/config/HomeTabs';
-import Login from './screens/Login/components/Login';
-import TabNavigator from './screens/CaseList/components/TabNavigator';
-import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
-import CaseUpdateForm from "./screens/CaseDetails/components/CaseUpdateForm";
+import Login from './screens/login/components/Login';
 import color from "./assets/styles/color"
 
 const defaultNavigationOptions = {
@@ -26,12 +23,6 @@ export default StackNavigator({
   },
   tabnav: {
     screen: tabnav
-    },
-    CaseDetails: { 
-      screen: CaseDetails 
-    },
-    CaseUpdateForm: { 
-      screen: CaseUpdateForm 
     },
 
   },
