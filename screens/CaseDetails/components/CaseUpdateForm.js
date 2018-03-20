@@ -90,6 +90,8 @@ class CaseUpdateForm extends React.Component {
       this.setState({ userid: item.cas.userid });
       this.setState({ subtype: item.cas.subtype });
       this.setState({ deleted: item.cas.deleted });
+      this.setState({ caseAssignedTo: item.cas.caseAssignedTo });
+      this.setState({ caseNature: item.cas.caseNature });
     })
   }
 
@@ -120,6 +122,8 @@ class CaseUpdateForm extends React.Component {
     obj["userid"] = this.state.userid ;
     obj["subtype"] = this.state.subtype ;
     obj["deleted"] = this.state.deleted ;
+    obj["caseNature"] = this.state.caseNature ;
+    obj["caseAssignedTo"] = this.state.caseAssignedTo ;
 
     this.state.updateDataJson.push(obj);
     var myJson = JSON.stringify(obj);
@@ -239,7 +243,7 @@ class CaseUpdateForm extends React.Component {
   render() {
     if (!this.state.caseLoaded) {
       return (
-        <View style={{ flex: 1, minHeight: 100 }}>
+        <View style={{ flex: 1, minHeight: 100, padding: 80 }}>
           <ActivityIndicator />
         </View>
       );
@@ -259,19 +263,16 @@ class CaseUpdateForm extends React.Component {
               <Text style={styles.category}>Case Details</Text>
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
-                  style={styles.submitBtn}
                   onPress={this.updateData}>
-                  <Icon name="check-circle" size={25} style={{ paddingTop: 10 }} color={color.green.hex} onPress={this.updateData} />
+                  <Icon name="check-circle" size={25} style={{ paddingTop: 10 }} color={color.green.hex} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.submitBtn}
-                  onPress={this.updateData}>
-                  <Icon name="edit" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#666" onPress={this.toggleEdit} />
+                  onPress={this.toggleEdit}>
+                  <Icon name="edit" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#666" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.submitBtn}
-                  onPress={this.updateData}>
-                  <Icon name="trash" size={25} color="#444" style={{ paddingTop: 10, paddingLeft: 20 }} onPress={() => this.deleteAlert()} />
+                  onPress={() => this.deleteAlert()}>
+                  <Icon name="trash" size={25} color="#444" style={{ paddingTop: 10, paddingLeft: 20 }} />
                 </TouchableOpacity>
               </View>
             </View>
