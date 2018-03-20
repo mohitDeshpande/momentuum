@@ -16,9 +16,13 @@ export default class CaseList extends Component<{}> {
     isLoading: false,
     dataSource: [],
     renderedListData: [],
+    uniqueStatuses: [],
+    uniqueTypes: [],
     token: '',
     noData: false,
     typeStatus: false,
+    valueS: '',
+    valueT: '',
   }
 
   }
@@ -49,12 +53,38 @@ export default class CaseList extends Component<{}> {
       })
     }
   }
-  filterCases(e){
-    console.debug("entered");
+  filterCasesByType(e){
+    this.state.valueT = e;
     let text = e.toLowerCase();
     let fullList = this.state.dataSource;
     let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-      if(item.cas.casestatus.toLowerCase().match(text) || item.cas.casetype.toLowerCase().match(text))
+      if(item.cas.casetype.toLowerCase().match(text))
+        return item;
+    })
+    if (!text || text === '') {
+      this.setState({
+        renderedListData: fullList,
+        typeStatus:false,
+      })
+    } else if (!filteredList.length) {
+     // set no data flag to true so as to render flatlist conditionally
+       this.setState({
+        typeStatus: true
+       })
+    }
+    else if (Array.isArray(filteredList)) {
+      this.setState({
+        typeStatus: false,
+        renderedListData: filteredList
+      })
+    }
+  }
+  filterCasesByStatus(e){
+    this.state.valueS = e;
+    let text = e.toLowerCase();
+    let fullList = this.state.dataSource;
+    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+      if(item.cas.casestatus.toLowerCase().match(text))
         return item;
     })
     if (!text || text === '') {
@@ -130,12 +160,13 @@ async componentDidMount() {
 
     }
     loadCaseTypes() {
+      //this.state.uniqueTypes = Array.from(new Set(this.state.dataSource.item.cas.casetype));
       return this.state.dataSource.map(type => (
-        
          <Picker.Item label={type.cas.casetype} value={type.cas.casetype} />
       ))
     }
     loadCaseStatuses() {
+      //this.state.uniqueStatuses = Array.from(new Set(this.state.dataSource.item.cas.casestatus));
       return this.state.dataSource.map(st => (
         <Picker.Item label={st.cas.casestatus} value={st.cas.casestatus} />
      ))
@@ -167,12 +198,14 @@ async componentDidMount() {
 
       <View style={{flexDirection: 'row'}}>
       <Picker 
-          onValueChange={this.filterCases.bind(this)}
+          selectedValue={this.state.valueT}
+          onValueChange={this.filterCasesByType.bind(this)}
           style={{width: 156, height: 56, marginLeft: 20}} itemStyle={{height: 56, fontSize: 13}}>
       {this.loadCaseTypes()}
       </Picker>
       <Picker 
-          onValueChange={this.filterCases.bind(this)}
+          selectedValue={this.state.valueS}
+          onValueChange={this.filterCasesByStatus.bind(this)}
           style={{width: 156, height: 56, marginLeft: 25}} itemStyle={{height: 56, fontSize: 13}}>
       {this.loadCaseStatuses()}
       </Picker>
@@ -210,6 +243,7 @@ async componentDidMount() {
                       onPress={this.GetItem.bind(this, item.cas.caseid)}
 
                    />}
+                   
              />
           
         </List>
