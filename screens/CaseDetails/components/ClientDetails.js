@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from "../styles/CaseDetailsStyles";
 import GrowingTextInput from './GrowingTextInput';
 import DatePicker from 'react-native-datepicker';
+import color from '../../../assets/styles/color';
 
 class ClientDetails extends React.Component {
 
@@ -20,8 +21,12 @@ class ClientDetails extends React.Component {
             caseId: '',
             address1: '',
             address2: '',
-            mainPhone: '',
+            city: '',
+            state: '',
+            workArea: '',
+            workPhone: '',
             email: '',
+            status: ''
         };
     }
 
@@ -31,10 +36,14 @@ class ClientDetails extends React.Component {
             this.setState({ firstName: item.cli.firstName });
             this.setState({ lastName: item.cli.lastname });
             this.setState({ caseId: item.cas.caseid });
-            this.setState({ address1: item.cli.addressLine1 });
-            this.setState({ address2: item.cli.addressLine2 });
-            this.setState({ mainPhone: item.cli.mainPhone });
+            this.setState({ address1: item.cli.ruralAddress1 });
+            this.setState({ address2: item.cli.ruralAddress2 });
+            this.setState({ city: item.cli.city });
+            this.setState({ state: item.cli.state });
+            this.setState({ workArea: item.cli.workArea });
+            this.setState({ workPhone: item.cli.workPhone });
             this.setState({ email: item.cli.email });
+            this.setState({ status: item.cli.status });
         })
     }
 
@@ -101,20 +110,21 @@ class ClientDetails extends React.Component {
                         <View>
                             {/* Client Session */}
                             {/* Client Header */}
-                            
-
                             {/* Client details */}
                             <View style={styles.details}>
                                 <View style={styles.clientFirstRow}>
-                                    <Text style={styles.clientName}>{this.state.firstName + " " + this.state.lastname}</Text>
-                                    <Text>#{this.state.caseId}</Text>
+                                    <Text style={styles.clientName}><Icon name="user" size={14} color={color.gray.hex} />  {this.state.firstName + " " + this.state.lastName}</Text>
+                                    <Text><Icon name="hashtag" size={14} color={color.gray.hex} /> {this.state.caseId}</Text>
                                 </View>
                                 <View style={styles.clientRow}>
-                                    <Text style={styles.clienttext}>{this.state.addressLine1} {this.state.addressLine2}</Text>
+                                    <Text><Icon name="laptop" size={14} color={color.gray.hex} /> {this.state.status}</Text>
                                 </View>
                                 <View style={styles.clientRow}>
-                                    <Text>{this.state.mainPhone}</Text>
-                                    <Text>{this.state.email}</Text>
+                                    <Text style={styles.clienttext}><Icon name="address-card" size={14} color={color.gray.hex} /> {this.state.address1} {this.state.address2}, {this.state.city}, {this.state.state}</Text>
+                                </View>
+                                <View style={styles.clientRow}>
+                                    <Text><Icon name="phone" size={14} color={color.gray.hex} /> {this.state.workArea} - {this.state.workPhone}</Text>
+                                    <Text><Icon name="envelope-open" size={12} color={color.gray.hex} /> {this.state.email}</Text>
                                 </View>
                             </View>
                             {/* Client Session Ends */}

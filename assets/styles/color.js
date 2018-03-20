@@ -13,5 +13,8 @@ export default {
     green: {
         hex: "#0f9b0f",
         rgb: "rgb(15, 153, 15)"
+    },
+    gray: {
+        hex: "#666666"
     }
 }

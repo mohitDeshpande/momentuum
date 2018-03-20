@@ -6,6 +6,7 @@ import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
 import styles from "./../styles/CaseListStyles";
+import CaseDetails from "../../CaseDetails/components/CaseDetails";
 
 export default class CaseList extends Component<{}> {
   constructor(props)
@@ -77,7 +78,7 @@ export default class CaseList extends Component<{}> {
 //passing caseid of list item being clicked
 GetItem (caseid1) {
   this.props.navigation.navigate(
-    'Add',
+    'CaseDetails',
     { caseid1 :caseid1 },
   );
 }

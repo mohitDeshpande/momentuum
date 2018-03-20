@@ -1,8 +1,7 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import tabnav from './assets/config/HomeTabs';
-import Login from './screens/Login/components/Login';
-import TabNavigator from './screens/CaseList/components/TabNavigator';
+import Login from './screens/login/components/Login';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
 import CaseItems from "./screens/CaseDetails/components/CaseItems";
 import CaseItemDemo from "./screens/CaseDetails/components/CaseItemDemo";
