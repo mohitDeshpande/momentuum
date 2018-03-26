@@ -33,14 +33,16 @@ class CaseDetails extends React.Component {
     }
 
     static navigationOptions = {
-        title: 'Case Details',
+        title: 'Case Details',	
+        headerMode: 'screen',		
+        tabBarVisible: false		
     };
 
     
-
     async componentWillMount() {
         const { params } = this.props.navigation.state;
         this.state.caseId = params ? params.caseid1 : "error";
+        console.log(this.state.caseId);
         this.state.token = await AsyncStorage.getItem("token");
         //this.getCaseDetails();
     }
@@ -58,7 +60,7 @@ class CaseDetails extends React.Component {
                         <View style={[styles.header]}>
                             <Text style={[styles.category, styles.clientHeader]}>Client Details</Text>
                         </View>
-                        <ClientDetails CaseId={this.state.caseId} />
+                        <ClientDetails nav={this.props.navigation} CaseId={this.state.caseId} />
 
                         {/* Case Session */}
                         <CaseUpdateForm nav={this.props.navigation} CaseId={this.state.caseId} />
@@ -98,7 +100,7 @@ class CaseDetails extends React.Component {
                 console.debug(
                     "Call was successful for case details. Response status : " + response.status
                 );
-                console.debug(response.data);
+                //console.debug(response.data);
                 this.setState({
                     dataSource: response.data,
                     caseLoaded: true

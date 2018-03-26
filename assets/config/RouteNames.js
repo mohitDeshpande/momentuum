@@ -3,6 +3,7 @@ export default {
     appScreen : "App",
     caseList: "CaseList",
     caseDetails: "CaseDetails",
+    ClientDetails: "ClientDetails",
     caseUpdateForm: "CaseUpdateForm",
     caseItemDetails: "CaseItemDetails",
     caseItems: "CaseItems",

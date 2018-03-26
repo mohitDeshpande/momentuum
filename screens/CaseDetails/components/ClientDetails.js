@@ -72,7 +72,7 @@ class ClientDetails extends React.Component {
                 console.debug(
                     "Call was successful for login. Response status : " + response.status
                 );
-                console.debug(response.data);
+                //console.debug(response.data);
                 this.setState({
                     dataSource: response.data,
                     clientLoaded:true

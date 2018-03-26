@@ -149,7 +149,7 @@ class CaseUpdateForm extends React.Component {
         );
         if(response.status == 204)
         Alert.alert('Updated Successfully!');
-        console.debug(response.data);
+        //console.debug(response.data);
       })
       .catch(error => {
         if (error.response) {
@@ -216,7 +216,7 @@ class CaseUpdateForm extends React.Component {
         console.debug(
           "Call was successful for login. Response status : " + response.status
         );
-        console.debug(response.data);
+        //console.debug(response.data);
         this.setState({
           dataSource: response.data,
           caseLoaded: true
