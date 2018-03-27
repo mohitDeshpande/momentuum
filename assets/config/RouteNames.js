@@ -11,4 +11,5 @@ export default {
     clientList: "ClientList",
     addCase: "AddCase",
     addClient: "AddClient",
+    createCaseItem: "CreateCaseItem",
 }
