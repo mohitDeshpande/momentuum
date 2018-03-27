@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Alert, AsyncStorage, Text, ScrollView, View,
+    Alert, TouchableOpacity, AsyncStorage, Text, ScrollView, View,
     TextInput, Picker, StatusBar, TouchableHighlight, KeyboardAvoidingView,
     Button, FlatList, Image
 } from 'react-native';
@@ -35,7 +35,7 @@ class CaseDetails extends React.Component {
     static navigationOptions = {
         title: 'Case Details',	
         headerMode: 'screen',		
-        tabBarVisible: true		
+        tabBarVisible: false		
     };
 
     
@@ -69,9 +69,13 @@ class CaseDetails extends React.Component {
                     {/* Case Items Session */}
                     <View style={styles.header}>
                         <Text style={styles.category}>Case Items</Text>
-                        <Icon name="plus-square" size={25} style={{ paddingTop: 10 }} color="#444" />
+                        <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('CreateCaseItem', {CaseId:this.state.caseId})}>
+                        <Icon name="plus-square" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#444" />
+                        </TouchableOpacity>
                     </View>
 
+                    
                     {/* Case Items details */}
                     <CaseItems nav={this.props.navigation} CaseId={this.state.caseId} /> 
                 

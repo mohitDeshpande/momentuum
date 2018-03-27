@@ -17,6 +17,7 @@ import CaseDetails from "../../screens/CaseDetails/components/CaseDetails";
 import FormGenerator from "../../screens/CaseDetails/components/FormGenerator";
 import TestCaseDetails from "../../screens/CaseDetails/components/TestCaseDetails";
 import CaseUpdateForm from "../../screens/CaseDetails/components/CaseUpdateForm";
+import CreateCaseItem from "../../screens/CreateCaseItem/components/CreateCaseItem";
 import color from '../styles/color';
 /**
  * This is the main configuration of all the Screen routes in the Application
@@ -60,10 +61,14 @@ const HomeStack = StackNavigator(
     AddClient: {
       screen: AddClient,
       title: "AddClient"
+    },
+    CreateCaseItem: {
+      screen: CreateCaseItem,
+      title: "Create CaseItem"
     }
   },
   {
-    initialRouteName: "AddCase",
+    initialRouteName: "CaseList",
     headerMode: "screen",
     navigationOptions: {
       ...defaultNavigationOptions,        

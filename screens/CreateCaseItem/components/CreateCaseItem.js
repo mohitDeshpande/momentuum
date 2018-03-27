@@ -11,7 +11,8 @@ import axios from "axios";
 // import Ripple from 'react-native-material-ripple';
 import Spinner from 'react-native-loading-spinner-overlay';
 import t from 'tcomb-form-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import screens from "../../../assets/config/RouteNames";
 
 
 var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem;
@@ -71,18 +72,16 @@ const detailsStyle = {
 class CreateCaseItem extends React.Component {
 
     static navigationOptions = {
-        title: 'Create Case Details',
-        headerLeft: (
-            <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
-                <Icon name="angle-left" size={25} color="#fff" onPress={() => {} } />
-            </View>
-        ),
+        title: 'Create Case Item',	
+        headerMode: 'screen',		
+        tabBarVisible: false		
     };
 
     constructor(props) {
         super(props);
         this.state = {
             caseItem: {},
+            CaseId: '',
             token: '',
             editMode: false,
             spinnerVisible: false,            
@@ -91,8 +90,11 @@ class CreateCaseItem extends React.Component {
     
 
     async componentDidMount() {
-        //this.state.token = await AsyncStorage.getItem("token");
-        this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4";
+        const { params } = this.props.navigation.state;
+        this.state.CaseId = params ? params.CaseId : "null";
+        console.log("Create Case Test + " + this.state.CaseId);
+        this.state.token = await AsyncStorage.getItem("token");
+        // this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4";
         this.setState({ options });
     }
     async save(value) {      
@@ -129,6 +131,7 @@ class CreateCaseItem extends React.Component {
                   }, 100);                
                
                 //Insert Navigation Code
+                this.props.navigation.navigate(screens.caseDetails, { caseid1: this.state.CaseId });
             })
             .catch(error => {
                 this.setState({ spinnerVisible: false });                

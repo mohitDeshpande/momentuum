@@ -8,6 +8,7 @@ import styles from "../styles/CaseDetailsStyles";
 import GrowingTextInput from './GrowingTextInput';
 import DatePicker from 'react-native-datepicker';
 import color from '../../../assets/styles/color';
+import screens from "../../../assets/config/RouteNames";
 
 class CaseUpdateForm extends React.Component {
 
@@ -37,36 +38,9 @@ class CaseUpdateForm extends React.Component {
       caseCode: '',
       caseDesc: '',
       casetype: '',
-      casetypes: [
-        {
-          "id": "Appointment",
-          "listtext": "Appointment",
-          "code": "234"
-        },
-        {
-          "id": "POC Exception",
-          "listtext": 'POC Exception',
-          "code": "1234"
-        },
-        {
-          "id": "Email",
-          "listtext": 'Email',
-          "code": "124"
-        }
-      ],
+      casetypes: [],
       casestatus: '',
-      casestatuses: [
-        {
-          "id": "Pending",
-          "listtext": "Pending",
-          "code": "23"
-        },
-        {
-          "id": "Scheduled",
-          "listtext": 'Scheduled',
-          "code": "43"
-        }
-      ]
+      casestatuses: []
     };
   }
 
@@ -178,7 +152,8 @@ class CaseUpdateForm extends React.Component {
           text: 'Yes', onPress: () => {
             console.log('Yes Pressed');
             this.deleteCase();
-           //this.props.nav.navigate('CaseList');
+            this.props.nav.navigate(screens.caseList);
+           //this.props.navigation.navigate(screens.caseList);
           }
 
         }
@@ -404,6 +379,7 @@ class CaseUpdateForm extends React.Component {
         this.setState({
           caseItem: response.data
         });
+        
       })
       .catch(error => {
         if (error.response) {
