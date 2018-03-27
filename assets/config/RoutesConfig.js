@@ -63,7 +63,7 @@ const HomeStack = StackNavigator(
     }
   },
   {
-    initialRouteName: "CaseList",
+    initialRouteName: "AddCase",
     headerMode: "screen",
     navigationOptions: {
       ...defaultNavigationOptions,        

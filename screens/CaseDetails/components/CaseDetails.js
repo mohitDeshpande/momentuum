@@ -35,7 +35,7 @@ class CaseDetails extends React.Component {
     static navigationOptions = {
         title: 'Case Details',	
         headerMode: 'screen',		
-        tabBarVisible: false		
+        tabBarVisible: true		
     };
 
     
