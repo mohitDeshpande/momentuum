@@ -75,9 +75,9 @@ class AddCase extends React.Component {
   };
 
   async componentWillMount() {
-    //const { params } = this.props.navigation.state;
-    //this.state.clientId = params ? params.clientId : "error";
-    //console.log(this.state.clientId);
+    const { params } = this.props.navigation.state;
+    this.state.clientId = params ? params.clientId : "error";
+    console.log(this.state.clientId);
     this.state.token = await AsyncStorage.getItem("token");
     //this.getCaseDetails();
   }
