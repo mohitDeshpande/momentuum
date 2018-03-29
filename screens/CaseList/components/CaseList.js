@@ -16,6 +16,7 @@ import routes from "./../../../assets/config/RouteNames";
 import colors from "./../../../assets/styles/color";
 import styles from "./../styles/CaseListStyles";
 import RouteNames from "./../../../assets/config/RouteNames";
+import CaseDetails from "../../CaseDetails/components/CaseDetails";
 
 export default class CaseList extends React.Component {
   constructor(props) {
