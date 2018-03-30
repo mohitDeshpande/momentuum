@@ -60,17 +60,17 @@ export default class Login extends React.Component {
           .then(response => {
             console.log("Token is valid. Token user : " + response.data);
             // Since token is valid we send the user to the next screen
-            this.props.navigation.navigate(screens.appScreen);
+            this.props.navigation.navigate(tabnav);
           })
           .catch(error => {
-            if (error.response.status === 401) {
+            if (error.response && error.response.status === 401) {
               console.debug(
                 "Token is not valid. User has to login again. Response: " +
                   error.response
               );
             } else {
               console.error(
-                "Something went wrong. Response: " + error.response
+                "Something went wrong. Response: " + JSON.stringify(error)
               );
             }
           });

@@ -84,7 +84,7 @@ export default class ClientList extends React.Component {
 
   //passing clientid of list item being clicked
   GetItem(id) {
-    this.props.navigation.navigate("ClientDetails", { clientId: id });
+    this.props.navigation.navigate(RouteNames.addCase, { clientId: id });
   }
 
   render() {

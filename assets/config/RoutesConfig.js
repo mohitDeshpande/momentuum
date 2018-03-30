@@ -13,14 +13,23 @@ import CaseItemDemo from "../../screens/CaseDetails/components/CaseItemDemo";
 import CaseItemDetails from "../../screens/CaseItemDetails/components/CaseItemDetails";
 import Integrate from "../../screens/CaseDetails/components/Integrate";
 import ClientDetails from "../../screens/CaseDetails/components/ClientDetails";
+import CaseDetails from "../../screens/CaseDetails/components/CaseDetails";
 import FormGenerator from "../../screens/CaseDetails/components/FormGenerator";
 import TestCaseDetails from "../../screens/CaseDetails/components/TestCaseDetails";
 import CaseUpdateForm from "../../screens/CaseDetails/components/CaseUpdateForm";
-
+import CreateCaseItem from "../../screens/CreateCaseItem/components/CreateCaseItem";
+import color from '../styles/color';
 /**
  * This is the main configuration of all the Screen routes in the Application
  * Whenever you need to add a new route, you should add it here
  */
+const defaultNavigationOptions = {
+  headerStyle: {
+    backgroundColor: color.primaryColor.hex,
+  },
+  headerTitleStyle:{ color: color.white.hex,textAlign: 'center',alignSelf:'center'},
+};
+
 const HomeStack = StackNavigator(
   {
     CaseList: {
@@ -28,13 +37,12 @@ const HomeStack = StackNavigator(
       title: "CaseList"
     },
     CaseDetails: {
-      screen: Integrate
-    },
-    CaseUpdateForm: {
-      screen: CaseUpdateForm
+      screen: CaseDetails,
+      title: "Case Details"
     },
     CaseItemDetails: {
-      screen: CaseItemDetails
+      screen: CaseItemDetails,
+      title: "Case Item Details"
     },
     CaseItems: {
       screen: CaseItems
@@ -53,11 +61,18 @@ const HomeStack = StackNavigator(
     AddClient: {
       screen: AddClient,
       title: "AddClient"
+    },
+    CreateCaseItem: {
+      screen: CreateCaseItem,
+      title: "Create CaseItem"
     }
   },
   {
     initialRouteName: "CaseList",
-    headerMode: "none"
+    headerMode: "screen",
+    navigationOptions: {
+      ...defaultNavigationOptions,        
+      }
   }
 );
 

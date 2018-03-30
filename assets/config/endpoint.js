@@ -1,6 +1,6 @@
 export default {
   api: {
-    url: "http://127.0.0.1:5000/api/",
+    url: "https://momentuumapi.azurewebsites.net/api/",
     endpoints: {
       login: "auth/login",
       caselist: "case/client/emp",
@@ -11,8 +11,8 @@ export default {
         stats: "case/stats"
       },
       caseItems: {
-        caseItem: "caseitem/",
-        caseItemsForCase: "caseitem/case/"
+        caseItem: "caseItems/",
+        caseItemsForCase: "caseItems/case/"
       },
       test: {
         withAuth: "values/5",

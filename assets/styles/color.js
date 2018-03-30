@@ -21,5 +21,8 @@ export default {
     blue: {
         hex: "#007BFF",
         rgb: "rgba(0,123,255,1)"
+    },
+    gray: {
+        hex: "#666666"
     }
 }

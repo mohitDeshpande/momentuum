@@ -1,37 +1,47 @@
 import React from 'react';
-import { Alert, AsyncStorage, Text, ScrollView, View, TextInput, StatusBar, TouchableHighlight, TouchableOpacity, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
+import { AsyncStorage, Text, ScrollView, Picker, View, TextInput, StatusBar, TouchableHighlight, TouchableOpacity, KeyboardAvoidingView, Button, FlatList, Image, Alert } from 'react-native';
 import { Constants } from 'expo';
 import endpoint from "../../../assets/config/endpoint";
-import styles from "../styles/CaseItemDetailsStyle"
+import styles from "../styles/CaseItemDetailsStyle";
 import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import GrowingTextInput from './GrowingTextInput';
 import { StackNavigator } from 'react-navigation';
 import axios from 'axios';
-import RouteNames from '../../../assets/config/RouteNames';
-//import Ripple from 'react-native-material-ripple';
+import Ripple from 'react-native-material-ripple';
+import Spinner from 'react-native-loading-spinner-overlay';
+
+const url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + '275314';
 
 class CaseItemDetails extends React.Component {
     // static toggleEdit =() => {
     //     this.setState({ editMode: true });
     //     console.log(" state: ", this.state);
     // }
-    
 
-    
+    static navigationOptions = {
+        title: 'Case Item',
+        headerLeft: (
+            <View style={{ flexDirection: 'row', paddingLeft: 20 }}>
+                <Icon name="angle-left" size={25} color="#fff" onPress={() => this.props.navigation.navigate('CaseUpdateForm')} />
+            </View>
+        ),
+    };
     constructor(props) {
         super(props);
         this.state = {
             caseItem: {},
             token: '',
             editMode: false,
+            spinnerVisible: false,
             caseItemActionCurrent:'',
             caseItemDescriptionCurrent:'',
             caseItemDetailsCurrent:'',
-            caseItemStatusCurrent:'', 
+            caseItemStatusCurrent:'',
+            caseItemAssignedToCurrent:'',
             caseItemId:"",
-            
         };
     }
+    
     deleteAlert(){
         Alert.alert(
             'Delete Case Item',
@@ -96,15 +106,18 @@ class CaseItemDetails extends React.Component {
 
 
     }
-   
+
     async componentDidMount() {
+        //this.state.token = await AsyncStorage.getItem("token");
+        this.setState({ spinnerVisible: true });
         const { params } = this.props.navigation.state;
         this.state.caseItemId = params ? params.CaseItemId : "null";
         console.log("Test + " + this.state.caseItemId);
         this.state.token = await AsyncStorage.getItem("token");
-        //this.state.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTIzODIwMDEzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.kIREt48cIMC18UbWpVldqPQAt3OFfpcj8770zNTW1rE';
 
+        //this.state.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4';
         var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem + this.state.caseItemId;
+        
         console.debug('Initiating GET request to endpoint: ' + url);
 
         console.debug(this.state.token);
@@ -119,15 +132,23 @@ class CaseItemDetails extends React.Component {
             }
         })
             .then(async response => {
+                this.setState({ spinnerVisible: false });
+                
                 console.debug(
-                    'Call was successful for get case item. Response status : ' + response.status
+                    'Call was successful for login. Response status : ' + response.status
                 );
-                console.debug(response.data);
                 this.setState({
-                    caseItem: response.data
-                });
+                    caseItem: response.data,
+                    caseItemActionCurrent: response.data.caseItemAction,
+                    caseItemDescriptionCurrent: response.data.caseItemDescription,
+                    caseItemDetailsCurrent: response.data.caseItemDetail,
+                    caseItemStatusCurrent: response.data.caseItemStatus,
+                    caseItemAssignedToCurrent: response.data.caseItemAssigned,
+                    }
+                );
             })
             .catch(error => {
+                this.setState({ spinnerVisible: false });
                 if (error.response) {
                     // the response was other than 2xx status
                     if (error.response.status == 401) {
@@ -142,12 +163,12 @@ class CaseItemDetails extends React.Component {
                     this.appError();
                 }
             });
+            this.baseState = this.state;
     }
 
     toggleEdit() {
         this.setState({ editMode: !this.state.editMode });
-
-        this.toggleReturn();
+        // this.toggleReturn();
     }
 
     toggleReturn() {
@@ -155,13 +176,61 @@ class CaseItemDetails extends React.Component {
             this.actionInput.setNativeProps({ text: this.state.caseItem.caseItemAction });
             this.descriptionInput.setNativeProps({ text: this.state.caseItem.caseItemDescription });
             this.detailInput.setNativeProps({ text: this.state.caseItem.caseItemDetail });
-            this.statusInput.setNativeProps({ text: this.state.caseItem.caseItemStatus });
+            // this.statusInput.setNativeProps({ itemValue: this.state.caseItem.caseItemStatus });
+            this.assignedInput.setNativeProps({ text: this.state.caseItem.caseItemAssigned });
         }
+    }
+
+    save() {      
+        this.setState({ spinnerVisible: true });
+        let data= {
+            "caseItemDescription": this.state.caseItemDescriptionCurrent,
+            "caseItemStatus": this.state.caseItemStatusCurrent,
+            "caseItemDetail": this.state.caseItemDetailsCurrent,
+            "caseItemAction": this.state.caseItemActionCurrent,
+            "caseItemAssigned": this.state.caseItem.caseItemAssigned,
+            "caseItemDate": this.state.caseItem.caseItemDate,
+            "caseItemFollowUpdate": null,
+            "caseid": this.state.caseItem.caseid,
+            "deleted": this.state.caseItem.deleted,
+            "intId": this.state.caseItem.intId,
+            "timeProcess": this.state.caseItem.timeProcess,
+            "userId": this.state.caseItem.userId,
+        };
+        // console.log("Data: ", data);
+        axios({
+            method: "put",
+            url,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.state.token,
+            },
+            data
+        })
+            .then(async response => {
+                Alert.alert("Update Successful");
+                this.setState({ spinnerVisible: false });
+                this.setState(this.baseState);
+                this.componentDidMount();
+            })
+            .catch(error => {
+                Alert.alert("Update Unsuccessful");
+                this.setState({ spinnerVisible: false });
+                this.state.toggleReturn();
+                console.debug(error);
+            });
     }
     render() {
         const caseItem = this.state.caseItem;
+        
+        
         return (
             <View style={styles.container}>
+                <View style={{ flex: 1 }} style={[{ display: 'none' }, this.state.spinnerVisible && {display: 'flex'}]}>
+                    <Spinner visible={this.state.spinnerVisible} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+                </View>
+
             <View style={styles.header}>
                 <Text style={[styles.category, { justifyContent: 'flex-start' }]}>Case Item Details</Text>
                 <View style={{ justifyContent: 'flex-end', flexDirection: 'row' }}>
@@ -172,15 +241,20 @@ class CaseItemDetails extends React.Component {
                 <TouchableOpacity>
                 <Icon name="trash" size={25} color="#444" style={styles.deleteButton} onPress={() => this.deleteAlert()}  />
                 </TouchableOpacity>
-               
-                
+                <TouchableOpacity>
+                <Icon name="save" size={25} color="#444" style={[{ display: 'flex' }, !this.state.editMode && { display: 'none' }]} onPress={() => { this.save(); }} />
+                </TouchableOpacity>
             </View>   
                         
             </View>
+            
                 <ScrollView
                     keyboardDismissMode="on-drag"
                     contentContainerStyle={{ paddingVertical: 0 }}
                     style={{ flex: 0.84, }}
+                >
+                <KeyboardAvoidingView
+                behavior="padding"
                 >
                     
                     <View style={styles.details}>
@@ -202,7 +276,7 @@ class CaseItemDetails extends React.Component {
                                 underlineColorAndroid='#ffffff'
                                 style={styles.textInput}
                                 editable={this.state.editMode}
-                                onChangeText={(text) => this.setState({caseItemActionCurrent: text })}
+                                onChangeText={(text) => this.setState({ caseItemActionCurrent: text })}
                                 defaultValue={caseItem.caseItemAction}
                                 selectTextOnFocus={true}
                                 ref={(ref) => this.actionInput = ref}
@@ -215,46 +289,41 @@ class CaseItemDetails extends React.Component {
                                 underlineColorAndroid='#ffffff'
                                 style={styles.textInput}
                                 editable={this.state.editMode}
-                                onChangeText={(text) => this.setState({caseItemActionCurrent: text })}
+                                onChangeText={(text) => this.setState({caseItemDescriptionCurrent: text })}
                                 defaultValue={caseItem.caseItemDescription}
                                 selectTextOnFocus={true}
                                 ref={(ref) => this.descriptionInput = ref}                                
                             />
                         </View>
+
                         <View style={[styles.row]}>
-                            <Text style={styles.fieldname}>Created By:</Text>
+                            <Text style={styles.fieldname}>Assigned To:</Text>
                             <TextInput
-                                placeholder="Created By"
-                                underlineColorAndroid='#ffffff'
-                                style={styles.textInput}
-                                editable={false}
-                                value={caseItem.createdBy}
-                                selectTextOnFocus={true}
-                            />
-                        </View>
-                        <View style={[styles.row]}>
-                            <Text style={styles.fieldname}>Updated In:</Text>
-                            <TextInput
-                                placeholder="Last Update Date"
-                                underlineColorAndroid='#ffffff'
-                                style={styles.textInput}
-                                editable={false}
-                                value={caseItem.updatedDate}
-                            />
-                        </View>
-                        <View style={[styles.row]}>
-                            <Text style={styles.fieldname}>Status:</Text>
-                            <TextInput
-                                placeholder="Status"
+                                placeholder="Assigned To"
                                 underlineColorAndroid='#ffffff'
                                 style={styles.textInput}
                                 editable={this.state.editMode}
-                                defaultValue={caseItem.caseItemStatus}
-                                onChangeText={(text) => this.setState({caseItemStatusCurrent: text })}                                
+                                onChangeText={(text) => this.setState({caseItemAssignedToCurrent: text })}
+                                defaultValue={caseItem.caseItemAssigned}
                                 selectTextOnFocus={true}
-                                ref={(ref) => this.statusInput = ref}                                
+                                ref={(ref) => this.assignedInput = ref}                                
                             />
                         </View>
+                        
+                        <View style={[styles.row]}>
+                            <Text style={styles.fieldname}>Status:</Text>
+                            <Picker
+                                selectedValue={caseItem.caseItemStatus}
+                                onValue={(itemValue, itemIndex) => this.setState({caseItemStatusCurrent: itemValue })}
+                                enabled={this.state.editMode} 
+                                ref={(ref) => this.statusInput = ref} >
+                                <Picker.Item label="" value="" />
+                                <Picker.Item label="close" value="close" />
+                                <Picker.Item label="open" value="open" />
+                                <Picker.Item label="Awaiting Info" value="Awaiting Info" />
+                            </Picker>
+                        </View>
+
                         <View style={[styles.row]}>
                             <Text style={styles.fieldname}>Details:</Text>
                             <TextInput
@@ -265,11 +334,12 @@ class CaseItemDetails extends React.Component {
                                 defaultValue={caseItem.caseItemDetail}
                                 onChangeText={(text) => this.setState({caseItemDetailsCurrent: text })}                                
                                 selectTextOnFocus={true}
+                                multiline={true}
                                 ref={(ref) => this.detailInput = ref}                                
                             />
                         </View>   
                     </View>
-                    
+                </KeyboardAvoidingView>    
                 </ScrollView>
                 <StatusBar barStyle="light-content" />
                 </View>
