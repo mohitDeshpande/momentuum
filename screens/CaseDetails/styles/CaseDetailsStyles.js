@@ -80,4 +80,8 @@ export default StyleSheet.create({
     details: {
         backgroundColor: '#fff'
     },
+    card: {
+        marginTop: 10,
+        
+    }
 })

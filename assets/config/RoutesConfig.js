@@ -8,6 +8,8 @@ import ClientList from "../../screens/clients/components/ClientList";
 import AddClient from "../../screens/clients/components/AddClient";
 import AddCase from "../../screens/AddCase/components/AddCase";
 import Profile from "../../screens/Profile/components/Profile";
+import CaseDetails from "../../screens/CaseDetails/components/CaseDetails";
+import Disclaimer from "../../screens/CaseDetails/components/Disclaimer";
 import CaseItems from "../../screens/CaseDetails/components/CaseItems";
 import CaseItemDemo from "../../screens/CaseDetails/components/CaseItemDemo";
 import CaseItemDetails from "../../screens/CaseItemDetails/components/CaseItemDetails";
@@ -16,6 +18,7 @@ import ClientDetails from "../../screens/CaseDetails/components/ClientDetails";
 import FormGenerator from "../../screens/CaseDetails/components/FormGenerator";
 import TestCaseDetails from "../../screens/CaseDetails/components/TestCaseDetails";
 import CaseUpdateForm from "../../screens/CaseDetails/components/CaseUpdateForm";
+import Sign from "../../screens/CaseDetails/components/Sign";
 
 /**
  * This is the main configuration of all the Screen routes in the Application
@@ -53,6 +56,16 @@ const HomeStack = StackNavigator(
     AddClient: {
       screen: AddClient,
       title: "AddClient"
+    },
+    Disclaimer: {
+      screen: Disclaimer,
+      title: "Disclaimer"
+    },
+    CaseDetails: {
+      screen: CaseDetails,
+    },
+    Sign: {
+      screen: Sign,
     }
   },
   {

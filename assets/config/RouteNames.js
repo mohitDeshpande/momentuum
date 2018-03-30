@@ -3,6 +3,7 @@ export default {
     appScreen : "App",
     caseList: "CaseList",
     caseDetails: "CaseDetails",
+    disclaimer: "Disclaimer",
     caseUpdateForm: "CaseUpdateForm",
     caseItemDetails: "CaseItemDetails",
     caseItems: "CaseItems",
@@ -10,4 +11,5 @@ export default {
     clientList: "ClientList",
     addCase: "AddCase",
     addClient: "AddClient",
+    sign: "Sign",
 }

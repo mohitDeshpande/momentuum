@@ -1,7 +1,8 @@
 import React from 'react';
 import { SwitchNavigator } from 'react-navigation';
 import App from './assets/config/RoutesConfig';
-import Login from './screens/Login/components/Login';
+import Disclaimer from "./screens/CaseDetails/components/Disclaimer";
+import Login from './screens/login/components/Login';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
 import CaseItems from "./screens/CaseDetails/components/CaseItems";
 import CaseItemDemo from "./screens/CaseDetails/components/CaseItemDemo";
@@ -11,6 +12,7 @@ import ClientDetails from "./screens/CaseDetails/components/ClientDetails";
 import FormGenerator from "./screens/CaseDetails/components/FormGenerator";
 import TestCaseDetails from "./screens/CaseDetails/components/TestCaseDetails";
 import CaseUpdateForm from "./screens/CaseDetails/components/CaseUpdateForm";
+import Sign from "./screens/CaseDetails/components/Sign";
 import color from "./assets/styles/color"
 
 const defaultNavigationOptions = {

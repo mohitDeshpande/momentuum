@@ -13,7 +13,7 @@ import { StackNavigator } from 'react-navigation';
 import axios from "axios";
 import DatePicker from 'react-native-datepicker';
 import color from '../../../assets/styles/color';
-//import Ripple from 'react-native-material-ripple';
+import routes from "./../../../assets/config/RouteNames";
 
 class CaseDetails extends React.Component {
 
@@ -137,7 +137,6 @@ class CaseDetails extends React.Component {
     async componentWillMount(){
         const { params } = this.props.navigation.state;
         const caseid = params ? params.caseid1 : "u";
-        console.log("CaseId + " + caseid);
         this.state.caseId=params ? params.caseid1 : "error";
         this.state.token = await AsyncStorage.getItem("token");
         this.getCaseDetails();
@@ -286,7 +285,15 @@ class CaseDetails extends React.Component {
                                     value={this.state.caseDesc}
                                 />
                             </View>
+                            <View style={styles.row}>
+                                <Text style={styles.fieldname}>Add signature</Text>
+                                <Icon name="plus-square" size={25} style={{ paddingTop: 10, paddingBottom: 10 }} color="#444" 
+                                onPress={() => this.props.navigation.navigate(routes.disclaimer,
+                                    { caseid1: this.state.caseId })}
+                                />
+                            </View>
                         </View>
+                        
                         {/* Case Session Ends */}
 
                     </View>
@@ -424,7 +431,7 @@ class CaseDetails extends React.Component {
                     caseItemsList: response.data,
                     caseItemsLoaded: true
                 });
-                console.log("Case Items Data :" + response.data);
+                //console.log("Case Items Data :" + response.data);
             }
             )
             .catch(error => {
