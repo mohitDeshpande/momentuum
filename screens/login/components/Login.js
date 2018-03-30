@@ -63,14 +63,14 @@ export default class Login extends React.Component {
             this.props.navigation.navigate(tabnav);
           })
           .catch(error => {
-            if (error.response.status === 401) {
+            if (error.response && error.response.status === 401) {
               console.debug(
                 "Token is not valid. User has to login again. Response: " +
                   error.response
               );
             } else {
               console.error(
-                "Something went wrong. Response: " + error.response
+                "Something went wrong. Response: " + JSON.stringify(error)
               );
             }
           });
