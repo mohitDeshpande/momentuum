@@ -20,6 +20,7 @@ import CaseUpdateForm from "../../screens/CaseDetails/components/CaseUpdateForm"
 import CreateCaseItem from "../../screens/CreateCaseItem/components/CreateCaseItem";
 import Disclaimer from "../../screens/CaseDetails/components/Disclaimer";
 import Sign from "../../screens/CaseDetails/components/Sign";
+import CreateItemSwitch from "../../screens/CaseItems/components/CreateItemSwitch";
 import color from '../styles/color';
 /**
  * This is the main configuration of all the Screen routes in the Application
@@ -63,6 +64,10 @@ const HomeStack = StackNavigator(
     AddClient: {
       screen: AddClient,
       title: "AddClient"
+    },
+    CreateItemSwitch: {
+      screen: CreateItemSwitch,
+      title: "Create Case Item"
     },
     CreateCaseItem: {
       screen: CreateCaseItem,
