@@ -5,7 +5,7 @@ import { ActivityIndicator, AsyncStorage, StyleSheet,
      KeyboardAvoidingView, FlatList, Image } from 'react-native';
 import axios from "axios";
 import CaseItemDetails from './CaseItemDetails';
-import styles from "../styles/CaseItemDetailsStyle"
+import styles from "../styles/ImageFileStyle"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import GrowingTextInput from './GrowingTextInput';
 import DatePicker from 'react-native-datepicker';
@@ -17,7 +17,8 @@ class ImageFile extends React.Component {
         super(props);
         this.state = {
             file:{},
-            fileId:''
+            fileId:'',
+            token:null
             
            
         };
@@ -29,9 +30,13 @@ class ImageFile extends React.Component {
         // Get case items from parent 
         console.log("Inside component will mount File Item");
         // Get State for caseId       
-         this.state.file=this.props.File;
+        this.setState({
+            file:this.props.File,
+            token :await AsyncStorage.getItem("token")
+        }); 
+        
        
-         this.state.token = await AsyncStorage.getItem("token");
+         
          console.log("The file data has loaded for file: "+this.state.file.fileName);
         
     }
@@ -41,19 +46,22 @@ class ImageFile extends React.Component {
         return (
             <View style={styles.container}>
            <Text>Description: {this.state.file.comments}</Text>
-           <Text>{endpoint.api.url + endpoint.api.endpoints.fileItem.image +this.state.file.id}</Text>
-           <Text>{this.state.token}</Text>
-           
+          
+           {this.state.token!==null &&
+                    <View style={styles.imgParent}>
                        <Image
                         source={{
                             uri: endpoint.api.url + endpoint.api.endpoints.fileItem.image +this.state.file.id,
                             method: 'GET',
                             headers: {
                             Pragma: 'no-cache',
+                            Authorization: 'Bearer '+this.state.token,
                               }
                         }}
-                        style={{width: 400, height: 400}}
+                        style={styles.image}
                         />
+                        </View>
+                    }
             </View>
         )
     }
