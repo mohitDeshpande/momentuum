@@ -1,17 +1,33 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { Camera, Permissions } from 'expo';
+import {Icon} from 'react-native-elements';
+import color from '../../../assets/styles/color';
 
 export default class PhotoCapture extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
+    autoFocus: Camera.Constants.AutoFocus.on,
+
   };
 
   async componentWillMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
   }
+
+  /**
+   * Capture a photo
+   */
+  capture = async () => {
+    if (this.camera){
+      await this.camera.takePictureAsync().then((uri) => {
+
+      });
+    }
+  };
+
 
   render() {
     const { hasCameraPermission } = this.state;
@@ -22,19 +38,31 @@ export default class PhotoCapture extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={this.state.type}>
+          <Camera 
+            ref={ ref => {this.camera = ref;} }
+            style={{ 
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'flex-end'
+            }} 
+            type={this.state.type}
+          >
             <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row',
-              }}>
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end'
+            }}>
               <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                }}
+                onPress={this.capture}
+              >
+                <Icon 
+                  name='ios-camera'
+                  type='ionicon'
+                  size='60'
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={() => {
                   this.setState({
                     type: this.state.type === Camera.Constants.Type.back
@@ -42,10 +70,11 @@ export default class PhotoCapture extends React.Component {
                       : Camera.Constants.Type.back,
                   });
                 }}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                  {' '}Flip{' '}
-                </Text>
+                <Icon 
+                  name='ios-reverse-camera'
+                  type='ionicon'
+                  size='60'
+                />
               </TouchableOpacity>
             </View>
           </Camera>

@@ -14,5 +14,6 @@ export default {
     createCaseItem: "CreateCaseItem",
     disclaimer: "Disclaimer",
     sign: "Sign",
-    createCaseItemSwitch: "CreateItemSwitch"
+    createCaseItemSwitch: "CreateItemSwitch",
+    photoCapture: "PhotoCapture"
 }

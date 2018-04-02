@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-navigation';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Ionicons } from "@expo/vector-icons";
+import { Button, Icon } from 'react-native-elements';
 import styles from '../styles/CreateItemSwitchStyles'
 import routes from '../../../assets/config/RouteNames';
 import color from '../../../assets/styles/color';
@@ -20,10 +20,8 @@ export default class CreateItemSwitch extends React.Component {
                 <Button 
                     title='Create Case Detail Item'
                     icon={
-                        <Icon 
-                            name='list-alt'
-                            color={color.white}
-                        />
+                        <Icon
+                        name='rowing' />
                     }
                     buttonStyle={{
                         backgroundColor: color.primaryColor.rgb,
@@ -48,7 +46,7 @@ export default class CreateItemSwitch extends React.Component {
                     }}
                     style={styles.item}
                     onPress={() => {
-                        this.props.navigation.navigate(routes.createCaseItem, {CaseId:this.props.caseId})
+                        this.props.navigation.navigate(routes.photoCapture, {CaseId:this.props.caseId})
                     }}
                 />
             </SafeAreaView>

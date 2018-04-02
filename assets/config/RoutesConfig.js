@@ -21,6 +21,7 @@ import CreateCaseItem from "../../screens/CreateCaseItem/components/CreateCaseIt
 import Disclaimer from "../../screens/CaseDetails/components/Disclaimer";
 import Sign from "../../screens/CaseDetails/components/Sign";
 import CreateItemSwitch from "../../screens/CaseItems/components/CreateItemSwitch";
+import PhotoCapture from "../../screens/CaseItems/components/PhotoCapture";
 import color from '../styles/color';
 /**
  * This is the main configuration of all the Screen routes in the Application
@@ -79,6 +80,11 @@ const HomeStack = StackNavigator(
     },
     Sign: {
       screen: Sign,
+      title: "Create Case Item"
+    },
+    PhotoCapture: {
+      screen: PhotoCapture,
+      title: "Photo Capture"
     }
   },
   {
