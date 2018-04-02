@@ -1,7 +1,7 @@
 import React from 'react';
 import { SwitchNavigator } from 'react-navigation';
 import App from './assets/config/RoutesConfig';
-import Login from './screens/Login/components/Login';
+import Login from './screens/login/components/Login';
 import CaseDetails from "./screens/CaseDetails/components/CaseDetails";
 import CaseItems from "./screens/CaseDetails/components/CaseItems";
 import CaseItemDemo from "./screens/CaseDetails/components/CaseItemDemo";

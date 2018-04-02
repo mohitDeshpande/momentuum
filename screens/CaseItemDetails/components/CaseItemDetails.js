@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, AsyncStorage, Text, ScrollView, View, TextInput, StatusBar, TouchableHighlight, TouchableOpacity, KeyboardAvoidingView, Button, FlatList, Image } from 'react-native';
 import { Constants } from 'expo';
 import endpoint from "../../../assets/config/endpoint";
+import ImageFile from './ImageFile';
 import styles from "../styles/CaseItemDetailsStyle"
 import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import GrowingTextInput from './GrowingTextInput';
@@ -21,6 +22,7 @@ class CaseItemDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            file: {},
             caseItem: {},
             token: '',
             editMode: false,
@@ -29,6 +31,8 @@ class CaseItemDetails extends React.Component {
             caseItemDetailsCurrent:'',
             caseItemStatusCurrent:'', 
             caseItemId:"",
+            loaded:false,
+            hasFile:false
             
         };
     }
@@ -75,7 +79,8 @@ class CaseItemDetails extends React.Component {
                   
                     console.debug(response.data);
                     this.setState({
-                        caseItem: response.data
+                        caseItem: response.data[0].item,
+                        file:response.data[0].file
                     });
                 })
                 .catch(error => {
@@ -97,7 +102,7 @@ class CaseItemDetails extends React.Component {
 
     }
    
-    async componentDidMount() {
+    async componentWillMount() {
         const { params } = this.props.navigation.state;
         this.state.caseItemId = params ? params.CaseItemId : "null";
         console.log("Test + " + this.state.caseItemId);
@@ -124,8 +129,18 @@ class CaseItemDetails extends React.Component {
                 );
                 console.debug(response.data);
                 this.setState({
-                    caseItem: response.data
+                    caseItem: response.data[0].item,
+                    file:response.data[0].file,
+                    loaded:true
+                   
                 });
+                if (this.state.file.fileName!==null){
+                    this.setState({
+                   hasFile:true
+                    }
+                       
+                    )
+                }
             })
             .catch(error => {
                 if (error.response) {
@@ -269,7 +284,21 @@ class CaseItemDetails extends React.Component {
                             />
                         </View>   
                     </View>
-                    
+                       {/* File Image Item */}
+                    {this.state.loaded && this.state.hasFile &&
+                      <View>
+                      <View style={styles.header}>
+                        <Text style={styles.category}>File Item</Text>
+                        <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('CreateCaseItem', {CaseId:this.state.caseId})}>
+                        <Icon name="plus-square" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#444" />
+                        </TouchableOpacity>
+                    </View>
+                                      
+                            <ImageFile nav={this.props.navigation} File={this.state.file} />
+                             
+                   </View>
+                    }
                 </ScrollView>
                 <StatusBar barStyle="light-content" />
                 </View>

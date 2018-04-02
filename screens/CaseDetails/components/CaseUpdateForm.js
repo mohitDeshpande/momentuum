@@ -172,7 +172,6 @@ class CaseUpdateForm extends React.Component {
     this.state.token = await AsyncStorage.getItem("token");
     console.log("Case ID inside of Case Items is " + this.state.caseId)
 
-    this.state.token = await AsyncStorage.getItem("token");
     var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + this.state.caseId;
     console.debug("Initiating GET request to endpoint: " + url);
 
