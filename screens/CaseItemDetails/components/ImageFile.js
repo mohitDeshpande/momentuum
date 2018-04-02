@@ -2,7 +2,7 @@ import React from 'react';
 import endpoint from "../../../assets/config/endpoint";
 import { ActivityIndicator, AsyncStorage, StyleSheet,
      Text, View, TextInput, ScrollView, Picker, 
-     KeyboardAvoidingView, FlatList, Image } from 'react-native';
+     KeyboardAvoidingView, FlatList, Image,Dimensions } from 'react-native';
 import axios from "axios";
 import CaseItemDetails from './CaseItemDetails';
 import styles from "../styles/ImageFileStyle"
@@ -37,7 +37,7 @@ class ImageFile extends React.Component {
         
        
          
-         console.log("The file data has loaded for file: "+this.state.file.fileName);
+         console.log("The file data has loaded for file: "+JSON.stringify(this.state.file));
         
     }
 
@@ -45,12 +45,13 @@ class ImageFile extends React.Component {
        
         return (
             <View style={styles.container}>
-           <Text>Description: {this.state.file.comments}</Text>
+           <Text style={styles.description}>Description: {this.state.file.comments}</Text>
           
            {this.state.token!==null &&
-                    <View style={styles.imgParent}>
+                    <View
+                    Style={styles.imgParent}>
                        <Image
-                        source={{
+                            source={{
                             uri: endpoint.api.url + endpoint.api.endpoints.fileItem.image +this.state.file.id,
                             method: 'GET',
                             headers: {
@@ -58,53 +59,20 @@ class ImageFile extends React.Component {
                             Authorization: 'Bearer '+this.state.token,
                               }
                         }}
-                        style={styles.image}
+
+                      
+                        style={{  width: (Dimensions.get('window').width)*.95,
+                                height: (Dimensions.get('window').width)*.95 ,
+                                flex:1, resizeMode: 'contain'} }
+
+                           
                         />
                         </View>
                     }
             </View>
         )
     }
-        // Api Calls
-          getFileImage(){
-            
-             var url = endpoint.api.url + endpoint.api.endpoints.fileItem.image +  this.state.file.fileName;
-             console.log("Inside Image File Compoment Calling "+url);
-             axios({
-                 method: "get",
-                 url: url,
-                 headers: {
-                     'Accept': 'image/jpeg',
-                     'Content-Type': 'application/json',
-                     'Authorization': 'Bearer ' + this.state.token,
-                 }
-             })
-                 .then(response => {
-                     console.log(response.data);
-                    
-                     this.setState({
-                         isLoading: false,
-                         dataSource: response.data,
-                         }); 
-                     console.log("Case Items Data :" + response.data);
-                 }
-                 )
-                 .catch(error => {
-                     if (error.response) {
-                         // the response was other than 2xx status
-                         if (error.response.status == 401) {
-                             console.debug("Invalid username and password entered");
-                            // this.authError();
-                         } else {
-                             console.error("Invalid request sent. Status : " + error.response.status);
-                             //this.appError();
-                         }
-                     } else {
-                         console.error("Something went wrong in the request Status : " +  error.response.status+ " Response : " + error);
-                         //this.appError();
-                     }
-                 });
-              }
+       
 }
 
 export default ImageFile;

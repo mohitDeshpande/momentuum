@@ -12,18 +12,17 @@ export default StyleSheet.create({
     },
     image: {
         flex:1,
-        width: (Dimensions.get('window').width)*.8,
-        height: (Dimensions.get('window').width)*.8,
         resizeMode: 'contain'
 
     },
     imgParent:{
         justifyContent: 'center',
         alignItems: 'center',
+        flex: 1
     },
     description:{
         padding: 10,
-
-    }
+    },
+    
 
 });
