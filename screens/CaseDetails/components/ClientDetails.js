@@ -31,20 +31,22 @@ class ClientDetails extends React.Component {
     }
 
     MapData = () => {
-        this.state.dataSource.map((item, i) => {
-            console.log(item.cas.casetype);
-            this.setState({ firstName: item.cli.firstName });
-            this.setState({ lastName: item.cli.lastname });
-            this.setState({ caseId: item.cas.caseid });
-            this.setState({ address1: item.cli.ruralAddress1 });
-            this.setState({ address2: item.cli.ruralAddress2 });
-            this.setState({ city: item.cli.city });
-            this.setState({ state: item.cli.state });
-            this.setState({ workArea: item.cli.workArea });
-            this.setState({ workPhone: item.cli.workPhone });
-            this.setState({ email: item.cli.email });
-            this.setState({ status: item.cli.status });
-        })
+        
+        var client = this.state.dataSource.casedetails;
+        console.log(client.cli.firstName);
+                    
+            this.setState({ firstName: client.cli.firstName });
+            this.setState({ lastName: client.cli.lastname });
+            this.setState({ caseId: client.cas.caseid });
+            this.setState({ address1: client.cli.ruralAddress1 });
+            this.setState({ address2: client.cli.ruralAddress2 });
+            this.setState({ city: client.cli.city });
+            this.setState({ state: client.cli.state });
+            this.setState({ workArea: client.cli.workArea });
+            this.setState({ workPhone: client.cli.workPhone });
+            this.setState({ email: client.cli.email });
+            this.setState({ status: client.cli.status });
+ 
     }
 
     async componentDidMount() {
@@ -53,6 +55,7 @@ class ClientDetails extends React.Component {
         console.log("Inside component did mount Case Items");
         // Get State for caseId       
          this.state.caseId=this.props.CaseId;
+         //this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTI1MjAzMjI4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.V3U3UqnXXUwy-rRxwSDcQpgX7nbhaTArOTkYtjJdSHw"
          this.state.token = await AsyncStorage.getItem("token");
          console.log("Case ID inside of Case Items is "+this.state.caseId)
 
@@ -113,18 +116,19 @@ class ClientDetails extends React.Component {
                             {/* Client details */}
                             <View style={styles.details}>
                                 <View style={styles.clientFirstRow}>
-                                    <Text style={styles.clientName}><Icon name="user" size={14} color={color.gray.hex} />  {this.state.firstName + " " + this.state.lastName}</Text>
-                                    <Text><Icon name="hashtag" size={14} color={color.gray.hex} /> {this.state.caseId}</Text>
+                                    <Text style={[styles.clientName, styles.clientFirstElement]}><Icon name="user" size={14} color={color.gray.hex} /> {this.state.firstName + " " + this.state.lastName}</Text>
+                                    <Text style={styles.clientSecondElement}><Icon name="hashtag" size={14} color={color.gray.hex} /> {this.state.caseId}</Text>
                                 </View>
                                 <View style={styles.clientRow}>
-                                    <Text><Icon name="laptop" size={14} color={color.gray.hex} /> {this.state.status}</Text>
+                                    <Text style={[styles.clienttext, styles.clientFirstElement]}><Icon name="address-card" size={14} color={color.gray.hex} /> {this.state.address1} {this.state.address2},</Text>
+                                    <Text style={styles.clientSecondElement}><Icon name="laptop" size={14} color={color.gray.hex} /> {this.state.status}</Text>
                                 </View>
                                 <View style={styles.clientRow}>
-                                    <Text style={styles.clienttext}><Icon name="address-card" size={14} color={color.gray.hex} /> {this.state.address1} {this.state.address2}, {this.state.city}, {this.state.state}</Text>
+                                    <Text style={[styles.clienttext, styles.clientFirstElement]}>  {this.state.city}, {this.state.state}</Text>
                                 </View>
                                 <View style={styles.clientRow}>
-                                    <Text><Icon name="phone" size={14} color={color.gray.hex} /> {this.state.workArea} - {this.state.workPhone}</Text>
-                                    <Text><Icon name="envelope-open" size={12} color={color.gray.hex} /> {this.state.email}</Text>
+                                    <Text style={styles.clientFirstElement}><Icon name="phone" size={14} color={color.gray.hex} /> {this.state.workArea} - {this.state.workPhone}</Text>
+                                    <Text style={styles.clientSecondElement}><Icon name="envelope-open" size={14} color={color.gray.hex} /> {this.state.email}</Text>
                                 </View>
                             </View>
                             {/* Client Session Ends */}

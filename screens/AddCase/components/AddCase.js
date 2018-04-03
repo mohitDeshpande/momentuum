@@ -170,8 +170,9 @@ class AddCase extends React.Component {
             </View>
             <View style={styles.details}>
               <View style={[styles.row, styles.firstRow]}>
-                <Text style={styles.fieldname}>Open Date</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Open Date</Text>
                 <DatePicker
+                  style={styles.secondElement}
                   mode="date"
                   date={this.state.openDate}
                   placeholder="select open date"
@@ -192,8 +193,9 @@ class AddCase extends React.Component {
                 />
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Closed Date</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Closed Date</Text>
                 <DatePicker
+                  style={styles.secondElement}
                   mode="date"
                   date={this.state.closeDate}
                   placeholder="select closed date"
@@ -214,20 +216,20 @@ class AddCase extends React.Component {
                 />
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Case Code</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Case Code</Text>
                 <TextInput
                   ref="caseCode"
                   placeholder="Case Code"
                   underlineColorAndroid='#ffffff'
-                  style={styles.textInput}
+                  style={[styles.textInput, styles.secondElement]}
                   onChangeText={(typedText) => { this.setState({ caseCode: typedText }) }}
                   value={this.state.caseCode}
                 />
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Case Type</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Case Type</Text>
                 <Picker
-                  style={styles.picker}
+                  style={[styles.picker, styles.secondElement]}
                   itemStyle={styles.picker}
                   selectedValue={this.state.casetype}
                   onValueChange={(typ) => this.setState({ casetype: typ })}>
@@ -235,9 +237,9 @@ class AddCase extends React.Component {
                 </Picker>
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Case Status</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Case Status</Text>
                 <Picker
-                  style={styles.picker}
+                  style={[styles.picker, styles.secondElement]}
                   itemStyle={styles.picker}
                   selectedValue={this.state.casestatus}
                   onValueChange={(sta) => this.setState({ casestatus: sta })}>
@@ -245,12 +247,12 @@ class AddCase extends React.Component {
                 </Picker>
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Description</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Description</Text>
                 <GrowingTextInput
                   minHeight={80}
                   placeholder="Description"
                   underlineColorAndroid='#ffffff'
-                  style={styles.textInput}
+                  style={[styles.textInput, styles.secondElement]}
                   onChangeText={(typedText) => { this.setState({ caseDesc: typedText }) }}
                   value={this.state.caseDesc}
                 />
