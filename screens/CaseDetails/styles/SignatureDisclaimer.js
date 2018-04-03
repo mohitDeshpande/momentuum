@@ -3,11 +3,6 @@ import { Constants } from 'expo';
 import { Dimensions } from 'react-native';
 
 
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
-const sceneWidth = deviceHeight;
-const sceneHeight = deviceWidth;
-
 export default StyleSheet.create({
     container: {
         flex: 1,
@@ -53,10 +48,5 @@ export default StyleSheet.create({
     signatureContainer: {
         flex: 1, 
         backgroundColor: 'white',
-        /*
-        width: sceneWidth,
-        height: sceneHeight,
-        transform: [{translateX: -sceneWidth / 2}, {translateY: -sceneHeight / 2}, {rotate: '-90deg'},
-        {translateX: -sceneWidth / 2}, {translateY: sceneHeight / 2}]*/
     }
 })

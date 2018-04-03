@@ -26,9 +26,6 @@ import React, {
 //      console.log("token in sign.js " + this.state.token);
     }  
     addSignature = () => {
-      console.log(this.state.signature);
-      console.log("ADDED ------------------------------------------------------------------------------" +
-      "-------------------------------------------------------------------" + this.state.signature);
       
       var url = config.api.url + config.api.endpoints.casesDetail.addSignature;
       console.debug("Initiating POST request to endpoint: " + url);
@@ -107,6 +104,7 @@ import React, {
 
         _signaturePadChange = ({base64DataUrl}) => {
           this.state.signature = base64DataUrl;
+          console.log("onChange: " + this.state.signature);
          };
     
     
