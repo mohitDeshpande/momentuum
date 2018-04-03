@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StackNavigator, SafeAreaView } from "react-navigation";
+import {DebounceInput} from 'react-debounce-input';
 import { List, ListItem, SearchBar, Button } from "react-native-elements"; // 0.19.0
 import {
   FlatList,
@@ -30,10 +31,11 @@ export default class ClientList extends React.Component {
       fisrtState: true
     };
   }
+
   //load always renderedlistdata in flatlist while ontextchange it's going
   // to be filtered and returned to the initial state if there's no text on the search bar
   async filterClients(e) {
-    console.disableYellowBox = true;
+    this.state.isLoading = true;
     this.state.token = await AsyncStorage.getItem("token");
     var url = config.api.url + config.api.endpoints.clientlist + e;
     console.debug("Initiating GET request to endpoint: " + url);
@@ -92,7 +94,9 @@ export default class ClientList extends React.Component {
       <SafeAreaView style={styles.container}>
         <SearchBar
           lightTheme
-          onChangeText={this.filterClients.bind(this)}
+          //ref={search => this.search = search}
+         //onChangeText={setTimeout(() => { this.filterClients.bind(this)}, 80000)}
+         // onChangeText={this.filterClientsDelayed}
           placeholder="Type Here..."
         />
 
@@ -110,6 +114,7 @@ export default class ClientList extends React.Component {
           <View style={styles.container}>
             <List>
               <FlatList
+              loading={this.state.isLoading}
                 data={this.state.dataSource}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item }) => (
