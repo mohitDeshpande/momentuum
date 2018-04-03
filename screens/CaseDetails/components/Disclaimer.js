@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, AsyncStorage, TouchableHighlight } from 'react-native';
-import styles from "../styles/CaseDetailsStyles";
+import styles from "../styles/SignatureDisclaimer";
 import { Card, Button } from "react-native-elements"; // 0.19.0
 import { Ionicons } from "@expo/vector-icons"; // 6.2.2
 import routes from "./../../../assets/config/RouteNames";
@@ -16,15 +16,16 @@ export default class Disclaimer extends React.Component{
    render() {
      const { params } = this.props.navigation.state;
      this.state.cid = params.caseid1;
+     
     return (
+      <View style={styles.container}>
         <View>
-             <View style={[styles.header]}>
-             <Text style={[styles.category, styles.clientHeader]}>Disclaimer</Text>
+             <View style={styles.header}>
+             <Text style={styles.disclaimer}>Disclaimer</Text>
         </View>
-
-            
-            <View style={{alignSelf: "stretch"}}>
-            <Text style={{marginBottom: 10, alignSelf: "stretch", textAlign: "center"}}>
+        
+        <View style={styles.details}>
+            <Text style={styles.textDetail}>
             The information on this application is true and correct to the best of my knowledge. 
             I authorize the person to whom this application is delivered to obtain my credit report from any credit-reporting 
             agency and to contact my current or previous landlord and/or employer(s) to establish or verify my financial 
@@ -36,12 +37,12 @@ export default class Disclaimer extends React.Component{
             </Text>
             </View>
 
-            <View style={{ flexDirection: 'row', paddingTop: 20, justifyContent: 'center', alignItems: 'center'  }}>
+            <View style={styles.buttonrow}>
                 <TouchableHighlight>
                 <Button
                 icon={{name: 'close'}}
                 backgroundColor='red'
-                buttonStyle={{marginLeft: 4, borderRadius: 2, width: 100}}
+                buttonStyle={styles.buttonStyle}
                 onPress={() => this.props.navigation.navigate(routes.caseDetails)}
                 title='Decline' />
                 </TouchableHighlight>
@@ -50,13 +51,13 @@ export default class Disclaimer extends React.Component{
                 <Button
                 icon={{name: 'create'}}
                 backgroundColor='#03A9F4'
-                buttonStyle={{borderRadius: 2, width: 100}}
+                buttonStyle={styles.buttonStyle}
                 onPress={() => this.props.navigation.navigate(routes.sign,
                   { cid1: this.state.cid })}
                 title='Sign' />
                 </TouchableHighlight>
             </View>
-
+          </View>
       </View>
     );
   }
