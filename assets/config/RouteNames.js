@@ -15,5 +15,6 @@ export default {
     disclaimer: "Disclaimer",
     sign: "Sign",
     createCaseItemSwitch: "CreateItemSwitch",
-    photoCapture: "PhotoCapture"
+    photoCapture: "PhotoCapture",
+    photoUpload: "PhotoUpload"
 }

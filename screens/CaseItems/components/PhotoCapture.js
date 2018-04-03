@@ -1,10 +1,18 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import {Icon} from 'react-native-elements';
 import color from '../../../assets/styles/color';
+import routes from '../../../assets/config/RouteNames';
 
 export default class PhotoCapture extends React.Component {
+
+  static navigationOptions = {
+    title: 'Capture Document',	
+    headerMode: 'screen',		
+    tabBarVisible: false		
+  };
+
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
@@ -22,8 +30,9 @@ export default class PhotoCapture extends React.Component {
    */
   capture = async () => {
     if (this.camera){
-      await this.camera.takePictureAsync().then((uri) => {
-
+      await this.camera.takePictureAsync().then((photo) => {
+        console.debug(`Captured photo: ${JSON.stringify(photo)}`)
+        this.props.navigation.navigate(routes.photoUpload, {uri:photo.uri, caseid: this.props.caseId})
       });
     }
   };
@@ -37,7 +46,7 @@ export default class PhotoCapture extends React.Component {
       return <Text>No access to camera</Text>;
     } else {
       return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <Camera 
             ref={ ref => {this.camera = ref;} }
             style={{ 
@@ -78,7 +87,7 @@ export default class PhotoCapture extends React.Component {
               </TouchableOpacity>
             </View>
           </Camera>
-        </View>
+        </SafeAreaView>
       );
     }
   }
