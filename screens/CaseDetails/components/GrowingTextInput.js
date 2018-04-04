@@ -51,7 +51,7 @@ export default class GrowingTextInput extends React.Component {
         }}
         style={[
           this.props.style,
-          { height: Math.max(this.props.minHeight, this.state.height) },
+          { height: Math.max(this.props.minHeight, this.state.height), textAlignVertical: "top", paddingTop:10 },
         ]}
       />
     );

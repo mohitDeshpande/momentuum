@@ -36,6 +36,7 @@ class CaseUpdateForm extends React.Component {
       openDate: '',
       closeDate: '',
       caseCode: '',
+      caseCodes: [],
       caseDesc: '',
       casetype: '',
       casetypes: [],
@@ -52,15 +53,17 @@ class CaseUpdateForm extends React.Component {
     var fetchType = this.state.dataSource.casetype;
     var fetchSign = this.state.dataSource.signed;
     var fetchStatus = this.state.dataSource.casestatus;
+    var fetchCode = this.state.dataSource.casecode;
     var fetchAssigned = this.state.dataSource.caseassignedto;
 
     this.state.casetypes = fetchType;
     this.state.signed = fetchSign;
     this.state.casestatuses = fetchStatus;
+    this.state.caseCodes = fetchCode;
     this.state.caseassignedtos = fetchAssigned;
 
     var fetchCase = this.state.dataSource.casedetails;
-    console.log(fetchType);
+    console.log(fetchCode);
       this.setState({ caseId: fetchCase.cas.caseid });
       this.setState({ openDate: fetchCase.cas.caseOpenDate });
       this.setState({ closeDate: fetchCase.cas.caseClosedDate });
@@ -322,15 +325,14 @@ class CaseUpdateForm extends React.Component {
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Code</Text>
-                <TextInput
-                  ref="caseCode"
-                  placeholder="Case Code"
-                  underlineColorAndroid='#ffffff'
-                  style={[styles.textInput, styles.secondElement]}
-                  editable={this.state.editable}
-                  onChangeText={(typedText) => { this.setState({ caseCode: typedText }) }}
-                  value={this.state.caseCode}
-                />
+                <Picker
+                  enabled={this.state.editable}
+                  style={[styles.picker, styles.secondElement]}
+                  itemStyle={styles.picker}
+                  selectedValue={this.state.caseCode}
+                  onValueChange={(cod) => this.setState({ caseCode: cod })}>
+                  {this.state.caseCodes.map((l, i) => { return <Picker.Item value={l.refid} label={l.listtext} key={i} /> })}
+                </Picker>
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Type</Text>
