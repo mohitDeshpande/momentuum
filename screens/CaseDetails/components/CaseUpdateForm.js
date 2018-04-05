@@ -40,33 +40,46 @@ class CaseUpdateForm extends React.Component {
       casetype: '',
       casetypes: [],
       casestatus: '',
-      casestatuses: []
+      casestatuses: [],
+      caseassignedto: '',
+      caseassignedtos: []
     };
   }
 
   MapData = () => {
-    this.state.dataSource.map((item, i) => {
-      this.setState({ caseId: item.cas.caseid });
-      this.setState({ openDate: item.cas.caseOpenDate });
-      this.setState({ closeDate: item.cas.caseClosedDate });
-      this.setState({ caseCode: item.cas.caseCode });
-      this.setState({ casetype: item.cas.casetype });
-      this.setState({ casestatus: item.cas.casestatus });
-      this.setState({ caseDesc: item.cas.casedescription });
+
+    var fetchType = this.state.dataSource.casetype;
+    var fetchStatus = this.state.dataSource.casestatus;
+    var fetchAssigned = this.state.dataSource.caseassignedto;
+
+    this.state.casetypes = fetchType;
+    this.state.casestatuses = fetchStatus;
+    this.state.caseassignedtos = fetchAssigned;
+
+    var fetchCase = this.state.dataSource.casedetails;
+    console.log(fetchType);
+      this.setState({ caseId: fetchCase.cas.caseid });
+      this.setState({ openDate: fetchCase.cas.caseOpenDate });
+      this.setState({ closeDate: fetchCase.cas.caseClosedDate });
+      this.setState({ caseCode: fetchCase.cas.caseCode });
+      this.setState({ casetype: fetchCase.cas.casetype });
+      this.setState({ caseassignedto: fetchCase.cas.caseAssignedTo });
+      this.setState({ casestatus: fetchCase.cas.casestatus });
+      this.setState({ caseDesc: fetchCase.cas.casedescription });
 
       //other fields
-      this.setState({ clientId: item.cas.idVoter });
-      this.setState({ tempcaseid: item.cas.tempCaseId });
-      this.setState({ caseSource: item.cas.caseSource });
-      this.setState({ createdby: item.cas.createdby });
-      this.setState({ casesin: item.cas.casesin });
-      this.setState({ timeprocess: item.cas.timeprocess });
-      this.setState({ userid: item.cas.userid });
-      this.setState({ subtype: item.cas.subtype });
-      this.setState({ deleted: item.cas.deleted });
-      this.setState({ caseAssignedTo: item.cas.caseAssignedTo });
-      this.setState({ caseNature: item.cas.caseNature });
-    })
+      this.setState({ clientId: fetchCase.cas.idVoter });
+      this.setState({ tempcaseid: fetchCase.cas.tempCaseId });
+      this.setState({ caseSource: fetchCase.cas.caseSource });
+      this.setState({ createdby: fetchCase.cas.createdby });
+      this.setState({ casesin: fetchCase.cas.casesin });
+      this.setState({ timeprocess: fetchCase.cas.timeprocess });
+      this.setState({ userid: fetchCase.cas.userid });
+      this.setState({ subtype: fetchCase.cas.subtype });
+      this.setState({ deleted: fetchCase.cas.deleted });
+      this.setState({ caseAssignedTo: fetchCase.cas.caseAssignedTo });
+      this.setState({ caseNature: fetchCase.cas.caseNature });
+    
   }
 
   toggleEdit = () => {
@@ -170,9 +183,9 @@ class CaseUpdateForm extends React.Component {
     // Get State for caseId       
     this.state.caseId = this.props.CaseId;
     this.state.token = await AsyncStorage.getItem("token");
-    console.log("Case ID inside of Case Items is " + this.state.caseId)
+    console.log("Case ID inside of Case Items is " + this.state.caseId);
 
-    this.state.token = await AsyncStorage.getItem("token");
+    //this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTIzODMwMDU4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.es7Isy_n4g8y2loU9Defn2v7PyTe5aHHR3U9Z_qRtgw"
     var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetailById + this.state.caseId;
     console.debug("Initiating GET request to endpoint: " + url);
 
@@ -254,8 +267,9 @@ class CaseUpdateForm extends React.Component {
             </View>
             <View style={styles.details}>
               <View style={[styles.row, styles.firstRow]}>
-                <Text style={styles.fieldname}>Open Date</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Open Date</Text>
                 <DatePicker
+                  style={styles.secondElement}
                   disabled={!this.state.editable}
                   mode="date"
                   date={this.state.openDate}
@@ -270,15 +284,18 @@ class CaseUpdateForm extends React.Component {
                     },
                     dateInput: {
                       height: 30,
-                      borderWidth: 0
+                      borderWidth: 0,
+                      marginLeft:0,
+                      paddingLeft:0,
                     }
                   }}
                   onDateChange={(date) => { this.setState({ openDate: date }) }}
                 />
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Closed Date</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Closed Date</Text>
                 <DatePicker
+                  style={styles.secondElement}
                   disabled={!this.state.editable}
                   mode="date"
                   date={this.state.closeDate}
@@ -300,46 +317,57 @@ class CaseUpdateForm extends React.Component {
                 />
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Case Code</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Case Code</Text>
                 <TextInput
                   ref="caseCode"
                   placeholder="Case Code"
                   underlineColorAndroid='#ffffff'
-                  style={styles.textInput}
+                  style={[styles.textInput, styles.secondElement]}
                   editable={this.state.editable}
                   onChangeText={(typedText) => { this.setState({ caseCode: typedText }) }}
                   value={this.state.caseCode}
                 />
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Case Type</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Case Type</Text>
                 <Picker
                   enabled={this.state.editable}
-                  style={styles.picker}
+                  style={[styles.picker, styles.secondElement]}
                   itemStyle={styles.picker}
                   selectedValue={this.state.casetype}
                   onValueChange={(typ) => this.setState({ casetype: typ })}>
-                  {this.state.casetypes.map((l, i) => { return <Picker.Item value={l.id} label={l.listtext} key={i} /> })}
+                  {this.state.casetypes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
                 </Picker>
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Case Status</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Case Status</Text>
                 <Picker
                   enabled={this.state.editable}
-                  style={styles.picker}
+                  style={[styles.picker, styles.secondElement]}
                   itemStyle={styles.picker}
                   selectedValue={this.state.casestatus}
                   onValueChange={(sta) => this.setState({ casestatus: sta })}>
-                  {this.state.casestatuses.map((l, i) => { return <Picker.Item value={l.id} label={l.listtext} key={i} /> })}
+                  {this.state.casestatuses.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
                 </Picker>
               </View>
               <View style={styles.row}>
-                <Text style={styles.fieldname}>Description</Text>
+                <Text style={[styles.fieldname, styles.firstElement]}>Case Assigned To</Text>
+                <Picker
+                  enabled={this.state.editable}
+                  style={[styles.picker, styles.secondElement]}
+                  itemStyle={styles.picker}
+                  selectedValue={this.state.caseassignedto}
+                  onValueChange={(sta) => this.setState({ caseassignedto: sta })}>
+                  {this.state.caseassignedtos.map((l, i) => { return <Picker.Item value={l.employeeLogin} label={l.employeeLogin} key={i} /> })}
+                </Picker>
+              </View>
+              <View style={styles.row}>
+                <Text style={[styles.fieldname, styles.firstElement]}>Description</Text>
                 <GrowingTextInput
                   minHeight={80}
                   placeholder="Description"
                   underlineColorAndroid='#ffffff'
-                  style={styles.textInput}
+                  style={[styles.textInput, styles.secondElement]}
                   editable={this.state.editable}
                   onChangeText={(typedText) => { this.setState({ caseDesc: typedText }) }}
                   value={this.state.caseDesc}

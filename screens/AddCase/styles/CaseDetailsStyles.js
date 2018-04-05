@@ -39,8 +39,17 @@ export default StyleSheet.create({
     row: {
         backgroundColor: '#fff',
         paddingHorizontal: 20,
+        paddingVertical: 10,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#ccc'
+        borderBottomColor: '#ccc',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    firstElement: {
+        flex: 1,
+    },
+    secondElement: {
+        flex: 2,
     },
     /* required */
     firstRow: {

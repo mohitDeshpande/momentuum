@@ -31,8 +31,23 @@ export default StyleSheet.create({
     row: {
         backgroundColor: '#fff',
         paddingHorizontal: 20,
+        paddingVertical: 10,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#ccc'
+        borderBottomColor: '#ccc',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    firstElement: {
+        flex: 1,
+    },
+    secondElement: {
+        flex: 2,
+    },
+    clientFirstElement: {
+        flex: 2,
+    },
+    clientSecondElement: {
+        flex: 2,
     },
     /* required */
     firstRow: {
@@ -43,10 +58,9 @@ export default StyleSheet.create({
     },
     clientRow: {
         backgroundColor: '#fff',
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         paddingVertical:5,
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
         flexDirection: 'row'
     },
     /* required */
@@ -69,12 +83,10 @@ export default StyleSheet.create({
     },
     /* required */
     textInput: {
-        height: 45,
-        paddingHorizontal: 20,
+        height: 45,       
     },
     picker: {
         height: 45,
-        paddingLeft: 30,
     },
     /* required */
     details: {

@@ -16,10 +16,10 @@ import {
 } from "react-native-elements";
 import { StackNavigator } from 'react-navigation';
 import axios from "axios";
-import styles from "./../styles/LoginStyles";
-import config from "./../../../assets/config/endpoint";
-import constants from "./../../../assets/config/constants";
-import screens from "./../../../assets/config/RouteNames";
+import styles from "../styles/LoginStyles";
+import config from "../../../assets/config/endpoint";
+import constants from "../../../assets/config/constants";
+import screens from "../../../assets/config/RouteNames";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -60,7 +60,8 @@ export default class Login extends React.Component {
           .then(response => {
             console.log("Token is valid. Token user : " + response.data);
             // Since token is valid we send the user to the next screen
-            this.props.navigation.navigate(tabnav);
+            //this.props.navigation.navigate(tabnav);
+            this.props.navigation.navigate(screens.appScreen);
           })
           .catch(error => {
             if (error.response && error.response.status === 401) {

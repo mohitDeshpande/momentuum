@@ -17,7 +17,8 @@ export default class CaseItems extends Component {
             caseItems: [],
             dataSource:[],
             caseId:'',
-            caseItemId: ''
+            caseItemId: '',
+            
         }
     }
     
@@ -57,15 +58,16 @@ export default class CaseItems extends Component {
                keyExtractor={(item, index) => index}
                renderItem={({item}) =>
                <ListItem
-                onPress= {() => this.props.nav.navigate('CaseItemDetails', {CaseItemId:item.intId})}
+                onPress= {() => this.props.nav.navigate('CaseItemDetails', {CaseItemId:item.item.intId})}
             
                     //Content properties
-                    title={<View ><Text style={styles.title} numberOfLines={1}>Status: <Text style={styles.status}>{item.caseItemStatus}</Text></Text>
+                    title={<View ><Text style={styles.title} numberOfLines={1}>
+                    Status: <Text style={styles.status}>{item.item.caseItemStatus}</Text></Text>
     
-                        <Text style={styles.action}>Action: {item.caseItemAction}</Text></View>}
-                    subtitle={<Text style={styles.itemDesc} numberOfLines={1}>{item.caseItemDescription}</Text>}
+                        <Text style={styles.action}>Action: {item.item.caseItemAction}</Text></View>}
+                    subtitle={<Text style={styles.itemDesc} numberOfLines={1}>{item.item.caseItemDescription}</Text>}
                     //Styling properties
-                    rightTitle={item.caseItemDate}
+                    rightTitle={item.item.caseItemDate}
                     
                     rightTitleStyle={styles.itemDate}
                     chevronColor={color.primaryColor.hex}
