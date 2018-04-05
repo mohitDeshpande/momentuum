@@ -103,7 +103,7 @@ export default class ClientList extends React.Component {
       <SafeAreaView style={styles.container}>
         <SearchBar
           lightTheme
-          onEndEditing={this.filterClients.bind(this)}
+          onChangeText={this.filterClients.bind(this)}
           containerStyle={{backgroundColor: "rgba(55, 111, 146, 1)", opacity: 0.6}}
           placeholder="Type Here..."
         />
