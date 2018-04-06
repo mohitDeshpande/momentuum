@@ -104,7 +104,7 @@ import React, {
 
         _signaturePadChange = ({base64DataUrl}) => {
           this.state.signature = base64DataUrl;
-          console.log("onChange: " + this.state.signature);
+          //console.debug("onChange: " + this.state.signature);
          };
     
     
