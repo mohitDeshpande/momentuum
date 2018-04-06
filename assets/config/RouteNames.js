@@ -12,4 +12,6 @@ export default {
     addCase: "AddCase",
     addClient: "AddClient",
     createCaseItem: "CreateCaseItem",
+    disclaimer: "Disclaimer",
+    sign: "Sign"
 }

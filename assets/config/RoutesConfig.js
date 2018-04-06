@@ -18,6 +18,8 @@ import FormGenerator from "../../screens/CaseDetails/components/FormGenerator";
 import TestCaseDetails from "../../screens/CaseDetails/components/TestCaseDetails";
 import CaseUpdateForm from "../../screens/CaseDetails/components/CaseUpdateForm";
 import CreateCaseItem from "../../screens/CreateCaseItem/components/CreateCaseItem";
+import Disclaimer from "../../screens/CaseDetails/components/Disclaimer";
+import Sign from "../../screens/CaseDetails/components/Sign";
 import color from '../styles/color';
 /**
  * This is the main configuration of all the Screen routes in the Application
@@ -65,6 +67,13 @@ const HomeStack = StackNavigator(
     CreateCaseItem: {
       screen: CreateCaseItem,
       title: "Create CaseItem"
+    },
+    Disclaimer: {
+      screen: Disclaimer,
+      title: "Disclaimer"
+    },
+    Sign: {
+      screen: Sign,
     }
   },
   {

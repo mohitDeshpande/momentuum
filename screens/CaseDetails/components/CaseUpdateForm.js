@@ -373,6 +373,13 @@ class CaseUpdateForm extends React.Component {
                   value={this.state.caseDesc}
                 />
               </View>
+              <View style={styles.row}>
+                  <Text style={styles.fieldname}>Add signature</Text>
+                  <Icon name="plus-square" size={25} style={{ paddingTop: 10, paddingBottom: 10 }} color="#444" 
+                  onPress={() => this.props.nav.navigate(screens.disclaimer,
+                  { caseid1: this.state.caseId })}
+                  />
+            </View>
             </View>
           </KeyboardAvoidingView>
         </ScrollView>
