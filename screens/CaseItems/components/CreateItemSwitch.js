@@ -29,7 +29,7 @@ export default class CreateItemSwitch extends React.Component {
                     }}
                     style={styles.item}
                     onPress={() => {
-                        this.props.navigation.navigate(routes.createCaseItem, {CaseId:this.props.caseId})
+                        this.props.navigation.navigate(routes.createCaseItem, { CaseId : this.props.navigation.state.params.caseId })
                     }}
                 />
                 <Button 
@@ -46,7 +46,7 @@ export default class CreateItemSwitch extends React.Component {
                     }}
                     style={styles.item}
                     onPress={() => {
-                        this.props.navigation.navigate(routes.photoCapture, {CaseId:this.props.caseId})
+                        this.props.navigation.navigate(routes.photoCapture, {caseId:this.props.navigation.state.params.caseId})
                     }}
                 />
             </SafeAreaView>

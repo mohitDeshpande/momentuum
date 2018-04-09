@@ -32,7 +32,7 @@ export default class PhotoCapture extends React.Component {
     if (this.camera){
       await this.camera.takePictureAsync().then((photo) => {
         console.debug(`Captured photo: ${JSON.stringify(photo)}`)
-        this.props.navigation.navigate(routes.photoUpload, {uri:photo.uri, caseid: this.props.caseId})
+        this.props.navigation.navigate(routes.photoUpload, {uri:photo.uri, caseId: this.props.navigation.state.params.caseId})
       });
     }
   };
