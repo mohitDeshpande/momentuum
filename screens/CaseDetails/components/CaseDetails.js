@@ -16,6 +16,7 @@ import axios from "axios";
 import DatePicker from 'react-native-datepicker';
 import color from '../../../assets/styles/color';
 import ClientDetails from './ClientDetails';
+import routes from '../../../assets/config/RouteNames';
 
 class CaseDetails extends React.Component {
 
@@ -70,7 +71,7 @@ class CaseDetails extends React.Component {
                     <View style={styles.header}>
                         <Text style={styles.category}>Case Items</Text>
                         <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('CreateCaseItem', {CaseId:this.state.caseId})}>
+                        onPress={() => this.props.navigation.navigate(routes.createCaseItemSwitch, {caseId:this.state.caseId})}>
                         <Icon name="plus-square" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#444" />
                         </TouchableOpacity>
                     </View>

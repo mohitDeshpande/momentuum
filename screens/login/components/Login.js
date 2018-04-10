@@ -60,7 +60,6 @@ export default class Login extends React.Component {
           .then(response => {
             console.log("Token is valid. Token user : " + response.data);
             // Since token is valid we send the user to the next screen
-            //this.props.navigation.navigate(tabnav);
             this.props.navigation.navigate(screens.appScreen);
           })
           .catch(error => {
