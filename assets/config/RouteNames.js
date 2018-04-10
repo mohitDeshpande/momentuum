@@ -12,4 +12,9 @@ export default {
     addCase: "AddCase",
     addClient: "AddClient",
     createCaseItem: "CreateCaseItem",
+    disclaimer: "Disclaimer",
+    sign: "Sign",
+    createCaseItemSwitch: "CreateItemSwitch",
+    photoCapture: "PhotoCapture",
+    photoUpload: "PhotoUpload"
 }

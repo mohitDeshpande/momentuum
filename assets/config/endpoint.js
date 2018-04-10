@@ -8,7 +8,8 @@ export default {
         caseDetail: "case/",
         caseDetailWithClient: "case/client/emp",
         caseDetailById: "case/client/",
-        stats: "case/stats"
+        stats: "case/stats",
+        addSignature: "case/signature"
       },
       caseItems: {
         caseItem: "caseItems/",
