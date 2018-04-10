@@ -9,13 +9,12 @@ import {
   Picker,
   AsyncStorage
 } from "react-native";
-import SearchInput, { createFilter } from "react-native-search-filter";
+import SearchInput from "react-native-search-filter";
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
-import routes from "./../../../assets/config/RouteNames";
+import routes, { RouteNames } from "./../../../assets/config/RouteNames";
 import colors from "./../../../assets/styles/color";
 import styles from "./../styles/CaseListStyles";
-import RouteNames from "./../../../assets/config/RouteNames";
 import CaseDetails from "../../CaseDetails/components/CaseDetails";
 
 export default class CaseList extends React.Component {
@@ -34,100 +33,105 @@ export default class CaseList extends React.Component {
       valueS: 'All',
       valueT: 'All',
     }
-
   }
   //load always renderedlistdata in flatlist while ontextchange it's going
   // to be filtered and returned to the initial state if there's no text on the search bar
   filterClients(e) {
-    let text = e.toLowerCase()
+    let text = e.toLowerCase();
     let fullList = this.state.dataSource;
     let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
       if (item.cli.lastname.toLowerCase().match(text) || item.cli.firstName.toLowerCase().match(text))
         return item;
-    })
+    });
     if (!text || text === '') {
       this.setState({
         renderedListData: fullList,
         noData: false,
-      })
+      });
     } else if (!filteredList.length) {
       // set no data flag to true so as to render flatlist conditionally
       this.setState({
         noData: true
-      })
+      });
     }
     else if (Array.isArray(filteredList)) {
       this.setState({
         noData: false,
         renderedListData: filteredList
-      })
+      });
     }
   }
-  filterCasesByType(e) {
-    this.state.valueS = 'All';
-    this.state.valueT = e;
-    let text = e.toLowerCase();
-    let fullList = this.state.dataSource;
-    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-      if (item.cas.casetype.toLowerCase().match(text))
-        return item;
-    })
-    if (!text || text === '') {
-      this.setState({
-        renderedListData: fullList,
-        typeStatus: false,
-      })
-    } else if (text === 'all') {
-      this.setState({
-        renderedListData: fullList,
-        typeStatus: false,
-      })
-    } else if (!filteredList.length) {
-      // set no data flag to true so as to render flatlist conditionally
-      this.setState({
-        typeStatus: true
-      })
-    }
-    else if (Array.isArray(filteredList)) {
-      this.setState({
-        typeStatus: false,
-        renderedListData: filteredList
-      })
-    }
-  }
-  filterCasesByStatus(e) {
-    this.state.valueT = 'All';
-    this.state.valueS = e;
-    let text = e.toLowerCase();
-    let fullList = this.state.dataSource;
-    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-      if (item.cas.casestatus.toLowerCase().match(text))
-        return item;
-    })
-    if (!text || text === '') {
-      this.setState({
-        renderedListData: fullList,
-        typeStatus: false,
-      })
-    } else if (text === 'all') {
-      this.setState({
-        renderedListData: fullList,
-        typeStatus: false,
-      })
-    } else if (!filteredList.length) {
-      // set no data flag to true so as to render flatlist conditionally
-      this.setState({
-        typeStatus: true
-      })
-    }
-    else if (Array.isArray(filteredList)) {
-      this.setState({
-        typeStatus: false,
-        renderedListData: filteredList
-      })
-    }
+
+updateType(val) {
+  this.setState({
+  valueT: val 
+}, function () {
+  this.filterCases();
+});
+}
+updateStatus(val){
+  this.setState({
+valueS: val 
+}, function () {
+this.filterCases();
+});
+}
+filterCases() {
+    // // this.state.valueS = 'All';
+    // this.state.valueT = e;
+    let textStatus = this.state.valueS.toLowerCase();
+    let textType = this.state.valueT.toLowerCase();
+    console.log("status: ", textStatus)
+    console.log("type: ", textType)
     
+    let fullList = this.state.dataSource;
+
+    let filteredList=[];
+
+    if (textType === 'all' && textStatus === 'all') {
+      filteredList = fullList;
+      this.setState({
+        renderedListData: fullList,
+        typeStatus: false,
+      });
+    }
+
+    else if (textType !== 'all' && textStatus === 'all'){
+      filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+          if (item.cas.casetype.toLowerCase().match(textType))
+            return item;
+        })
+    }
+    else if(textType === 'all' && textStatus !== 'all'){
+      filteredList=fullList.filter((item) => { // search from a full list, and not from a previous search results list
+        if (item.cas.casestatus.toLowerCase().match(textStatus))
+          return item;
+      })
+    }
+    else if (textType !== 'all' && textStatus !== 'all'){
+      filteredList=fullList.filter((item) => { // search from a full list, and not from a previous search results list
+        if (item.cas.casetype.toLowerCase().match(textType))
+          return item;
+      });
+      filteredList=filteredList.filter((item) => { // search from a full list, and not from a previous search results list
+        if (item.cas.casestatus.toLowerCase().match(textStatus))
+          return item;
+      });
+    }
+    if (!filteredList.length) {
+      // set no data flag to true so as to render flatlist conditionally
+      this.setState({
+        typeStatus: true
+      })
+    }
+if (Array.isArray(filteredList)) {
+      this.setState({
+        typeStatus: false,
+        renderedListData: filteredList
+      })
+    }
   }
+ 
   //passing caseid of list item being clicked
   GetItem(caseid1) {
     this.props.navigation.navigate(routes.caseDetails,
@@ -142,7 +146,7 @@ export default class CaseList extends React.Component {
     // make the call
     axios({
       method: "get",
-      url: url,
+      url: url+"?dt="+(new Date()).getTime(),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -150,6 +154,7 @@ export default class CaseList extends React.Component {
       }
     })
       .then(async response => {
+        console.log(response.data.cas)
         this.setState({
           dataSource: response.data,
           renderedListData: response.data,
@@ -217,13 +222,17 @@ export default class CaseList extends React.Component {
             <View style={{ flexDirection: 'row' }}>
               <Picker
                 selectedValue={this.state.valueT}
-                onValueChange={this.filterCasesByType.bind(this)}
+                onValueChange={
+                  this.updateType.bind(this)
+                }
                 style={{ width: 156, height: 56, marginLeft: 20 }} itemStyle={{ height: 56, fontSize: 13 }}>
                 {this.loadCaseTypes()}
               </Picker>
               <Picker
                 selectedValue={this.state.valueS}
-                onValueChange={this.filterCasesByStatus.bind(this)}
+                onValueChange= {
+                  this.updateStatus.bind(this)
+                }
                 style={{ width: 156, height: 56, marginLeft: 25 }} itemStyle={{ height: 56, fontSize: 13 }}>
                 {this.loadCaseStatuses()}
               </Picker>
