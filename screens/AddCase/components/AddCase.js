@@ -109,7 +109,7 @@ class AddCase extends React.Component {
     this.state.caseCodes = fetchCode;
     this.state.caseassignedtos = fetchAssigned;   
     this.setState({ casetype: "Select Case Type" });
-    this.setState({ caseassignedto: "Select Case Assign To" });
+    this.setState({ caseAssignedTo: "Select Case Assign To" });
     this.setState({ casestatus: "Select Case Status" });
     this.setState({ casecode: "Select Case Code" });
     console.log(this.state.casestatuses)
@@ -127,7 +127,7 @@ class AddCase extends React.Component {
     obj["casetype"] = this.state.casetype;
     obj["casestatus"] = this.state.casestatus;
     obj["casedescription"] = this.state.caseDesc;
-    //obj["idVoter"] = this.state.clientId ;
+    obj["idVoter"] = this.state.clientId ;
     obj["tempCaseId"] = this.state.tempcaseid ;
     obj["caseSource"] = this.state.caseSource ;
     obj["createby"] = this.state.createdby ;
@@ -141,6 +141,7 @@ class AddCase extends React.Component {
 
     this.state.addDataJson.push(obj);
     var myJson = JSON.stringify(obj);
+    console.log(this.state.caseAssignedTo);
     console.log(myJson);
     
     var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetail;
@@ -255,7 +256,7 @@ class AddCase extends React.Component {
                   itemStyle={styles.picker}
                   selectedValue={this.state.caseCode}
                   onValueChange={(cod) => this.setState({ caseCode: cod })}>
-                  {this.state.caseCodes.map((l, i) => { return <Picker.Item value={l.refid} label={l.listtext} key={i} /> })}
+                  {this.state.caseCodes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
                 </Picker>
               </View>
               <View style={styles.row}>
@@ -265,7 +266,7 @@ class AddCase extends React.Component {
                   itemStyle={styles.picker}
                   selectedValue={this.state.casetype}
                   onValueChange={(typ) => this.setState({ casetype: typ })}>
-                  {this.state.casetypes.map((l, i) => { return <Picker.Item value={l.refid} label={l.listtext} key={i} /> })}
+                  {this.state.casetypes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
                 </Picker>
               </View>
               <View style={styles.row}>
@@ -275,7 +276,7 @@ class AddCase extends React.Component {
                   itemStyle={styles.picker}
                   selectedValue={this.state.casestatus}
                   onValueChange={(sta) => this.setState({ casestatus: sta })}>
-                  {this.state.casestatuses.map((l, i) => { return <Picker.Item value={l.refid} label={l.listtext} key={i} /> })}
+                  {this.state.casestatuses.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
                 </Picker>
               </View>
               <View style={styles.row}>
@@ -284,8 +285,8 @@ class AddCase extends React.Component {
                   enabled={this.state.editable}
                   style={[styles.picker, styles.secondElement]}
                   itemStyle={styles.picker}
-                  selectedValue={this.state.caseassignedto}
-                  onValueChange={(sta) => this.setState({ caseassignedto: sta })}>
+                  selectedValue={this.state.caseAssignedTo}
+                  onValueChange={(caseassign) => this.setState({ caseAssignedTo: caseassign })}>
                   {this.state.caseassignedtos.map((l, i) => { return <Picker.Item value={l.employeeLogin} label={l.employeeLogin} key={i} /> })}
                 </Picker>
               </View>

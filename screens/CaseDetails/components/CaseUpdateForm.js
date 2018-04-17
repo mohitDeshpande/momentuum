@@ -64,10 +64,13 @@ class CaseUpdateForm extends React.Component {
     this.state.caseassignedtos = fetchAssigned;
 
     var fetchCase = this.state.dataSource.casedetails;
-    console.log(fetchCode);
+    console.log("fetchDate");
       this.setState({ caseId: fetchCase.cas.caseid });
       this.setState({ openDate: fetchCase.cas.caseOpenDate });
+      this.openDateFormat();
       this.setState({ closeDate: fetchCase.cas.caseClosedDate });
+      if(this.state.closeDate != "")
+      this.closeDateFormat();
       this.setState({ caseCode: fetchCase.cas.caseCode });
       this.setState({ casetype: fetchCase.cas.casetype });
       this.setState({ caseassignedto: fetchCase.cas.caseAssignedTo });
@@ -87,6 +90,35 @@ class CaseUpdateForm extends React.Component {
       this.setState({ caseAssignedTo: fetchCase.cas.caseAssignedTo });
       this.setState({ caseNature: fetchCase.cas.caseNature });
     
+  }
+
+  openDateFormat = () =>
+  {
+    console.log(this.state.openDate);
+    var myDate = new Date(this.state.openDate);
+    console.log(myDate);
+    var d = myDate.getDate();
+    d += 1;
+    var m =  myDate.getMonth();
+    console.log(d);
+    console.log(m);
+    m += 1;  
+    var y = myDate.getFullYear();
+    var newdate=(y+ "/" + m + "/" + d);
+    this.setState({ openDate: newdate});
+    console.log(this.state.openDate);
+  }
+
+  closeDateFormat = () =>
+  {
+    var myDate = new Date(this.state.closeDate);
+    var d = myDate.getDate();
+    d += 1;
+    var m =  myDate.getMonth();
+    m += 1;  
+    var y = myDate.getFullYear();
+    var newdate=(y+ "/" + m + "/" + d);
+    this.setState({ closeDate: newdate});
   }
 
   toggleEdit = () => {
@@ -143,6 +175,7 @@ class CaseUpdateForm extends React.Component {
         );
         if(response.status == 204)
         Alert.alert('Updated Successfully!');
+        this.toggleEdit();
         //console.debug(response.data);
       })
       .catch(error => {
@@ -267,7 +300,7 @@ class CaseUpdateForm extends React.Component {
           <KeyboardAvoidingView
             backgroundColor="transparent"
             style={{ flex: 1 }}
-            keyboardVerticalOffset={100}
+            keyboardVerticalOffset={20}
             behavior={"position"}>
             <View style={styles.header}>
               <Text style={styles.category}>Case Details</Text>

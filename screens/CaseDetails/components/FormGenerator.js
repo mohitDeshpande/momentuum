@@ -28,6 +28,10 @@ export default class FormGenerator extends React.Component {
           label: 'Blue',
           value: 'blue',
         },
+        {
+          label: 'Address-Telephone-E-Mail add/change',
+          value: 'Address-Telephone-E-Mail add/change',
+        },
       ],
     };
   }

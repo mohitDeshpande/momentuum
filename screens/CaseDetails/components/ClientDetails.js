@@ -101,12 +101,20 @@ class ClientDetails extends React.Component {
     }
 
     render() {
+        //contact email
+        const workEmail = this.state.email;
+        const workEmailField = workEmail ? (
+                <Text style={styles.clientSecondElement}><Icon name="envelope-open" size={14} color={color.gray.hex} /> {this.state.email}</Text>
+        ) : (
+            <Text style={styles.clientSecondElement}> </Text>
+        );
+
         //contact number
         const workPhone = this.state.workPhone;
         const workPhoneField = workPhone ? (
             <View style={styles.clientRow}>
                 <Text style={styles.clientFirstElement}><Icon name="phone" size={14} color={color.gray.hex} /> {this.state.workArea} - {this.state.workPhone}</Text>
-                <Text style={styles.clientSecondElement}><Icon name="envelope-open" size={14} color={color.gray.hex} /> {this.state.email}</Text>
+                {workEmailField}
             </View>
         ) : (
             <View style={styles.clientRow}>
