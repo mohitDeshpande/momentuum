@@ -12,7 +12,7 @@ import {
 import SearchInput from "react-native-search-filter";
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
-import  RouteNames from "./../../../assets/config/RouteNames";
+import RouteNames from "./../../../assets/config/RouteNames";
 import colors from "./../../../assets/styles/color";
 import styles from "./../styles/CaseListStyles";
 import CaseDetails from "../../CaseDetails/components/CaseDetails";
@@ -139,7 +139,7 @@ if (Array.isArray(filteredList)) {
  
   //passing caseid of list item being clicked
   GetItem(caseid1) {
-    this.props.navigation.navigate(routes.caseDetails,
+    this.props.navigation.navigate(RouteNames.caseDetails,
       { caseid1: caseid1 });
   }
 
