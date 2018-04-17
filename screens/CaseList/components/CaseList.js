@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StackNavigator, SafeAreaView } from "react-navigation";
-import { List, ListItem, SearchBar, Button, Icon } from "react-native-elements"; // 0.19.0
+import { List, ListItem, SearchBar, Button } from "react-native-elements"; // 0.19.0
 import {
   FlatList,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   AsyncStorage
 } from "react-native";
 import SearchInput from "react-native-search-filter";
+import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
 import RouteNames from "./../../../assets/config/RouteNames";
