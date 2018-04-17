@@ -36,7 +36,7 @@ export default class ClientList extends React.Component {
     };
   }
   static navigationOptions = {
-    title: 'k',	
+    title: '',	
     headerMode: 'screen',		
     tabBarVisible: true		
 };
@@ -105,8 +105,7 @@ export default class ClientList extends React.Component {
     console.disableYellowBox = true;
     return (
       <SafeAreaView style={styles.container}>
-      <View style={styles._searchSection}>      
-      <View style={styles.searchSection}>
+      <View style={styles.searchSection}>  
        <Ionicons style={styles.searchIcon} name="ios-search" size={20} color="#000"/>
           <TextInput
               ref= {(el) => { this.state.el = el; }}
@@ -117,7 +116,6 @@ export default class ClientList extends React.Component {
               placeholder="Search Constituent"
               underlineColorAndroid="transparent"
           />
-      </View>
       </View>
         {this.state.dataSource || this.state.dataSource.length > 0 ? (
           
