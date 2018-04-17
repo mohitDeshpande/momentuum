@@ -2,7 +2,7 @@ import React, {
     Component, PropTypes
   } from 'react';
   import ReactNative, {
-    View, Text, StyleSheet, TouchableHighlight, AsyncStorage, Dimensions
+    View, Text, StyleSheet, TouchableHighlight, AsyncStorage, Dimensions, Alert
   } from 'react-native';
   import { Button } from 'react-native-elements';
   import SignaturePad from 'react-native-signature-pad';
