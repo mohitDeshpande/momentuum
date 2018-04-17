@@ -9,6 +9,7 @@ import GrowingTextInput from './GrowingTextInput';
 import DatePicker from 'react-native-datepicker';
 import color from '../../../assets/styles/color';
 import screens from "../../../assets/config/RouteNames";
+import RNPickerSelect from 'react-native-picker-select';
 
 class CaseUpdateForm extends React.Component {
 
@@ -236,7 +237,20 @@ class CaseUpdateForm extends React.Component {
   }
 
   render() {
-    //console.log(this.state.caseId + "from form");
+    console.log(this.state.caseId + "from form");
+    //Save button toggle
+    const isEditable = this.state.editable; 
+    const SaveButton = isEditable ? (
+      <TouchableOpacity
+        onPress={this.updateData}>
+        <Icon name="check-circle" size={25} style={{ paddingTop: 10 }} color={color.green.hex} />
+      </TouchableOpacity>
+    ) : (
+      <TouchableOpacity>
+      </TouchableOpacity>
+    );
+
+    //Page loading logo
     if (!this.state.caseLoaded) {
       return (
         <View style={{ flex: 1, minHeight: 100, padding: 80 }}>
@@ -258,13 +272,10 @@ class CaseUpdateForm extends React.Component {
             <View style={styles.header}>
               <Text style={styles.category}>Case Details</Text>
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                  onPress={this.updateData}>
-                  <Icon name="check-circle" size={25} style={{ paddingTop: 10 }} color={color.green.hex} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={this.toggleEdit}>
-                  <Icon name="edit" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#666" />
+                {SaveButton}
+                <Text style={[{ display: 'none' }, this.state.editable && { display: 'flex', paddingHorizontal: 10, paddingTop: 10 }]}>Editing</Text>
+                <TouchableOpacity>
+                <Icon name="edit" size={25} color="#444" onPress={() => this.toggleEdit()} style={[styles.editButton, this.state.editable && styles.editButtonActive]} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => this.deleteAlert()}>

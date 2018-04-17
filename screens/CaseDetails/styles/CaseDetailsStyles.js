@@ -92,4 +92,21 @@ export default StyleSheet.create({
     details: {
         backgroundColor: '#fff'
     },
+    editButton: {
+        paddingHorizontal: 10, 
+        paddingTop: 10,
+    },
+    editButtonActive: {
+        backgroundColor: '#dcdcdc',
+        borderRadius: 5,
+        borderWidth: 0.5,
+        paddingHorizontal: 10,
+        paddingTop: 10,
+    }, 
+    editActions: {
+        color: 'black',
+        fontSize: 16,
+        fontWeight: 'bold',
+        alignItems: 'center'
+    },
 })
