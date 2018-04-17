@@ -6,6 +6,27 @@ export default StyleSheet.create({
     flex: 1,
     //marginBottom: 20,
  },
+ searchSection: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#fff',
+  paddingTop: 20,
+},
+searchIcon: {
+  padding: 10,
+  backgroundColor: '#d9d9d9',
+
+},
+searchInput: {
+  flex: 1,
+  paddingTop: 10,
+  paddingRight: 10,
+  paddingBottom: 10,
+  paddingLeft: 10,
+  backgroundColor: '#fff',
+  color: '#424242',
+},
 title: {
   fontSize: 16,
   padding: 5,

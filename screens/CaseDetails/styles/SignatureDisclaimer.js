@@ -31,7 +31,7 @@ export default StyleSheet.create({
     textDetail: {
         marginBottom: 10, 
         alignSelf: "stretch", 
-        textAlign: "center",
+        //textAlign: "left",
         fontSize: 18,
     },
     buttonrow: {

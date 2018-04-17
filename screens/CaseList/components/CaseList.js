@@ -10,9 +10,10 @@ import {
   AsyncStorage
 } from "react-native";
 import SearchInput from "react-native-search-filter";
+import Icon from 'react-native-vector-icons/FontAwesome'; // 4.5.0
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
-import routes, { RouteNames } from "./../../../assets/config/RouteNames";
+import RouteNames from "./../../../assets/config/RouteNames";
 import colors from "./../../../assets/styles/color";
 import styles from "./../styles/CaseListStyles";
 import CaseDetails from "../../CaseDetails/components/CaseDetails";
@@ -34,6 +35,12 @@ export default class CaseList extends React.Component {
       valueT: 'All',
     }
   }
+  static navigationOptions = {
+    title: 'Your Tickets',	
+    headerLeft: (<View style={{flexDirection: 'row', paddingLeft: 20}}><Icon name="home" size={25} color="#fff"/></View>),
+    headerMode: 'screen',		
+    tabBarVisible: true		
+  };
   //load always renderedlistdata in flatlist while ontextchange it's going
   // to be filtered and returned to the initial state if there's no text on the search bar
   filterClients(e) {
@@ -134,7 +141,7 @@ if (Array.isArray(filteredList)) {
  
   //passing caseid of list item being clicked
   GetItem(caseid1) {
-    this.props.navigation.navigate(routes.caseDetails,
+    this.props.navigation.navigate(RouteNames.caseDetails,
       { caseid1: caseid1 });
   }
 

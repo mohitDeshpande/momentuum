@@ -2,7 +2,7 @@ import React, {
     Component, PropTypes
   } from 'react';
   import ReactNative, {
-    View, Text, StyleSheet, TouchableHighlight, AsyncStorage, Dimensions
+    View, Text, StyleSheet, TouchableHighlight, AsyncStorage, Dimensions, Alert
   } from 'react-native';
   import { Button } from 'react-native-elements';
   import SignaturePad from 'react-native-signature-pad';
@@ -21,6 +21,12 @@ import React, {
             token: '',
         }
     }
+    static navigationOptions = {
+      title: 'Signature',	
+      headerMode: 'screen',		
+      tabBarVisible: true		
+    };
+
     async componentDidMount() {
       this.state.token = await AsyncStorage.getItem("token");
 //      console.log("token in sign.js " + this.state.token);
@@ -48,8 +54,16 @@ import React, {
         .then(async response => {
           console.debug(
             "Signature added. Response status : " + response.status);
-          console.debug(response.data);
-          this.props.navigation.navigate(routes.caseDetails);
+          //console.debug(response.data);
+          //this.props.navigation.navigate(screens.caseList);
+          Alert.alert(
+            'Success',
+            'Press ok to go back',
+            [
+              {text: 'OK', onPress: () => this.props.navigation.navigate(screens.caseDetails, {caseid1: this.state.cid})},
+            ],
+            { cancelable: false }
+          )
           })
         .catch(error => {
           if (error.response) {
