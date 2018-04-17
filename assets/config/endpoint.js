@@ -17,7 +17,8 @@ export default {
       },
       fileItem: {
         image: "file/image/",
-        caseItemsForCase: "caseItems/case/"
+        caseItemsForCase: "caseItems/case/",
+        store: "file/store/"
       },
       test: {
         withAuth: "values/5",

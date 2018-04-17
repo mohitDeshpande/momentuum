@@ -36,6 +36,11 @@ class CaseItemDetails extends React.Component {
             
         };
     }
+    static navigationOptions = {
+        title: 'Case Item Details',	
+        headerMode: 'screen',		
+        tabBarVisible: false		
+    };
     deleteAlert(){
         Alert.alert(
             'Delete Case Item',
@@ -173,6 +178,7 @@ class CaseItemDetails extends React.Component {
             this.statusInput.setNativeProps({ text: this.state.caseItem.caseItemStatus });
         }
     }
+    
     render() {
         const caseItem = this.state.caseItem;
         return (
