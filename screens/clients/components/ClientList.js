@@ -36,7 +36,7 @@ export default class ClientList extends React.Component {
     };
   }
   static navigationOptions = {
-    title: '',	
+    title: 'Add Case',	
     headerMode: 'screen',		
     tabBarVisible: true		
 };

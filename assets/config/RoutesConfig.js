@@ -35,6 +35,22 @@ const defaultNavigationOptions = {
   headerTitleStyle:{ color: color.white.hex,textAlign: 'center',alignSelf:'center'},
 };
 
+const SecondStack = StackNavigator(
+  {
+    ClientList: {
+      screen: ClientList,
+      title: "ClientList"
+    }
+  }, 
+    {
+      initialRouteName: "ClientList",
+      headerMode: "screen",
+      navigationOptions: {
+        ...defaultNavigationOptions,        
+        }
+    }
+  );
+
 const HomeStack = StackNavigator(
   {
     CaseList: {
@@ -81,7 +97,7 @@ const HomeStack = StackNavigator(
     },
     Sign: {
       screen: Sign,
-      title: "Create Case Item"
+      title: "Sign"
     },
     PhotoCapture: {
       screen: PhotoCapture,
@@ -104,7 +120,7 @@ const HomeStack = StackNavigator(
 export default tabnav = TabNavigator(
   {
     Home: { screen: HomeStack },
-    Add: { screen: ClientList },
+    Add: { screen: SecondStack },
     Profile: { screen: Profile }
   },
   {

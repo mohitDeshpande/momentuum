@@ -12,7 +12,7 @@ import {
 import SearchInput from "react-native-search-filter";
 import axios from "axios"; // 0.17.1
 import config from "./../../../assets/config/endpoint";
-import routes, { RouteNames } from "./../../../assets/config/RouteNames";
+import  RouteNames from "./../../../assets/config/RouteNames";
 import colors from "./../../../assets/styles/color";
 import styles from "./../styles/CaseListStyles";
 import CaseDetails from "../../CaseDetails/components/CaseDetails";
@@ -34,6 +34,11 @@ export default class CaseList extends React.Component {
       valueT: 'All',
     }
   }
+  static navigationOptions = {
+    title: 'Your Tickets',	
+    headerMode: 'screen',		
+    tabBarVisible: true		
+  };
   //load always renderedlistdata in flatlist while ontextchange it's going
   // to be filtered and returned to the initial state if there's no text on the search bar
   filterClients(e) {

@@ -49,7 +49,7 @@ import React, {
           console.debug(
             "Signature added. Response status : " + response.status);
           console.debug(response.data);
-          this.props.navigation.navigate(routes.caseDetails);
+          this.props.navigation.navigate(screens.caseDetails);
           })
         .catch(error => {
           if (error.response) {
