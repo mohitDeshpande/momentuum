@@ -10,7 +10,8 @@ import {
   Picker,
   TextInput,
   AsyncStorage,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableHighlight
 } from "react-native";
 import { Constants } from 'expo';
 import constants from "../../../assets/config/constants";
@@ -106,7 +107,6 @@ export default class ClientList extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
       <View style={styles.searchSection}>  
-       <Ionicons style={styles.searchIcon} name="ios-search" size={20} color="#000"/>
           <TextInput
               ref= {(el) => { this.state.el = el; }}
               onChangeText={(e) => this.setState({e})}
@@ -116,6 +116,10 @@ export default class ClientList extends React.Component {
               placeholder="Search Constituent"
               underlineColorAndroid="transparent"
           />
+          
+          <TouchableHighlight>
+          <Ionicons style={styles.searchIcon} name="ios-search" size={20} color="#000" onPress={this.filterClients}/>
+          </TouchableHighlight>
       </View>
         {this.state.dataSource || this.state.dataSource.length > 0 ? (
           

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StackNavigator, SafeAreaView } from "react-navigation";
-import { List, ListItem, SearchBar, Button } from "react-native-elements"; // 0.19.0
+import { List, ListItem, SearchBar, Button, Icon } from "react-native-elements"; // 0.19.0
 import {
   FlatList,
   StyleSheet,
@@ -36,6 +36,7 @@ export default class CaseList extends React.Component {
   }
   static navigationOptions = {
     title: 'Your Tickets',	
+    headerLeft: (<View style={{flexDirection: 'row', paddingLeft: 20}}><Icon name="home" size={25} color="#fff"/></View>),
     headerMode: 'screen',		
     tabBarVisible: true		
   };

@@ -15,13 +15,15 @@ export default StyleSheet.create({
 },
 searchIcon: {
   padding: 10,
+  backgroundColor: '#d9d9d9',
+
 },
 searchInput: {
   flex: 1,
   paddingTop: 10,
   paddingRight: 10,
   paddingBottom: 10,
-  paddingLeft: 0,
+  paddingLeft: 10,
   backgroundColor: '#fff',
   color: '#424242',
 },

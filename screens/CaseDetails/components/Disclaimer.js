@@ -15,11 +15,15 @@ export default class Disclaimer extends React.Component{
       cid: '',
     }
   }
-
+  static navigationOptions = {
+    title: 'Disclaimer',	
+    headerMode: 'screen',		
+    tabBarVisible: true		
+  };
    render() {
     const { params } = this.props.navigation.state;
     this.state.cid = params ? params.caseid1 : "error";
-    console.log(this.state.cid + "disc");
+    //console.log(this.state.cid + "disc");
 
     return (
       <View style={styles.container}>
@@ -47,10 +51,10 @@ export default class Disclaimer extends React.Component{
                 icon={{name: 'close'}}
                 backgroundColor='red'
                 buttonStyle={styles.buttonStyle}
-                onPress={() => this.props.navigation.navigate(routes.caseDetails)}
+                onPress={() => this.props.navigation.navigate(routes.caseDetails, {caseid1: this.state.cid})}
                 title='Decline' />
                 </TouchableHighlight>
-
+               
                 <TouchableHighlight>
                 <Button
                 icon={{name: 'create'}}
