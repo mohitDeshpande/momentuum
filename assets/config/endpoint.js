@@ -1,6 +1,8 @@
 export default {
   api: {
-    url: "https://momentuumapi.azurewebsites.net/api/",
+    //url: "https://momentuumapi.azurewebsites.net/api/",
+    url: "http://192.168.0.13:5000/api/",
+    
     endpoints: {
       login: "auth/login",
       caselist: "case/client/emp",
