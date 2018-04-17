@@ -230,6 +230,7 @@ class CaseUpdateForm extends React.Component {
   }
 
   render() {
+    console.log(this.state.caseId + "from form");
     if (!this.state.caseLoaded) {
       return (
         <View style={{ flex: 1, minHeight: 100, padding: 80 }}>

@@ -48,8 +48,9 @@ import React, {
         .then(async response => {
           console.debug(
             "Signature added. Response status : " + response.status);
-          console.debug(response.data);
-          this.props.navigation.navigate(screens.caseDetails);
+          //console.debug(response.data);
+          //this.props.navigation.navigate(screens.caseList);
+        Alert.alert('Signature added successfully!');
           })
         .catch(error => {
           if (error.response) {

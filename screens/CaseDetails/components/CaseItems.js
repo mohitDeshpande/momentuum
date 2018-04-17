@@ -94,13 +94,13 @@ export default class CaseItems extends Component {
             }
         })
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                
                 this.setState({
                     isLoading: false,
                     dataSource: response.data,
                     }); 
-                console.log("Case Items Data :" + response.data);
+                //console.log("Case Items Data :" + response.data);
             }
             )
             .catch(error => {

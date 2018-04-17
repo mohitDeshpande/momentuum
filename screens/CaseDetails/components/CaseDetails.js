@@ -43,7 +43,7 @@ class CaseDetails extends React.Component {
     async componentWillMount() {
         const { params } = this.props.navigation.state;
         this.state.caseId = params ? params.caseid1 : "error";
-        console.log(this.state.caseId);
+        console.log(this.state.caseId + "from casede");
         this.state.token = await AsyncStorage.getItem("token");
         //this.getCaseDetails();
     }

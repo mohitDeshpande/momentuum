@@ -6,6 +6,7 @@ import { Card, Button } from "react-native-elements"; // 0.19.0
 import { Ionicons } from "@expo/vector-icons"; // 6.2.2
 import routes from "./../../../assets/config/RouteNames";
 import config from "./../../../assets/config/endpoint";
+import { StackNavigator } from 'react-navigation';
 
 export default class Disclaimer extends React.Component{
   constructor(props) {
@@ -16,8 +17,9 @@ export default class Disclaimer extends React.Component{
   }
 
    render() {
-     const { params } = this.props.navigation.state;
-     this.state.cid = params.caseid1;
+    const { params } = this.props.navigation.state;
+    this.state.cid = params ? params.caseid1 : "error";
+    console.log(this.state.cid + "disc");
 
     return (
       <View style={styles.container}>
