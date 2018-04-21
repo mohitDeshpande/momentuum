@@ -32,7 +32,9 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         paddingHorizontal: 20,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#ccc'
+        borderBottomColor: '#ccc',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     /* required */
     firstRow: {
@@ -72,9 +74,23 @@ export default StyleSheet.create({
         height: 45,
         paddingHorizontal: 20,
     },
+    picker: {
+        height: 45,
+    },
+    biggerTextInput: {
+        height: 105,
+        paddingHorizontal: 20,
+    },
+    firstElement: {
+        flex: 1,
+    },
+    secondElement: {
+        flex: 2,
+    },
     /* required */
     details: {
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        flex:9.88,
     },
     button: {
         backgroundColor: color.primaryColor.hex,
@@ -89,7 +105,7 @@ export default StyleSheet.create({
         // height: 50
     },
     editButton: {
-        paddingHorizontal: 10, 
+        marginHorizontal: 10, 
     },
     editButtonActive: {
         backgroundColor: '#dcdcdc',
