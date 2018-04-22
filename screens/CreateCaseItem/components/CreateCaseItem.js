@@ -232,8 +232,8 @@ class CreateCaseItem extends React.Component {
     handleSubmit = () => {
         const value = this._form.getValue(); // use that ref to get the form value
         if (value) {
-            // this.save(value);
-        console.log('value: ', value); 
+            this.save(value);
+        // console.log('value: ', value); 
         }
       }
 
