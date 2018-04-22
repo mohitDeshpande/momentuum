@@ -88,8 +88,16 @@ class CreateCaseItem extends React.Component {
         };
     }
     
+    cancel(props) {
+        console.log("cancel pressed");
+        // this.props.navigation.navigate(screens.caseDetails, { caseid1: this.state.CaseId });
+       console.log("nav",props)
+        const { goBack } = props;        
+            goBack();
+    }
     async componentWillMount() {
         const { params } = this.props.navigation.state;
+        console.log(this.props.navigation);
         this.state.CaseId = params ? params.CaseId : "null";
         // this.state.CaseId = 1026071;  
         console.log("Create Case Test + " + this.state.CaseId);
@@ -157,7 +165,7 @@ class CreateCaseItem extends React.Component {
         //     statusObj[s["id"]]=s["listtext"];
         // }
         statusesSource.forEach(obj => {
-            statusObj[obj.code] = obj.listtext;
+            statusObj[obj.listtext] = obj.listtext;
         });
         this.setState({statuses:t.enums(statusObj) }) 
 
@@ -165,7 +173,7 @@ class CreateCaseItem extends React.Component {
         var assignedToObj={};
         
         assignedToSource.forEach(obj => {
-            assignedToObj[obj.employeeId] = obj.employeeName;
+            assignedToObj[obj.employeeName] = obj.employeeName;
         });
         
         this.setState({assignedToList:t.enums(assignedToObj) })
@@ -207,9 +215,10 @@ class CreateCaseItem extends React.Component {
                 setTimeout(() => {
                     Alert.alert("Save Successful");
                   }, 100);                
-               
+                
                 //Insert Navigation Code
-                this.props.navigation.navigate(screens.caseDetails, { caseid1: this.state.CaseId });
+                const { goBack } = this.props.navigation;        
+                goBack();
             })
             .catch(error => {
                 this.setState({ spinnerVisible: false });                
@@ -219,18 +228,11 @@ class CreateCaseItem extends React.Component {
                 console.debug(error);
             });
     }
-    cancel() {
-        console.log("cancel pressed");
-        // this.props.navigation.navigate(screens.caseDetails, { caseid1: this.state.CaseId });
-        const { goBack } = props.navigation;        
-        goBack();
-        
-
-    }
+    
     handleSubmit = () => {
         const value = this._form.getValue(); // use that ref to get the form value
         if (value) {
-            this.save(value);
+            // this.save(value);
         console.log('value: ', value); 
         }
       }
@@ -254,20 +256,21 @@ class CreateCaseItem extends React.Component {
                     keyboardDismissMode="on-drag"
                     resetScrollToCoords={{ x: 0, y: 0 }}
                     contentContainerStyle={{ paddingVertical: 0 }}
-                    style={{ flex: 0.84, padding: 10 }}
+                    style={{ flex: 1, padding: 10 }}
                >
                 <Form type={this.state.CaseItem} ref={c => this._form = c} options={this.state.options} />
-                
+                {/* {
+                    console.log("in render",this.props.navigation)
+                } */}
                 </KeyboardAwareScrollView>
-                <View style={{ flex: 0.1, flexDirection:'column' }}>
+                <View style={{flexDirection:'column', flex:0.15, alignContent:'space-between'}}>
                     <TouchableOpacity style={styles.button} onPress={this.handleSubmit} underlayColor='#99d9f4'>
-                            <Text>Save</Text>
+                            <Text style={styles.buttonText}>Save</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonNeutral} onPress={this.cancel} underlayColor='#99d9f4'>
-                            <Text>Cancel</Text>
+                    <TouchableOpacity style={styles.buttonNeutral} onPress={()=>{this.cancel(this.props.navigation)}} underlayColor='#99d9f4'>
+                            <Text style={styles.buttonText}>Cancel</Text>
                     </TouchableOpacity>
                 </View>
-                
                 <StatusBar barStyle="light-content" /> 
                 </View>
         );
