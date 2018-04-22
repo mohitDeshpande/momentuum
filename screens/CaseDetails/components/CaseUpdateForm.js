@@ -1,6 +1,6 @@
 import React from 'react';
 import endpoint from "../../../assets/config/endpoint";
-import { Alert, TouchableOpacity, ActivityIndicator, AsyncStorage, StyleSheet, Text, View, TextInput, ScrollView, Picker, KeyboardAvoidingView } from 'react-native';
+import { Alert, TouchableOpacity, Button, ActivityIndicator, AsyncStorage, StyleSheet, Text, View, TextInput, ScrollView, Picker, KeyboardAvoidingView } from 'react-native';
 import axios from "axios";
 import colors from '../../../assets/styles/color'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -10,6 +10,7 @@ import DatePicker from 'react-native-datepicker';
 import color from '../../../assets/styles/color';
 import screens from "../../../assets/config/RouteNames";
 import RNPickerSelect from 'react-native-picker-select';
+import Moment from 'moment';
 
 class CaseUpdateForm extends React.Component {
 
@@ -69,7 +70,7 @@ class CaseUpdateForm extends React.Component {
       this.setState({ openDate: fetchCase.cas.caseOpenDate });
       this.openDateFormat();
       this.setState({ closeDate: fetchCase.cas.caseClosedDate });
-      if(this.state.closeDate != "")
+      if(this.state.closeDate != "" || this.state.closeDate != null)
       this.closeDateFormat();
       this.setState({ caseCode: fetchCase.cas.caseCode });
       this.setState({ casetype: fetchCase.cas.casetype });
@@ -94,31 +95,19 @@ class CaseUpdateForm extends React.Component {
 
   openDateFormat = () =>
   {
-    console.log(this.state.openDate);
-    var myDate = new Date(this.state.openDate);
-    console.log(myDate);
-    var d = myDate.getDate();
-    d += 1;
-    var m =  myDate.getMonth();
-    console.log(d);
-    console.log(m);
-    m += 1;  
-    var y = myDate.getFullYear();
-    var newdate=(y+ "/" + m + "/" + d);
-    this.setState({ openDate: newdate});
-    console.log(this.state.openDate);
+    //console.log(this.state.openDate);
+    var myDate = Moment(this.state.openDate).format('YYYY-MM-DD');
+    //console.log(myDate);
+    this.setState({ openDate: myDate});
+    console.disableYellowBox = true;
   }
 
   closeDateFormat = () =>
   {
-    var myDate = new Date(this.state.closeDate);
-    var d = myDate.getDate();
-    d += 1;
-    var m =  myDate.getMonth();
-    m += 1;  
-    var y = myDate.getFullYear();
-    var newdate=(y+ "/" + m + "/" + d);
-    this.setState({ closeDate: newdate});
+    //console.log(this.state.closeDate);
+    var myDate = Moment(this.state.closeDate).format('YYYY-MM-DD');
+    this.setState({ closeDate: myDate});
+    console.disableYellowBox = true;
   }
 
   toggleEdit = () => {
@@ -369,6 +358,7 @@ class CaseUpdateForm extends React.Component {
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Code</Text>
+                {this.state.editable ?
                 <Picker
                   enabled={this.state.editable}
                   style={[styles.picker, styles.secondElement]}
@@ -376,10 +366,11 @@ class CaseUpdateForm extends React.Component {
                   selectedValue={this.state.caseCode}
                   onValueChange={(cod) => this.setState({ caseCode: cod })}>
                   {this.state.caseCodes.map((l, i) => { return <Picker.Item value={l.refid} label={l.listtext} key={i} /> })}
-                </Picker>
+                </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.caseCode}</Text> }
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Type</Text>
+                {this.state.editable ? 
                 <Picker
                   enabled={this.state.editable}
                   style={[styles.picker, styles.secondElement]}
@@ -387,10 +378,12 @@ class CaseUpdateForm extends React.Component {
                   selectedValue={this.state.casetype}
                   onValueChange={(typ) => this.setState({ casetype: typ })}>
                   {this.state.casetypes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
-                </Picker>
+                </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.casetype}</Text> }
+                
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Status</Text>
+                {this.state.editable ?
                 <Picker
                   enabled={this.state.editable}
                   style={[styles.picker, styles.secondElement]}
@@ -398,10 +391,11 @@ class CaseUpdateForm extends React.Component {
                   selectedValue={this.state.casestatus}
                   onValueChange={(sta) => this.setState({ casestatus: sta })}>
                   {this.state.casestatuses.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
-                </Picker>
+                </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.casestatus}</Text> }
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Assigned To</Text>
+                {this.state.editable ?
                 <Picker
                   enabled={this.state.editable}
                   style={[styles.picker, styles.secondElement]}
@@ -409,7 +403,7 @@ class CaseUpdateForm extends React.Component {
                   selectedValue={this.state.caseassignedto}
                   onValueChange={(sta) => this.setState({ caseassignedto: sta })}>
                   {this.state.caseassignedtos.map((l, i) => { return <Picker.Item value={l.employeeLogin} label={l.employeeLogin} key={i} /> })}
-                </Picker>
+                </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.caseassignedto}</Text> }
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Description</Text>
@@ -423,12 +417,12 @@ class CaseUpdateForm extends React.Component {
                   value={this.state.caseDesc}
                 />
               </View>
-              {this.state.signed === '' ? 
-              <View style={styles.row}>
-                  <Text style={styles.fieldname}> Add Signature</Text>
-                  <Icon name="plus-square" size={25} style={{ paddingTop: 10, paddingBottom: 10 }} color="#444" 
+              <View style={styles.lastrow}>
+                  <Button
+                  title="ADD SIGNATURE"
+                  style={styles.button}
                   onPress={() => this.props.nav.navigate(screens.disclaimer,
-                  { caseid1: this.state.caseId })}
+                    { caseid1: this.state.caseId })}
                   />
             </View>
             :

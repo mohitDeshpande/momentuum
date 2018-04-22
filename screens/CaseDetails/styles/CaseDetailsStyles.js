@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Constants } from 'expo';
+import color from '../../../assets/styles/color';
 //Stylesheet
 export default StyleSheet.create({
     container: {
@@ -36,6 +37,13 @@ export default StyleSheet.create({
         borderBottomColor: '#ccc',
         flexDirection: 'row',
         justifyContent: 'space-between'
+    },
+    lastrow: {
+        backgroundColor: '#fff',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#ccc',
     },
     firstElement: {
         flex: 1,
@@ -83,15 +91,24 @@ export default StyleSheet.create({
     },
     /* required */
     textInput: {
-        height: 45,       
+        height: 45,     
+        paddingTop: 10  
     },
     picker: {
-        height: 45,
+        height: 40,
+        fontSize: 13
     },
     /* required */
     details: {
         backgroundColor: '#fff'
     },
+    button: {
+        flex: 1,
+        backgroundColor: color.primaryColor.rgb,
+        height: 50,
+        padding: 10,
+        borderRadius: 3,
+      },
     editButton: {
         paddingHorizontal: 10, 
         paddingTop: 10,
