@@ -13,22 +13,13 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import t from 'tcomb-form-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import screens from "../../../assets/config/RouteNames";
-
+import _ from 'lodash';
 
 var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem;
+var urlDropdowns = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDropdowns;
 
-var statuses = t.enums({
-    close: "close",
-    open: "open"
-  });
 var Form = t.form.Form;
-var CaseItem = t.struct({
-    details:t.String,
-    action:t.maybe(t.String),
-    status:t.maybe(statuses),
-    assigned:t.maybe(t.String),
-    description:t.maybe(t.String),
-});
+
 const detailsStyle = {
     ...Form.stylesheet,
     textbox: {
@@ -69,6 +60,7 @@ const detailsStyle = {
       }
   };
 
+
 class CreateCaseItem extends React.Component {
 
     static navigationOptions = {
@@ -80,23 +72,121 @@ class CreateCaseItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            caseItem: {},
+            CaseItem: {},
             CaseId: '',
             token: '',
             editMode: false,
-            spinnerVisible: false,            
+            spinnerVisible: false, 
+            dropdownSource:[] ,
+            casetypes:[],
+            casestatuses:[],
+            caseCodes:[],
+            caseAssingedList:[], 
+            hasData:false,
+            statuses:{} ,
+            assignedToList:{}       
         };
     }
     
-
-    async componentDidMount() {
+    cancel(props) {
+        console.log("cancel pressed");
+        // this.props.navigation.navigate(screens.caseDetails, { caseid1: this.state.CaseId });
+       console.log("nav",props)
+        const { goBack } = props;        
+            goBack();
+    }
+    async componentWillMount() {
         const { params } = this.props.navigation.state;
+        console.log(this.props.navigation);
         this.state.CaseId = params ? params.CaseId : "null";
+        // this.state.CaseId = 1026071;  
         console.log("Create Case Test + " + this.state.CaseId);
         this.state.token = await AsyncStorage.getItem("token");
-        // this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzb2FpYiIsImV4cCI6MTUyMjM0MjExOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTAwMC8ifQ.9pOx82l-_RhlyeJU-xBKlCg4B6UlmcDjv6PdMVH9qL4";
         this.setState({ options });
+        this.getDropdowns();
+    };
+
+    getDropdowns() {
+        console.log("dropdown called")
+        axios({
+            method: "get",
+            url: urlDropdowns,
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + this.state.token,
+            }
+          })
+            .then(async response => {
+              console.debug(
+                "Call was successful for login. get dropdowns Response status : " + response.status
+              );
+              this.setState({
+                dropdownSource: response.data,
+              });
+              console.log("before mapping data");
+              this.MapData();
+            })
+            .catch(error => {
+              if (error.response) {
+                // the response was other than 2xx status
+                if (error.response.status == 401) {
+                  console.debug("Invalid username and password entered");
+                //   this.authError();
+                } else {
+                  console.error("Invalid request sent. Status : " + error.response.status);
+                //   this.appError();
+                }
+              } else {
+                console.error("Something went wrong in the request Status : " + error.response.status + " Response : " + error);
+                // this.appError();
+              }
+            });
     }
+    MapData = () => {
+        console.log("mapping data here");
+        var fetchType = this.state.dropdownSource.casetype;
+        var fetchStatus = this.state.dropdownSource.casestatus;
+        var fetchCode = this.state.dropdownSource.casecode;
+        var fetchAssigned = this.state.dropdownSource.caseassignedto;
+    
+        this.state.casetypes = fetchType;
+        this.state.casestatuses = fetchStatus;
+        this.state.caseCodes = fetchCode;
+        this.state.caseAssingedList = fetchAssigned;
+        
+        this.setState({ casetype: "Select Case Type" });
+        this.setState({ caseassignedto: "Select Case Assign To" });
+        this.setState({ casestatus: "Select Case Status" });
+        this.setState({ casecode: "Select Case Code" });
+        var statusesSource= this.state.casestatuses;
+        var statusObj={};
+        // for (let s of statusesSource){
+        //     statusObj[s["id"]]=s["listtext"];
+        // }
+        statusesSource.forEach(obj => {
+            statusObj[obj.listtext] = obj.listtext;
+        });
+        this.setState({statuses:t.enums(statusObj) }) 
+
+        var assignedToSource= this.state.caseAssingedList;
+        var assignedToObj={};
+        
+        assignedToSource.forEach(obj => {
+            assignedToObj[obj.employeeName] = obj.employeeName;
+        });
+        
+        this.setState({assignedToList:t.enums(assignedToObj) })
+        var caseItemForm = t.struct({
+            details:t.String,
+            action:t.maybe(t.String),
+            status:t.maybe(this.state.statuses),
+            assigned:t.maybe(this.state.assignedToList),
+            description:t.maybe(t.String),
+        });
+        this.setState({ CaseItem:caseItemForm });
+        this.setState({hasData: true})
+      }
     async save(value) {      
         this.setState({ spinnerVisible: true });
         let data= {
@@ -105,13 +195,9 @@ class CreateCaseItem extends React.Component {
             "caseItemDetail": value.details,
             "caseItemAction": value.action,
             "caseItemAssigned": value.assigned,
-            // "caseItemDate": this.state.caseItem.caseItemDate,
-            // "caseItemFollowUpdate": null,
-            // "caseid": this.state.caseItem.caseid,
-            // "deleted": this.state.caseItem.deleted,
-            // "intId": this.state.caseItem.intId,
-            // "timeProcess": this.state.caseItem.timeProcess,
-            // "userId": this.state.caseItem.userId,
+            
+            "caseid": this.state.CaseId,
+            
         };
         // console.log("Data: ", data);
         axios({
@@ -129,9 +215,10 @@ class CreateCaseItem extends React.Component {
                 setTimeout(() => {
                     Alert.alert("Save Successful");
                   }, 100);                
-               
+                
                 //Insert Navigation Code
-                this.props.navigation.navigate(screens.caseDetails, { caseid1: this.state.CaseId });
+                const { goBack } = this.props.navigation;        
+                goBack();
             })
             .catch(error => {
                 this.setState({ spinnerVisible: false });                
@@ -141,18 +228,25 @@ class CreateCaseItem extends React.Component {
                 console.debug(error);
             });
     }
-    cancel() {
-        //handle navigation here
-    }
+    
     handleSubmit = () => {
         const value = this._form.getValue(); // use that ref to get the form value
         if (value) {
             this.save(value);
-        console.log('value: ', value); 
+        // console.log('value: ', value); 
         }
       }
-    
+
     render() {
+        if (!this.state.hasData){
+            return(
+                <View style={styles.container}>
+                    <View style={{ flex: 1, minHeight: 100, padding: 80 }}>
+                    <Spinner visible={!this.state.hasData} textContent={"Loading..."} textStyle={{color: '#FFF'}} />
+                    </View>
+                </View>
+            );
+        }
         return (
             <View style={styles.container}>
                 <View style={{ flex: 1 }} style={[{ display: 'none' }, this.state.spinnerVisible && {display: 'flex'}]}>
@@ -162,19 +256,21 @@ class CreateCaseItem extends React.Component {
                     keyboardDismissMode="on-drag"
                     resetScrollToCoords={{ x: 0, y: 0 }}
                     contentContainerStyle={{ paddingVertical: 0 }}
-                    style={{ flex: 0.84, padding: 10 }}
+                    style={{ flex: 1, padding: 10 }}
                >
-                <Form type={CaseItem} ref={c => this._form = c} options={this.state.options} />
+                <Form type={this.state.CaseItem} ref={c => this._form = c} options={this.state.options} />
+                {/* {
+                    console.log("in render",this.props.navigation)
+                } */}
                 </KeyboardAwareScrollView>
-                <View style={{ flex: 0.1, flexDirection:'column' }}>
+                <View style={{flexDirection:'column', flex:0.15, alignContent:'space-between'}}>
                     <TouchableOpacity style={styles.button} onPress={this.handleSubmit} underlayColor='#99d9f4'>
-                            <Text>Save</Text>
+                            <Text style={styles.buttonText}>Save</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonNeutral} onPress={this.cancel} underlayColor='#99d9f4'>
-                            <Text>Cancel</Text>
+                    <TouchableOpacity style={styles.buttonNeutral} onPress={()=>{this.cancel(this.props.navigation)}} underlayColor='#99d9f4'>
+                            <Text style={styles.buttonText}>Cancel</Text>
                     </TouchableOpacity>
                 </View>
-                
                 <StatusBar barStyle="light-content" /> 
                 </View>
         );

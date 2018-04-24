@@ -80,7 +80,10 @@ export default StyleSheet.create({
         backgroundColor: color.primaryColor.hex,
         alignItems: 'center',
         flex: 0.5,
-        justifyContent:'center'      
+        justifyContent:'center',      
+    },
+    buttonText: {
+        fontSize:25
     },
     buttonNeutral: {
         backgroundColor: '#f8f8f8',
