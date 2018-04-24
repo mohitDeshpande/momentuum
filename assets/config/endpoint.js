@@ -1,13 +1,13 @@
 export default {
   api: {
-    url: "https://momentuumapi.azurewebsites.net/api/",
-    
+    url: "https://momentuumapi.azurewebsites.net/api/",  
     endpoints: {
       login: "auth/login",
       caselist: "case/client/emp",
       casesDetail: {
         caseDetail: "case/",
         caseDetailWithClient: "case/client/emp",
+        caseDropdowns: "case/dropdowns",
         caseDetailById: "case/client/",
         stats: "case/stats",
         addSignature: "case/signature"
