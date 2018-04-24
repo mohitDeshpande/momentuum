@@ -42,17 +42,20 @@ class CaseUpdateForm extends React.Component {
       casestatus: '',
       casestatuses: [],
       caseassignedto: '',
-      caseassignedtos: []
+      caseassignedtos: [],
+      signed: ''
     };
   }
 
   MapData = () => {
 
     var fetchType = this.state.dataSource.casetype;
+    var fetchSign = this.state.dataSource.signed;
     var fetchStatus = this.state.dataSource.casestatus;
     var fetchAssigned = this.state.dataSource.caseassignedto;
 
     this.state.casetypes = fetchType;
+    this.state.signed = fetchSign;
     this.state.casestatuses = fetchStatus;
     this.state.caseassignedtos = fetchAssigned;
 
@@ -114,7 +117,7 @@ class CaseUpdateForm extends React.Component {
 
     this.state.updateDataJson.push(obj);
     var myJson = JSON.stringify(obj);
-    console.log(myJson);
+    //console.log(myJson);
     
     var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetail + this.state.caseId;
     console.debug("Initiating GET request to endpoint: " + url);
@@ -230,7 +233,7 @@ class CaseUpdateForm extends React.Component {
   }
 
   render() {
-    console.log(this.state.caseId + "from form");
+    //console.log(this.state.caseId + "from form");
     if (!this.state.caseLoaded) {
       return (
         <View style={{ flex: 1, minHeight: 100, padding: 80 }}>
@@ -374,13 +377,20 @@ class CaseUpdateForm extends React.Component {
                   value={this.state.caseDesc}
                 />
               </View>
+              {this.state.signed === '' ? 
               <View style={styles.row}>
-                  <Text style={styles.fieldname}>Add signature</Text>
+                  <Text style={styles.fieldname}> Add Signature</Text>
                   <Icon name="plus-square" size={25} style={{ paddingTop: 10, paddingBottom: 10 }} color="#444" 
                   onPress={() => this.props.nav.navigate(screens.disclaimer,
                   { caseid1: this.state.caseId })}
                   />
             </View>
+            :
+            <View style={styles.row}>
+                  <Text style={styles.fieldname}>Signature Added</Text>
+                  <Icon name="check" size={25} style={{ paddingTop: 10, paddingBottom: 10 }} color="#2d862d"/>
+            </View>
+                  }
             </View>
           </KeyboardAvoidingView>
         </ScrollView>
