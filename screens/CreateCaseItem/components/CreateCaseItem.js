@@ -13,7 +13,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import t from 'tcomb-form-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import screens from "../../../assets/config/RouteNames";
-import _ from 'lodash';
 
 var url = endpoint.api.url + endpoint.api.endpoints.caseItems.caseItem;
 var urlDropdowns = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDropdowns;
