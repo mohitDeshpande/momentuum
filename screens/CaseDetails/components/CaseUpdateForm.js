@@ -417,6 +417,7 @@ class CaseUpdateForm extends React.Component {
                   value={this.state.caseDesc}
                 />
               </View>
+              {this.state.signed === '' ? 
               <View style={styles.lastrow}>
                   <Button
                   title="ADD SIGNATURE"
