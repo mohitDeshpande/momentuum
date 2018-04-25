@@ -365,7 +365,7 @@ class CaseUpdateForm extends React.Component {
                   itemStyle={styles.picker}
                   selectedValue={this.state.caseCode}
                   onValueChange={(cod) => this.setState({ caseCode: cod })}>
-                  {this.state.caseCodes.map((l, i) => { return <Picker.Item value={l.refid} label={l.listtext} key={i} /> })}
+                  {this.state.caseCodes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
                 </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.caseCode}</Text> }
               </View>
               <View style={styles.row}>
