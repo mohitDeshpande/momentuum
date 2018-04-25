@@ -145,7 +145,7 @@ if (Array.isArray(filteredList)) {
       { caseid1: caseid1 });
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     console.disableYellowBox = true;
     this.state.token = await AsyncStorage.getItem("token");
     var url = config.api.url + config.api.endpoints.caselist;

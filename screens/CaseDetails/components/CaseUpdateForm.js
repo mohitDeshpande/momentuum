@@ -1,6 +1,6 @@
 import React from 'react';
 import endpoint from "../../../assets/config/endpoint";
-import { Alert, TouchableOpacity, ActivityIndicator, AsyncStorage, StyleSheet, Text, View, TextInput, ScrollView, Picker, KeyboardAvoidingView } from 'react-native';
+import { Alert, TouchableOpacity, Button, ActivityIndicator, AsyncStorage, StyleSheet, Text, View, TextInput, ScrollView, Picker, KeyboardAvoidingView } from 'react-native';
 import axios from "axios";
 import colors from '../../../assets/styles/color'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,6 +9,8 @@ import GrowingTextInput from './GrowingTextInput';
 import DatePicker from 'react-native-datepicker';
 import color from '../../../assets/styles/color';
 import screens from "../../../assets/config/RouteNames";
+import RNPickerSelect from 'react-native-picker-select';
+import Moment from 'moment';
 
 class CaseUpdateForm extends React.Component {
 
@@ -36,6 +38,7 @@ class CaseUpdateForm extends React.Component {
       openDate: '',
       closeDate: '',
       caseCode: '',
+      caseCodes: [],
       caseDesc: '',
       casetype: '',
       casetypes: [],
@@ -52,18 +55,23 @@ class CaseUpdateForm extends React.Component {
     var fetchType = this.state.dataSource.casetype;
     var fetchSign = this.state.dataSource.signed;
     var fetchStatus = this.state.dataSource.casestatus;
+    var fetchCode = this.state.dataSource.casecode;
     var fetchAssigned = this.state.dataSource.caseassignedto;
 
     this.state.casetypes = fetchType;
     this.state.signed = fetchSign;
     this.state.casestatuses = fetchStatus;
+    this.state.caseCodes = fetchCode;
     this.state.caseassignedtos = fetchAssigned;
 
     var fetchCase = this.state.dataSource.casedetails;
-    console.log(fetchType);
+    console.log("fetchDate");
       this.setState({ caseId: fetchCase.cas.caseid });
       this.setState({ openDate: fetchCase.cas.caseOpenDate });
+      this.openDateFormat();
       this.setState({ closeDate: fetchCase.cas.caseClosedDate });
+      if(this.state.closeDate != "" || this.state.closeDate != null)
+      this.closeDateFormat();
       this.setState({ caseCode: fetchCase.cas.caseCode });
       this.setState({ casetype: fetchCase.cas.casetype });
       this.setState({ caseassignedto: fetchCase.cas.caseAssignedTo });
@@ -83,6 +91,23 @@ class CaseUpdateForm extends React.Component {
       this.setState({ caseAssignedTo: fetchCase.cas.caseAssignedTo });
       this.setState({ caseNature: fetchCase.cas.caseNature });
     
+  }
+
+  openDateFormat = () =>
+  {
+    //console.log(this.state.openDate);
+    var myDate = Moment(this.state.openDate).format('YYYY-MM-DD');
+    //console.log(myDate);
+    this.setState({ openDate: myDate});
+    console.disableYellowBox = true;
+  }
+
+  closeDateFormat = () =>
+  {
+    //console.log(this.state.closeDate);
+    var myDate = Moment(this.state.closeDate).format('YYYY-MM-DD');
+    this.setState({ closeDate: myDate});
+    console.disableYellowBox = true;
   }
 
   toggleEdit = () => {
@@ -139,6 +164,7 @@ class CaseUpdateForm extends React.Component {
         );
         if(response.status == 204)
         Alert.alert('Updated Successfully!');
+        this.toggleEdit();
         //console.debug(response.data);
       })
       .catch(error => {
@@ -233,7 +259,20 @@ class CaseUpdateForm extends React.Component {
   }
 
   render() {
-    //console.log(this.state.caseId + "from form");
+    console.log(this.state.caseId + "from form");
+    //Save button toggle
+    const isEditable = this.state.editable; 
+    const SaveButton = isEditable ? (
+      <TouchableOpacity
+        onPress={this.updateData}>
+        <Icon name="check-circle" size={25} style={{ paddingTop: 10 }} color={color.green.hex} />
+      </TouchableOpacity>
+    ) : (
+      <TouchableOpacity>
+      </TouchableOpacity>
+    );
+
+    //Page loading logo
     if (!this.state.caseLoaded) {
       return (
         <View style={{ flex: 1, minHeight: 100, padding: 80 }}>
@@ -250,18 +289,15 @@ class CaseUpdateForm extends React.Component {
           <KeyboardAvoidingView
             backgroundColor="transparent"
             style={{ flex: 1 }}
-            keyboardVerticalOffset={100}
+            keyboardVerticalOffset={20}
             behavior={"position"}>
             <View style={styles.header}>
               <Text style={styles.category}>Case Details</Text>
               <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                  onPress={this.updateData}>
-                  <Icon name="check-circle" size={25} style={{ paddingTop: 10 }} color={color.green.hex} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={this.toggleEdit}>
-                  <Icon name="edit" size={25} style={{ paddingTop: 10, paddingLeft: 20 }} color="#666" />
+                {SaveButton}
+                <Text style={[{ display: 'none' }, this.state.editable && { display: 'flex', paddingHorizontal: 10, paddingTop: 10 }]}>Editing</Text>
+                <TouchableOpacity>
+                <Icon name="edit" size={25} color="#444" onPress={() => this.toggleEdit()} style={[styles.editButton, this.state.editable && styles.editButtonActive]} />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => this.deleteAlert()}>
@@ -322,18 +358,19 @@ class CaseUpdateForm extends React.Component {
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Code</Text>
-                <TextInput
-                  ref="caseCode"
-                  placeholder="Case Code"
-                  underlineColorAndroid='#ffffff'
-                  style={[styles.textInput, styles.secondElement]}
-                  editable={this.state.editable}
-                  onChangeText={(typedText) => { this.setState({ caseCode: typedText }) }}
-                  value={this.state.caseCode}
-                />
+                {this.state.editable ?
+                <Picker
+                  enabled={this.state.editable}
+                  style={[styles.picker, styles.secondElement]}
+                  itemStyle={styles.picker}
+                  selectedValue={this.state.caseCode}
+                  onValueChange={(cod) => this.setState({ caseCode: cod })}>
+                  {this.state.caseCodes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
+                </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.caseCode}</Text> }
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Type</Text>
+                {this.state.editable ? 
                 <Picker
                   enabled={this.state.editable}
                   style={[styles.picker, styles.secondElement]}
@@ -341,10 +378,12 @@ class CaseUpdateForm extends React.Component {
                   selectedValue={this.state.casetype}
                   onValueChange={(typ) => this.setState({ casetype: typ })}>
                   {this.state.casetypes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
-                </Picker>
+                </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.casetype}</Text> }
+                
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Status</Text>
+                {this.state.editable ?
                 <Picker
                   enabled={this.state.editable}
                   style={[styles.picker, styles.secondElement]}
@@ -352,10 +391,11 @@ class CaseUpdateForm extends React.Component {
                   selectedValue={this.state.casestatus}
                   onValueChange={(sta) => this.setState({ casestatus: sta })}>
                   {this.state.casestatuses.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
-                </Picker>
+                </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.casestatus}</Text> }
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Assigned To</Text>
+                {this.state.editable ?
                 <Picker
                   enabled={this.state.editable}
                   style={[styles.picker, styles.secondElement]}
@@ -363,7 +403,7 @@ class CaseUpdateForm extends React.Component {
                   selectedValue={this.state.caseassignedto}
                   onValueChange={(sta) => this.setState({ caseassignedto: sta })}>
                   {this.state.caseassignedtos.map((l, i) => { return <Picker.Item value={l.employeeLogin} label={l.employeeLogin} key={i} /> })}
-                </Picker>
+                </Picker> : <Text style={[styles.textInput, styles.secondElement]}>{this.state.caseassignedto}</Text> }
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Description</Text>
@@ -378,11 +418,12 @@ class CaseUpdateForm extends React.Component {
                 />
               </View>
               {this.state.signed === '' ? 
-              <View style={styles.row}>
-                  <Text style={styles.fieldname}> Add Signature</Text>
-                  <Icon name="plus-square" size={25} style={{ paddingTop: 10, paddingBottom: 10 }} color="#444" 
+              <View style={styles.lastrow}>
+                  <Button
+                  title="ADD SIGNATURE"
+                  style={styles.button}
                   onPress={() => this.props.nav.navigate(screens.disclaimer,
-                  { caseid1: this.state.caseId })}
+                    { caseid1: this.state.caseId })}
                   />
             </View>
             :

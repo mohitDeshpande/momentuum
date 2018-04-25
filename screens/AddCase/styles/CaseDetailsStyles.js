@@ -91,7 +91,7 @@ export default StyleSheet.create({
     },
     picker: {
         height: 45,
-        paddingLeft: 30,
+    
     },
     /* required */
     details: {

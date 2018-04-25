@@ -33,38 +33,13 @@ class AddCase extends React.Component {
       openDate: '',
       closeDate: '',
       caseCode: '',
+      caseCodes: [],
       caseDesc: '',
       casetype: '',
-      casetypes: [
-        {
-          "id": "Appointment",
-          "listtext": "Appointment",
-          "code": "234"
-        },
-        {
-          "id": "POC Exception",
-          "listtext": 'POC Exception',
-          "code": "1234"
-        },
-        {
-          "id": "Email",
-          "listtext": 'Email',
-          "code": "124"
-        }
-      ],
+      casetypes: [],
       casestatus: '',
-      casestatuses: [
-        {
-          "id": "Pending",
-          "listtext": "Pending",
-          "code": "23"
-        },
-        {
-          "id": "Scheduled",
-          "listtext": 'Scheduled',
-          "code": "43"
-        }
-      ]
+      casestatuses: [],
+      caseassignedtos: []
     };
   }
 
@@ -80,6 +55,64 @@ class AddCase extends React.Component {
     console.log(this.state.clientId);
     this.state.token = await AsyncStorage.getItem("token");
     //this.getCaseDetails();
+    //this.state.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI5MDkwIiwiZXhwIjoxNTIzODMwMDU4LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwLyJ9.es7Isy_n4g8y2loU9Defn2v7PyTe5aHHR3U9Z_qRtgw"
+    var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDropdowns;
+    console.debug("Initiating GET request to endpoint: " + url);
+
+    console.debug(this.state.token);
+    // make the call
+    axios({
+      method: "get",
+      url: url,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + this.state.token,
+      }
+    })
+      .then(async response => {
+        console.debug(
+          "Call was successful for login. Response status : " + response.status
+        );
+        //console.debug(response.data);
+        this.setState({
+          dataSource: response.data,
+          caseLoaded: true
+        });
+        this.MapData();
+      })
+      .catch(error => {
+        if (error.response) {
+          // the response was other than 2xx status
+          if (error.response.status == 401) {
+            console.debug("Invalid username and password entered");
+            this.authError();
+          } else {
+            console.error("Invalid request sent. Status : " + error.response.status);
+            this.appError();
+          }
+        } else {
+          console.error("Something went wrong in the request Status : " + error.response.status + " Response : " + error);
+          this.appError();
+        }
+      });
+  }
+
+  MapData = () => {
+    var fetchType = this.state.dataSource.casetype;
+    var fetchStatus = this.state.dataSource.casestatus;
+    var fetchCode = this.state.dataSource.casecode;
+    var fetchAssigned = this.state.dataSource.caseassignedto;
+
+    this.state.casetypes = fetchType;
+    this.state.casestatuses = fetchStatus;
+    this.state.caseCodes = fetchCode;
+    this.state.caseassignedtos = fetchAssigned;   
+    this.setState({ casetype: "Select Case Type" });
+    this.setState({ caseAssignedTo: "Select Case Assign To" });
+    this.setState({ casestatus: "Select Case Status" });
+    this.setState({ casecode: "Select Case Code" });
+    console.log(this.state.casestatuses)
   }
 
   addData = () => {
@@ -94,7 +127,7 @@ class AddCase extends React.Component {
     obj["casetype"] = this.state.casetype;
     obj["casestatus"] = this.state.casestatus;
     obj["casedescription"] = this.state.caseDesc;
-    //obj["idVoter"] = this.state.clientId ;
+    obj["idVoter"] = this.state.clientId ;
     obj["tempCaseId"] = this.state.tempcaseid ;
     obj["caseSource"] = this.state.caseSource ;
     obj["createby"] = this.state.createdby ;
@@ -108,6 +141,7 @@ class AddCase extends React.Component {
 
     this.state.addDataJson.push(obj);
     var myJson = JSON.stringify(obj);
+    console.log(this.state.caseAssignedTo);
     console.log(myJson);
     
     var url = endpoint.api.url + endpoint.api.endpoints.casesDetail.caseDetail;
@@ -217,14 +251,13 @@ class AddCase extends React.Component {
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Code</Text>
-                <TextInput
-                  ref="caseCode"
-                  placeholder="Case Code"
-                  underlineColorAndroid='#ffffff'
-                  style={[styles.textInput, styles.secondElement]}
-                  onChangeText={(typedText) => { this.setState({ caseCode: typedText }) }}
-                  value={this.state.caseCode}
-                />
+                <Picker
+                  style={[styles.picker, styles.secondElement]}
+                  itemStyle={styles.picker}
+                  selectedValue={this.state.caseCode}
+                  onValueChange={(cod) => this.setState({ caseCode: cod })}>
+                  {this.state.caseCodes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
+                </Picker>
               </View>
               <View style={styles.row}>
                 <Text style={[styles.fieldname, styles.firstElement]}>Case Type</Text>
@@ -233,7 +266,7 @@ class AddCase extends React.Component {
                   itemStyle={styles.picker}
                   selectedValue={this.state.casetype}
                   onValueChange={(typ) => this.setState({ casetype: typ })}>
-                  {this.state.casetypes.map((l, i) => { return <Picker.Item value={l.id} label={l.listtext} key={i} /> })}
+                  {this.state.casetypes.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
                 </Picker>
               </View>
               <View style={styles.row}>
@@ -243,7 +276,18 @@ class AddCase extends React.Component {
                   itemStyle={styles.picker}
                   selectedValue={this.state.casestatus}
                   onValueChange={(sta) => this.setState({ casestatus: sta })}>
-                  {this.state.casestatuses.map((l, i) => { return <Picker.Item value={l.id} label={l.listtext} key={i} /> })}
+                  {this.state.casestatuses.map((l, i) => { return <Picker.Item value={l.listtext} label={l.listtext} key={i} /> })}
+                </Picker>
+              </View>
+              <View style={styles.row}>
+                <Text style={[styles.fieldname, styles.firstElement]}>Assign Case</Text>
+                <Picker
+                  enabled={this.state.editable}
+                  style={[styles.picker, styles.secondElement]}
+                  itemStyle={styles.picker}
+                  selectedValue={this.state.caseAssignedTo}
+                  onValueChange={(caseassign) => this.setState({ caseAssignedTo: caseassign })}>
+                  {this.state.caseassignedtos.map((l, i) => { return <Picker.Item value={l.employeeLogin} label={l.employeeLogin} key={i} /> })}
                 </Picker>
               </View>
               <View style={styles.row}>
